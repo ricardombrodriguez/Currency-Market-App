@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS  PROJETO.User (
 CREATE TABLE IF NOT EXISTS  PROJETO.Currency (
 
 	id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
+  name VARCHAR(100) NOT NULL,
 	symbol VARCHAR(100) NOT NULL,
 	logoUrl VARCHAR(200) NOT NULL,
 	online BIT DEFAULT 1,
@@ -26,13 +26,15 @@ CREATE TABLE IF NOT EXISTS  PROJETO.Currency (
 
 CREATE TABLE IF NOT EXISTS  PROJETO.Market (
 
+  id INT NOT NULL AUTO_INCREMENT,
 	origin_currency INT NOT NULL,
 	destiny_currency INT NOT NULL,
 	last_value FLOAT NOT NULL,
 	max_bid FLOAT NOT NULL,
 	max_sell FLOAT NOT NULL,
 	FOREIGN KEY (origin_currency) REFERENCES PROJETO.Currency(id),
-	FOREIGN KEY (destiny_currency) REFERENCES PROJETO.Currency(id)
+	FOREIGN KEY (destiny_currency) REFERENCES PROJETO.Currency(id),
+	PRIMARY KEY (id)
 
 );
 
@@ -42,14 +44,12 @@ CREATE TABLE IF NOT EXISTS  PROJETO.Order (
 
 	id INT NOT NULL AUTO_INCREMENT,
 	portfolio INT NOT NULL,
-	origin_currency INT NOT NULL,
-	destiny_currency INT NOT NULL,
+	market INT NOT NULL,
 	quantity FLOAT NOT NULL,
 	value FLOAT NOT NULL,
-	date TIMESTAMP NOT NULL,
+	created_at TIMESTAMP NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (origin_currency) REFERENCES PROJETO.Currency(id),
-	FOREIGN KEY (destiny_currency) REFERENCES PROJETO.Currency(id),
+	FOREIGN KEY (market) REFERENCES PROJETO.Market(id),
 	FOREIGN KEY (portfolio) REFERENCES PROJETO.Portfolio(id)
 
 );
@@ -60,7 +60,8 @@ CREATE TABLE IF NOT EXISTS  PROJETO.UserPortfolio (
     user INT NOT NULL,
     portfolio INT NOT NULL,
     FOREIGN KEY (user) REFERENCES PROJETO.User(id),
-    FOREIGN KEY (portfolio) REFERENCES PROJETO.Portfolio(id)
+    FOREIGN KEY (portfolio) REFERENCES PROJETO.Portfolio(id),
+    PRIMARY KEY (user,portfolio)
 
 );
 
@@ -77,12 +78,11 @@ CREATE TABLE IF NOT EXISTS  PROJETO.Portfolio (
 -- Venda
 CREATE TABLE IF NOT EXISTS  PROJETO.Transaction (
 
-    id INT NOT NULL AUTO_INCREMENT,
     origin_order INT NOT NULL,
     destiny_order INT NOT NULL,
     FOREIGN KEY (origin_order) REFERENCES PROJETO.Order(id),
-	FOREIGN KEY (destiny_order) REFERENCES PROJETO.Order(id),
-    PRIMARY KEY (id)
+    FOREIGN KEY (destiny_order) REFERENCES PROJETO.Order(id),
+    PRIMARY KEY (origin_order,destiny_order)
 
 );
 
@@ -104,6 +104,7 @@ CREATE TABLE IF NOT EXISTS  PROJETO.PortfolioExtensions(
     extension INT NOT NULL,
     portfolio INT NOT NULL,
     FOREIGN KEY (extension) REFERENCES PROJETO.Extensions(id),
-    FOREIGN KEY (portfolio) REFERENCES PROJETO.Portfolio(id)
+    FOREIGN KEY (portfolio) REFERENCES PROJETO.Portfolio(id),
+    PRIMARY KEY (extension,portfolio)
 
 );
