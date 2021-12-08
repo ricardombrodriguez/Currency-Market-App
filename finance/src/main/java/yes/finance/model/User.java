@@ -1,9 +1,10 @@
 package yes.finance.model;
 
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "User")
 public class User {
 
     private int id;
@@ -67,5 +68,11 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @OneToMany(mappedBy = "User")
+    private List<UserPortfolio> user_portfolios = new ArrayList<>();
+
+    @OneToMany(mappedBy = "User")
+    private List<Extensions> extensions = new ArrayList<>();
 
 }
