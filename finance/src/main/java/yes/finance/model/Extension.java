@@ -16,8 +16,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Extension")
 public class Extension {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
+
+    
     private String path;
 
     @ManyToOne
@@ -34,8 +39,7 @@ public class Extension {
         this.path = path;
     }
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    
     public int getId() {
         return id;
     }

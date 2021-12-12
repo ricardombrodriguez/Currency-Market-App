@@ -7,7 +7,13 @@ import java.util.*;
 @Table(name = "User")
 public class User {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
+
+    
     private String username;
     private String fullname;
     private String email;
@@ -33,8 +39,7 @@ public class User {
         this.password = password;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    
     public int getId() {
         return id;
     }

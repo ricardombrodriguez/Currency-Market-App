@@ -9,7 +9,12 @@ import java.util.*;
 @Table(name = "Order")
 public class Order {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
+
+
     private float quantity;
     private float value;
     private Timestamp created_at;
@@ -37,8 +42,7 @@ public class Order {
         this.created_at = new Timestamp(System.currentTimeMillis());
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    
     public int getId() {
         return id;
     }

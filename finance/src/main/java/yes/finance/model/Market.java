@@ -16,8 +16,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Market")
 public class Market {
-    
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
+    
+    
     private double last_value;
     private double max_bid;
     private double max_sell;
@@ -41,8 +47,7 @@ public class Market {
         this.max_sell = max_sell;
     }
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    
     public int getId() {
         return id;
     }

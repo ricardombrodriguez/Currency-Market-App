@@ -7,7 +7,11 @@ import java.util.*;
 @Table(name = "Portfolio")
 public class Portfolio {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
+
     private String name;
     private String public_key;
 
@@ -33,8 +37,7 @@ public class Portfolio {
         this.public_key = public_key;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    
     public int getId() {
         return id;
     }

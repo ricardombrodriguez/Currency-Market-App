@@ -15,7 +15,13 @@ import javax.persistence.Table;
 @Table(name = "Currency")
 public class Currency {
     
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
+
+
     private String name;
     private String symbol;
     private String logoUrl;
@@ -36,8 +42,7 @@ public class Currency {
         this.online = online;
     }
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    
     public int getId() {
         return id;
     }
