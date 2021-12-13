@@ -9,6 +9,11 @@ public class Transaction{
 
     public Transaction(){}
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private int id;
+
     @ManyToOne
     @JoinColumn(name = "Order.id")
     private Order origin_order;
@@ -16,6 +21,10 @@ public class Transaction{
     @ManyToOne
     @JoinColumn(name = "Order.id")
     private Order destiny_order;
+
+    public int getId() {
+        return id;
+    }
 
     public Order getOrigin_order() {
         return this.origin_order;

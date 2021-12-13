@@ -29,7 +29,7 @@ public class Extension {
     @JoinColumn(name = "User.id")
     private User user;
 
-    @ManyToMany(mappedBy = "PortfolioExtension")
+    @ManyToMany(mappedBy = "extensions")
     private List<Portfolio> portfolios = new ArrayList<>();
 
     

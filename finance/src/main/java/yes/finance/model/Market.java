@@ -17,23 +17,21 @@ import javax.persistence.Table;
 @Table(name = "Market")
 public class Market {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
-    
     
     private double last_value;
     private double max_bid;
     private double max_sell;
 
     @ManyToOne
-    @JoinColumn(name = "Currency.id")
+    @JoinColumn(name = "id")
     private Currency origin_currency;
 
     @ManyToOne
-    @JoinColumn(name = "Currency.id")
+    @JoinColumn(name = "id")
     private Currency destiny_currency;
 
     @OneToMany
