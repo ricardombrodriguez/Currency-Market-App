@@ -7,13 +7,15 @@ import javax.persistence.*;
 @Table(name = "Transaction")
 public class Transaction{
 
-    public Transaction(){}
+    public Transaction(){}  
 
-    @ManyToOne
+    @Id
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Order.id")
     private Order origin_order;
 
-    @ManyToOne
+    @Id
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Order.id")
     private Order destiny_order;
 

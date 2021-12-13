@@ -22,7 +22,6 @@ public class Extension {
     @Column(name = "id")
     private int id;
 
-    
     private String path;
 
     @ManyToOne
@@ -32,7 +31,6 @@ public class Extension {
     @ManyToMany(mappedBy = "PortfolioExtension")
     private List<Portfolio> portfolios = new ArrayList<>();
 
-    
     public Extension(){}
 
     public Extension(String path) {
