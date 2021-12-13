@@ -5,7 +5,6 @@ services:
 
   db:
     container_name: database
-    build: ./database
     image: mysql:8.0.27
     ports:
       - "3306:3306"
@@ -21,42 +20,6 @@ services:
     networks:
       - finance_db
 
-  client:
-    container_name: client
-    build: ./use_cases
-    ports: 
-      - '80:80'
-    depends_on:
-      - db
-      - message_broker
-      - backend
-      - data_generation
-    volumes: 
-      .
-    environment:
-      SERVER_IP: backend
-    networks:
-      - finance_db
-
-  message_broker:
-    container_name: rabbitmq
-    build: ./message_broker
-    image: 'rabbitmq:3.9.11'
-    ports:
-      # Standard AMQP (Advanced Message Queuing Protocol) port
-      - '5672:5672'
-      # UI and HTTP API port (https://www.rabbitmq.com/management.html). It doesn't support AMQP, so it should be separated 
-      - '15672:15672'
-    # Reference: https://zgadzaj.com/development/docker/docker-compose/containers/rabbitmq
-    environment:
-      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-    volumes:
-      - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
-      - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
-      - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
-
   backend:
     container_name: backend
     build: ./finance
@@ -64,7 +27,7 @@ services:
       - "8080:8080"
     depends_on:
       - db
-      - message_broker
+      #- message_broker
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ies
       SPRING_DATASOURCE_USERNAME: ies
@@ -74,18 +37,23 @@ services:
     networks:
       - finance_db
 
-  data_generation:
-    container_name: data_generation
-    build: .
+  
+
+  client:
+    container_name: client
+    build: ./use_cases
+    ports: 
+      - '80:80'
     depends_on:
       - db
-      - message_broker
+      #- message_broker
       - backend
+      #- data_generation
     environment:
-      RABBITMQ_IP: message_broker
       SERVER_IP: backend
-    restart: on-failure
-    
+    networks:
+      - finance_db
+
 # Volumes
 volumes:
   db-data:
@@ -93,3 +61,36 @@ volumes:
 # Networks to be created to facilitate communication between containers
 networks:
   finance_db:
+
+
+  # message_broker:
+  #   container_name: rabbitmq
+  #   build: ./message_broker
+  #   image: 'rabbitmq:3.9.11'
+  #   ports:
+  #     # Standard AMQP (Advanced Message Queuing Protocol) port
+  #     - '5672:5672'
+  #     # UI and HTTP API port (https://www.rabbitmq.com/management.html). It doesn't support AMQP, so it should be separated 
+  #     - '15672:15672'
+  #   # Reference: https://zgadzaj.com/development/docker/docker-compose/containers/rabbitmq
+  #   environment:
+  #     RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+  #     RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+  #     RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+  #   volumes:
+  #     - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
+  #     - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
+  #     - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
+
+  # data_generation:
+  #   container_name: data_generation
+  #   build: .
+  #   depends_on:
+  #     - db
+  #     - message_broker
+  #     - backend
+  #   environment:
+  #     RABBITMQ_IP: message_broker
+  #     SERVER_IP: backend
+  #   restart: on-failure
+    

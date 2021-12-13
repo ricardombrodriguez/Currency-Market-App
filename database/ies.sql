@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS  PROJETO.Portfolio (
 
 );
 
--- Venda
+-- Troca de ordens (entre ordem de venda e de compra)
 CREATE TABLE IF NOT EXISTS  PROJETO.Transaction (
 
     origin_order INT NOT NULL,
