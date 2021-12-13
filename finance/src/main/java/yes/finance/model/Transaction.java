@@ -17,7 +17,6 @@ public class Transaction{
     @JoinColumn(name = "Order.id")
     private Order destiny_order;
 
-
     public Order getOrigin_order() {
         return this.origin_order;
     }
