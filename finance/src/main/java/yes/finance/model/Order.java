@@ -26,11 +26,11 @@ public class Order {
     private List<Transaction> destiny_orders = new ArrayList<>();  
    
     @ManyToOne
-    @JoinColumn(name = "Portfolio.id")
+    @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
     @ManyToOne
-    @JoinColumn(name = "Market.id")
+    @JoinColumn(name = "market_id")
     private Market market;
 
     public Order() {

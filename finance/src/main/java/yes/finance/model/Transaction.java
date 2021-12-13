@@ -15,11 +15,11 @@ public class Transaction{
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "Order.id")
+    @JoinColumn(name = "origin_order_id")
     private Order origin_order;
 
     @ManyToOne
-    @JoinColumn(name = "Order.id")
+    @JoinColumn(name = "destiny_order_id")
     private Order destiny_order;
 
     public int getId() {
