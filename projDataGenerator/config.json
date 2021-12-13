@@ -1,0 +1,13 @@
+{
+  "bittrex": {
+    "events": {
+      "tickers": "on_tickers"
+    }
+  },
+
+  "rabbitmq": {
+    "host": "localhost",
+    "port": 5672
+  }
+
+}

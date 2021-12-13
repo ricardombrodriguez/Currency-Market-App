@@ -1,0 +1,2 @@
+signalr-client-aio
+pika
