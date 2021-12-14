@@ -19,6 +19,9 @@ public class FinanceController {
     @Autowired
     private UserService service;
 
+    // @Autowired
+    // private MarketService service2;
+
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
@@ -29,6 +32,11 @@ public class FinanceController {
     public User createUsers(@RequestBody User user){
         return service.saveUser(user);
     }
+
+    // @GetMapping("/markets")
+    // public List<Market> getAllMarkets() {
+    //     return service2.getMarkets();
+    // }
 
     // @GetMapping("/orders")
     // public List<Order> getAllOrders() {

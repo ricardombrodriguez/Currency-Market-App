@@ -22,11 +22,11 @@ public class Market {
     @Column(name = "id")
     private int id;
     
-    private double last_value;
+    private double prev_value;
     private double max_bid;
     private double max_sell;
 
-    @ManyToOne
+    @ManyToOne  
     @JoinColumn(name = "origin_currency_id")
     private Currency origin_currency;
 
@@ -34,13 +34,13 @@ public class Market {
     @JoinColumn(name = "destiny_currency_id")
     private Currency destiny_currency;
 
-    @OneToMany
+    @OneToMany(mappedBy = "id")
     private List<Order> orders = new ArrayList<>();
 
     public Market(){}
 
-    public Market(double last_value, double max_bid, double max_sell) {
-        this.last_value = last_value;
+    public Market(double prev_value, double max_bid, double max_sell) {
+        this.prev_value = prev_value;
         this.max_bid = max_bid;
         this.max_sell = max_sell;
     }
@@ -66,12 +66,12 @@ public class Market {
         this.destiny_currency = destiny_currency;
     }
 
-    @Column(name = "last_value", nullable = false)
-    public double getLast_value() {
-        return this.last_value;
+    @Column(name = "prev_value", nullable = false)
+    public double getPrev_value() {
+        return this.prev_value;
     }
-    public void setLast_value(double last_value) {
-        this.last_value = last_value;
+    public void setPrev_value(double prev_value) {
+        this.prev_value = prev_value;
     }
 
     @Column(name = "max_bid", nullable = false)
@@ -102,7 +102,7 @@ public class Market {
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
-            ", last_value='" + getLast_value() + "'" +
+            ", prev_value='" + getPrev_value() + "'" +
             ", max_bid='" + getMax_bid() + "'" +
             ", max_sell='" + getMax_sell() + "'" +
             ", origin_currency='" + getOrigin_currency() + "'" +

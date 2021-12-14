@@ -93,7 +93,7 @@ public class Portfolio {
             ", public_key='" + getPublic_key() + "'" +
             ", extensions='" + getExtensions() + "'" +
             ", users='" + getUsers() + "'" +
-            ", orders='" + getOrders() + "'" +
+            //", orders='" + getOrders() + "'" +
             "}";
     }
 

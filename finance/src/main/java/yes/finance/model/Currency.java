@@ -100,8 +100,8 @@ public class Currency {
             ", symbol='" + getSymbol() + "'" +
             ", logoUrl='" + getLogoUrl() + "'" +
             ", online='" + getOnline() + "'" +
-            ", list_origin_currency='" + getList_origin_currency() + "'" +
-            ", list_destiny_currency='" + getList_destiny_currency() + "'" +
+            // ", list_origin_currency='" + getList_origin_currency() + "'" +
+            // ", list_destiny_currency='" + getList_destiny_currency() + "'" +
             "}";
     }
     
