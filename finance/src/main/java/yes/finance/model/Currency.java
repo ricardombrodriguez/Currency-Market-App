@@ -27,10 +27,10 @@ public class Currency {
     private String logoUrl;
     private Byte online;
 
-    @OneToMany(mappedBy = "Currency")
+    @OneToMany(mappedBy = "origin_currency")
     private List<Market> list_origin_currency = new ArrayList<>();
 
-    @OneToMany(mappedBy = "Currency")
+    @OneToMany(mappedBy = "destiny_currency")
     private List<Market> list_destiny_currency = new ArrayList<>();  
 
     public Currency(){}
@@ -41,7 +41,6 @@ public class Currency {
         this.logoUrl = logoUrl;
         this.online = online;
     }
-    
     
     public int getId() {
         return id;

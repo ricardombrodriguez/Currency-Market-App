@@ -18,7 +18,7 @@ public class User {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "User")
+    @OneToMany(mappedBy = "user")
     private List<Extension> extensions = new ArrayList<>();
 
     @ManyToMany

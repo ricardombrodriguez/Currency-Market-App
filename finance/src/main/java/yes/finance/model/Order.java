@@ -19,10 +19,10 @@ public class Order {
     private float value;
     private Timestamp created_at;
 
-    @OneToMany(mappedBy = "Order")
+    @OneToMany(mappedBy = "origin_order")
     private List<Transaction> origin_orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "Order")
+    @OneToMany(mappedBy = "destiny_order")
     private List<Transaction> destiny_orders = new ArrayList<>();  
    
     @ManyToOne

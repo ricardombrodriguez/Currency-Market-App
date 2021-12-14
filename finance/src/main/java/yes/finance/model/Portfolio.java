@@ -22,10 +22,10 @@ public class Portfolio {
         inverseJoinColumns = @JoinColumn(name = "Extension.id"))
     private List<Extension> extensions = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "UserPortfolio")
+    @ManyToMany(mappedBy = "portfolios")
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "Portfolio")
+    @OneToMany(mappedBy = "portfolio")
     private List<Order> orders = new ArrayList<>();
 
 

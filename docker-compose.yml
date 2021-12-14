@@ -17,7 +17,6 @@ services:
       MYSQL_ROOT_PASSWORD: password
     volumes:
       - db-data:/var/lib/mysql
-      - .database/ies.sql:/docker-entrypoint-initdb.d/ies.sql
     restart: on-failure
     networks:
       - finance_db
@@ -51,10 +50,7 @@ services:
     ports: 
       - '80:80'
     depends_on:
-      - db
-      #- message_broker
       - backend
-      #- data_generation
     volumes: 
       - ./src:/etc/share/nginx/html
     environment:
@@ -94,9 +90,7 @@ networks:
   #   container_name: data_generation
   #   build: .
   #   depends_on:
-  #     - db
   #     - message_broker
-  #     - backend
   #   environment:
   #     RABBITMQ_IP: message_broker
   #     SERVER_IP: backend
