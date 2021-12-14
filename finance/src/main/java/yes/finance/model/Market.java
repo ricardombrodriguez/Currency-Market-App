@@ -19,12 +19,12 @@ public class Market {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "id")    
     private int id;
     
-    private double last_value;
+    /* private double last_value;
     private double max_bid;
-    private double max_sell;
+    private double max_sell; */
 
     @ManyToOne
     @JoinColumn(name = "origin_currency_id")
@@ -34,17 +34,16 @@ public class Market {
     @JoinColumn(name = "destiny_currency_id")
     private Currency destiny_currency;
 
-    @OneToMany
+    @OneToMany(mappedBy = "market")
     private List<Order> orders = new ArrayList<>();
 
     public Market(){}
 
-    public Market(double last_value, double max_bid, double max_sell) {
+    /* public Market(double last_value, double max_bid, double max_sell) {
         this.last_value = last_value;
         this.max_bid = max_bid;
         this.max_sell = max_sell;
-    }
-    
+    } */
     
     public int getId() {
         return id;
@@ -66,7 +65,7 @@ public class Market {
         this.destiny_currency = destiny_currency;
     }
 
-    @Column(name = "last_value", nullable = false)
+    /* @Column(name = "last_value", nullable = false)
     public double getLast_value() {
         return this.last_value;
     }
@@ -88,7 +87,7 @@ public class Market {
     }
     public void setMax_sell(double max_sell) {
         this.max_sell = max_sell;
-    }
+    } */
 
     public List<Order> getOrders() {
         return this.orders;
@@ -97,20 +96,16 @@ public class Market {
         this.orders = orders;
     }
 
-
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
+            " id='" + getId() + "'" +/* 
             ", last_value='" + getLast_value() + "'" +
             ", max_bid='" + getMax_bid() + "'" +
-            ", max_sell='" + getMax_sell() + "'" +
+            ", max_sell='" + getMax_sell() + "'" + */
             ", origin_currency='" + getOrigin_currency() + "'" +
             ", destiny_currency='" + getDestiny_currency() + "'" +
             ", orders='" + getOrders() + "'" +
             "}";
     }
-
-
-
 }

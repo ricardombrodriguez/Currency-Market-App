@@ -13,10 +13,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
-
-
+  
     private float quantity;
-    private float value;
+    private float order_value;
     private Timestamp created_at;
 
     @OneToMany(mappedBy = "origin_order")
@@ -33,12 +32,11 @@ public class Order {
     @JoinColumn(name = "market_id")
     private Market market;
 
-    public Order() {
-    }
+    public Order(){}
 
-    public Order(float quantity, float value) {
+    public Order(float quantity, float order_value) {
         this.quantity = quantity;
-        this.value = value;
+        this.order_value = order_value;
         this.created_at = new Timestamp(System.currentTimeMillis());
     }
 
@@ -56,13 +54,13 @@ public class Order {
         this.quantity = quantity;
     }
 
-    @Column(name = "value", nullable = false)
-    public float getValue() {
-        return value;
+    @Column(name = "order_value", nullable = false)
+    public float getOrder_value() {
+        return order_value;
     }
 
-    public void setValue(float value) {
-        this.value = value;
+    public void setOrder_value(float order_value) {
+        this.order_value = order_value;
     }
 
     @Column(name = "created_at", nullable = false)
@@ -111,7 +109,7 @@ public class Order {
         return "{" +
             " id='" + getId() + "'" +
             ", quantity='" + getQuantity() + "'" +
-            ", value='" + getValue() + "'" +
+            ", order_value='" + getOrder_value() + "'" +
             ", created_at='" + getCreated_at() + "'" +
             ", origin_orders='" + getOrigin_orders() + "'" +
             ", destiny_orders='" + getDestiny_orders() + "'" +
