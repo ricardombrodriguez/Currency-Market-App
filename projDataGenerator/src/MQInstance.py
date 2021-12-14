@@ -1,6 +1,6 @@
 import pika
 
-from ConfigInstance import ConfigInstance
+from .ConfigInstance import ConfigInstance
 
 
 class MQInterface:
@@ -22,6 +22,8 @@ class RabbitMQ(MQInterface):
     self._queues = []
     
   def publish(self, queue: str, body: str):
+    print('[{}] {}'.format(queue.upper(), body[:20]))
+
     channel = self._connection.channel()
 
     if queue not in self._queues:
@@ -29,6 +31,7 @@ class RabbitMQ(MQInterface):
       self._queues.append(queue)
 
     channel.basic_publish('', queue, body)
+    channel.close()
 
 
 class MQInstance:

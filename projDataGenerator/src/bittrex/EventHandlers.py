@@ -1,14 +1,20 @@
 from base64 import b64decode
+from typing import List
 from zlib import decompress, MAX_WBITS
+import json
 
-from MQInstance import MQInstance
+from ..MQInstance import MQInstance
 
 
-class BittrexEventHandlers:
+class EventHandlers:
 
   @classmethod
   async def on_tickers(cls, msg) -> None:
-    cls._publish_decoded('Tickers', msg)
+    cls._publish_array('Tickers', json.loads(cls._process_message(msg[0]))['deltas'])
+
+  @classmethod
+  def _publish_array(cls, channel: str, msgs) -> None:
+    for msg in msgs: cls._publish(channel, json.dumps(msg))
 
   @classmethod
   def _publish_decoded(cls, channel: str, msg) -> None:
