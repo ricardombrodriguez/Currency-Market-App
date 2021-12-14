@@ -19,7 +19,7 @@ public class Market {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "id")    
     private int id;
     
     private double prev_value;
@@ -44,7 +44,6 @@ public class Market {
         this.max_bid = max_bid;
         this.max_sell = max_sell;
     }
-    
     
     public int getId() {
         return id;
@@ -97,7 +96,6 @@ public class Market {
         this.orders = orders;
     }
 
-
     @Override
     public String toString() {
         return "{" +
@@ -110,7 +108,4 @@ public class Market {
             ", orders='" + getOrders() + "'" +
             "}";
     }
-
-
-
 }

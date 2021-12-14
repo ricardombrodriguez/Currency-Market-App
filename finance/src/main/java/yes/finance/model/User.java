@@ -7,7 +7,6 @@ import java.util.*;
 @Table(name = "User")
 public class User {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

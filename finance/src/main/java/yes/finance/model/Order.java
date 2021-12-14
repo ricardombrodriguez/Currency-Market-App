@@ -13,8 +13,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
-
-
+  
     private float quantity;
     private float order_value;
     private Timestamp created_at;
@@ -33,8 +32,7 @@ public class Order {
     @JoinColumn(name = "market_id")
     private Market market;
 
-    public Order() {
-    }
+    public Order(){}
 
     public Order(float quantity, float order_value) {
         this.quantity = quantity;

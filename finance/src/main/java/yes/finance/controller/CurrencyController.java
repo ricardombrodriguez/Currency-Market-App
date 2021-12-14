@@ -11,7 +11,7 @@ import yes.finance.model.Currency;
 import yes.finance.services.CurrencyService;
 
 @RestController
-@RequestMapping("/api/data") 
+// @RequestMapping("/api/data") 
 public class CurrencyController {
     
     @Autowired
@@ -21,4 +21,6 @@ public class CurrencyController {
     public List<Currency> getAllUsers() {
         return service.getCurrencies();
     }
+
+
 }
