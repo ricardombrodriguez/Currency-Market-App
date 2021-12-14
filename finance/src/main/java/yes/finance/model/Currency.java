@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "Currency")
 public class Currency {
     
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

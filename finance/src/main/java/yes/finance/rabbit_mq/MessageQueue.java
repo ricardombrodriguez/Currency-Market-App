@@ -1,5 +1,6 @@
 package yes.finance.rabbit_mq;
 
+import org.hibernate.internal.util.MarkerObject;
 import org.json.JSONObject;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import java.util.concurrent.TimeoutException;
 /**
  * Tickers
  * Orders
- * usadas uma vez para registo:
  * currencies
  * markets 
  */
@@ -73,23 +73,37 @@ public class MessageQueue {
         switch (operation) {
             case 1:
                 //tickers
+                // vão dar informação a cada x minutos sobre um mercado
                 break;
+
             case 2:
                 //orders
+                Float quantity = data.getFloat("quantity");
+                Float value = data.getFloat("value");
+                Order order = new Order(quantity,value);
+
                 break;
+
             case 3:
-                //currencies
+
+                String name = data.getString("name");
+                String symbol = data.getString("symbol");
+                String logoUrl = data.getString("logoUrl");
+                Byte online = (Byte) data.get("online");
+                Currency currency = new Currency(name,symbol,logoUrl,online);
+
                 break;
 
             case 4:
-                //markets
+                
+                // infomração base sobre um mercado
+                Market market = new Market();
                 break;
+
             default:
                 break;
 
         }
-
     }
-
 }
     

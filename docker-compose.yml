@@ -21,8 +21,6 @@ services:
     networks:
       - finance_db
 
-<<<<<<< HEAD
-=======
   client:
     container_name: client
     build: ./use_cases
@@ -57,7 +55,6 @@ services:
   #     - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
   #     - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
 
->>>>>>> 9de6d6b5329d85a543a7acb126edce09615418f3
   backend:
     container_name: backend
     build:
@@ -79,24 +76,6 @@ services:
     networks:
       - finance_db
 
-<<<<<<< HEAD
-  
-
-  client:
-    container_name: client
-    build: ./use_cases
-    ports: 
-      - '80:80'
-    depends_on:
-      - backend
-    volumes: 
-      - ./src:/etc/share/nginx/html
-    environment:
-      SERVER_IP: backend
-    networks:
-      - finance_db
-
-=======
   # data_generation:
   #   container_name: data_generation
   #   build: .
@@ -109,7 +88,6 @@ services:
   #     SERVER_IP: backend
   #   restart: on-failure
     
->>>>>>> 9de6d6b5329d85a543a7acb126edce09615418f3
 # Volumes
 volumes:
   db-data:
