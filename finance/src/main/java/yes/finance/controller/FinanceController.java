@@ -10,23 +10,36 @@ import org.springframework.web.bind.annotation.*;
 
 import yes.finance.model.*;
 import yes.finance.repository.*;
+import yes.finance.services.*;
 
 @RestController
 public class FinanceController {
+    
+
     @Autowired
-    private CurrencyRepository repository;
-    private ExtensionRepository extensionRepository;
-    private MarketRepository marketRepository;
-    private OrderRepository orderRepository;
-    private PortfolioRepository portfolioRepository;
-    private TransactionRepository transactionRepository;
-    private UserRepository userRepository;
+    private UserService service;
 
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return service.getUsers();
     }
+
+    @PostMapping("/users")
+    public User createUsers(@RequestBody User user){
+        return service.saveUser(user);
+    }
+
+    // @GetMapping("/orders")
+    // public List<Order> getAllOrders() {
+    //     return orderRepository.findAll();
+    // }
+
+    // @GetMapping("/trans")
+    // public List<Transaction> getAllTransactions() {
+    //     return transactionRepository.findAll();
+    // }
+
     
 }
 
