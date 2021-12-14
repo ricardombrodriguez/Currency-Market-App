@@ -27,11 +27,11 @@ public class Market {
     private double max_sell;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "origin_currency_id")
     private Currency origin_currency;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "destiny_currency_id")
     private Currency destiny_currency;
 
     @OneToMany

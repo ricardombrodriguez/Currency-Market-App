@@ -10,13 +10,16 @@ public class Transaction{
     public Transaction(){}  
 
     @Id
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Order.id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "origin_order_id")
     private Order origin_order;
 
-    @Id
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Order.id")
+    @ManyToOne
+    @JoinColumn(name = "destiny_order_id")
     private Order destiny_order;
 
     public Order getOrigin_order() {

@@ -25,7 +25,7 @@ public class Extension {
     private String path;
 
     @ManyToOne
-    @JoinColumn(name = "User.id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany(mappedBy = "extensions")
