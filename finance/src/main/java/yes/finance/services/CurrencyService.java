@@ -5,6 +5,9 @@ import yes.finance.repository.CurrencyRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 import java.util.List;
 
@@ -21,8 +24,8 @@ public class CurrencyService {
         return repository.saveAll(currencies);
     }
 
-    public List<Currency> getCurrencies() {
-        return repository.findAll();
+    public Page<Currency> getCurrencies(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Currency getCurrencyById(int id) {

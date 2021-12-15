@@ -5,6 +5,8 @@ import yes.finance.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -21,8 +23,8 @@ public class UserService {
         return repository.saveAll(users);
     }
 
-    public List<User> getUsers() {
-        return repository.findAll();
+    public Page<User> getUsers(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public User getUserById(int id) {

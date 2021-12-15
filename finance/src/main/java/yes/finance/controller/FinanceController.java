@@ -7,6 +7,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import yes.finance.model.*;
 import yes.finance.model.Currency;
@@ -15,7 +17,6 @@ import yes.finance.services.*;
 @RestController
 public class FinanceController {
     
-
     @Autowired
     private UserService service;
     @Autowired
@@ -32,8 +33,8 @@ public class FinanceController {
     private PortfolioService portfolioservice;
 
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return service.getUsers();
+    public Page<User> getAllUsers(Pageable pageable) {
+        return service.getUsers(pageable);
     }
 
     @PostMapping("/users")
@@ -46,10 +47,9 @@ public class FinanceController {
     }
 
 
-
     @GetMapping("/currencies")
-    public List<Currency> getAllCurrencies() {
-        return currencyservice.getCurrencies();
+    public Page<Currency> getAllCurrencies(Pageable pageable) {
+        return currencyservice.getCurrencies(pageable);
     }
 
     @PostMapping("/currencies")
@@ -58,12 +58,9 @@ public class FinanceController {
     }
 
 
-
-
-
     @GetMapping("/extensions")
-    public List<Extension> getAllExtensions() {
-        return extensionservice.getExtensions();
+    public Page<Extension> getAllExtensions(Pageable pageable) {
+        return extensionservice.getExtensions(pageable);
     }
 
     @PostMapping("/extensions")
@@ -76,12 +73,9 @@ public class FinanceController {
     }
 
 
-
-
-
     @GetMapping("/portfolios")
-    public List<Portfolio> getAllPortfolios() {
-        return portfolioservice.getPortfolios();
+    public Page<Portfolio> getAllPortfolios(Pageable pageable) {
+        return portfolioservice.getPortfolios(pageable);
     }
 
     @PostMapping("/portfolios")
@@ -90,27 +84,20 @@ public class FinanceController {
     }
 
 
-
-
-
-
     @PostMapping("/markets")
     public Market createMarkets(@RequestBody Market market){
         return marketservice.saveMarket(market);
     }
 
     @GetMapping("/markets")
-    public List<Market> getAllMarkets() {
-        return marketservice.getMarkets();
+    public Page<Market> getAllMarkets(Pageable pageable) {
+        return marketservice.getMarkets(pageable);
     }
 
 
-
-
-
     @GetMapping("/orders")
-    public List<Order> getAllOrders() {
-        return orderservice.getOrders();
+    public Page<Order> getAllOrders(Pageable pageable) {
+        return orderservice.getOrders(pageable);
     }
 
     @PostMapping("/orders")
@@ -120,23 +107,15 @@ public class FinanceController {
 
 
 
-
-
-
     @GetMapping("/transactions")
-    public List<Transaction> getAllTransactions() {
-        return transactionservice.getTransactions();
+    public Page<Transaction> getAllTransactions(Pageable pageable) {
+        return transactionservice.getTransactions(pageable);
     }
 
     @PostMapping("/transactions")
     public Transaction createTransaction(@RequestBody Transaction transaction) {
         return transactionservice.saveTransaction(transaction);
     }
-
-
-
-
-    
 }
 
 /*

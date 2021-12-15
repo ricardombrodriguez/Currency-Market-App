@@ -5,6 +5,8 @@ import yes.finance.repository.PortfolioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -21,8 +23,8 @@ public class PortfolioService {
         return repository.saveAll(Portfolios);
     }
 
-    public List<Portfolio> getPortfolios() {
-        return repository.findAll();
+    public Page<Portfolio> getPortfolios(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Portfolio getPortfolioById(int id) {

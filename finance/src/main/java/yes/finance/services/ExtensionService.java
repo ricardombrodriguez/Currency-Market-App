@@ -5,6 +5,9 @@ import yes.finance.repository.ExtensionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 import java.util.List;
 
@@ -21,8 +24,8 @@ public class ExtensionService {
         return repository.saveAll(extensions);
     }
 
-    public List<Extension> getExtensions() {
-        return repository.findAll();
+    public Page<Extension> getExtensions(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Extension getExtensionById(int id) {

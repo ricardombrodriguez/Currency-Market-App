@@ -5,6 +5,8 @@ import yes.finance.repository.OrderRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -21,8 +23,8 @@ public class OrderService {
         return repository.saveAll(Orders);
     }
 
-    public List<Order> getOrders() {
-        return repository.findAll();
+    public Page<Order> getOrders(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Order getOrderById(int id) {

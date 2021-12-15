@@ -111,10 +111,10 @@ public class Order {
             ", quantity='" + getQuantity() + "'" +
             ", order_value='" + getOrder_value() + "'" +
             ", created_at='" + getCreated_at() + "'" +
-            // ", origin_orders='" + getOrigin_orders() + "'" +
-            // ", destiny_orders='" + getDestiny_orders() + "'" +
-            //", portfolio='" + getPortfolio() + "'" +
-            //", market='" + getMarket() + "'" +
+            ", origin_orders='" + getOrigin_orders() + "'" +
+            ", destiny_orders='" + getDestiny_orders() + "'" +
+            ", portfolio='" + getPortfolio() + "'" +
+            ", market='" + getMarket() + "'" +
             "}";
     }
 
