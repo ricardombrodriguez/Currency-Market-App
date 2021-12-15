@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import yes.finance.model.*;
-import yes.finance.repository.*;
+import yes.finance.model.Currency;
 import yes.finance.services.*;
 
 @RestController
@@ -18,10 +18,18 @@ public class FinanceController {
 
     @Autowired
     private UserService service;
-
-    // @Autowired
-    // private MarketService service2;
-
+    @Autowired
+    private CurrencyService currencyservice;
+    @Autowired
+    private ExtensionService extensionservice;
+    @Autowired
+    private MarketService marketservice;
+    @Autowired
+    private OrderService orderservice;
+    @Autowired
+    private TransactionService transactionservice;
+    @Autowired
+    private PortfolioService portfolioservice;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
@@ -32,21 +40,101 @@ public class FinanceController {
     public User createUsers(@RequestBody User user){
         return service.saveUser(user);
     }
+    @DeleteMapping("/users/{id}")
+    public String deleteUsers(@PathVariable int id) {
+        return service.deleteUser(id);
+    }
 
-    // @GetMapping("/markets")
-    // public List<Market> getAllMarkets() {
-    //     return service2.getMarkets();
-    // }
 
-    // @GetMapping("/orders")
-    // public List<Order> getAllOrders() {
-    //     return orderRepository.findAll();
-    // }
 
-    // @GetMapping("/trans")
-    // public List<Transaction> getAllTransactions() {
-    //     return transactionRepository.findAll();
-    // }
+    @GetMapping("/currencies")
+    public List<Currency> getAllCurrencies() {
+        return currencyservice.getCurrencies();
+    }
+
+    @PostMapping("/currencies")
+    public Currency createCurrencies(@RequestBody Currency currency){
+        return currencyservice.saveCurrency(currency);
+    }
+
+
+
+
+
+    @GetMapping("/extensions")
+    public List<Extension> getAllExtensions() {
+        return extensionservice.getExtensions();
+    }
+
+    @PostMapping("/extensions")
+    public Extension createExtensions(@RequestBody Extension extension){
+        return extensionservice.saveExtension(extension);
+    }
+    @DeleteMapping("/extensions/{id}")
+    public String deleteExtensions(@PathVariable int id) {
+        return extensionservice.deleteExtension(id);
+    }
+
+
+
+
+
+    @GetMapping("/portfolios")
+    public List<Portfolio> getAllPortfolios() {
+        return portfolioservice.getPortfolios();
+    }
+
+    @PostMapping("/portfolios")
+    public Portfolio createPortfolios(@RequestBody Portfolio portfolio){
+        return portfolioservice.savePortfolio(portfolio);
+    }
+
+
+
+
+
+
+    @PostMapping("/markets")
+    public Market createMarkets(@RequestBody Market market){
+        return marketservice.saveMarket(market);
+    }
+
+    @GetMapping("/markets")
+    public List<Market> getAllMarkets() {
+        return marketservice.getMarkets();
+    }
+
+
+
+
+
+    @GetMapping("/orders")
+    public List<Order> getAllOrders() {
+        return orderservice.getOrders();
+    }
+
+    @PostMapping("/orders")
+    public Order createOrders(@RequestBody Order order) {
+        return orderservice.saveOrder(order);
+    }
+
+
+
+
+
+
+    @GetMapping("/transactions")
+    public List<Transaction> getAllTransactions() {
+        return transactionservice.getTransactions();
+    }
+
+    @PostMapping("/transactions")
+    public Transaction createTransaction(@RequestBody Transaction transaction) {
+        return transactionservice.saveTransaction(transaction);
+    }
+
+
+
 
     
 }

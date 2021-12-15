@@ -21,7 +21,7 @@ public class TransactionService {
         return repository.saveAll(currencies);
     }
 
-    public List<Transaction> getCurrencies() {
+    public List<Transaction> getTransactions() {
         return repository.findAll();
     }
 
