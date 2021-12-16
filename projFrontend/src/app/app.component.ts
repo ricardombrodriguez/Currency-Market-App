@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivationStart, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'projFrontend';
+  title = '';
+  routes: Route[] = [];
+
+  public constructor(private router:Router) {
+    this.routes = router.config;
+  }
+  
+  ngOnInit() {
+    this.router.events.subscribe(event => {
+      if (event instanceof ActivationStart) {
+        this.title = event.snapshot.data['title'];
+      }
+    });
+  }
+  
 }
