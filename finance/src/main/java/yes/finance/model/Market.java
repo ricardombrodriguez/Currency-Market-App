@@ -66,6 +66,13 @@ public class Market {
         this.orders = orders;
     }
 
+    public List<Ticker> getTickers() {
+        return this.tickers;
+    }
+    public void setTicker(List<Ticker> tickers) {
+        this.tickers = tickers;
+    }
+
     @Override
     public String toString() {
         return "{" +

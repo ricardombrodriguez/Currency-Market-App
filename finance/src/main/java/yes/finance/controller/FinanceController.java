@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import yes.finance.model.*;
@@ -54,22 +55,21 @@ public class FinanceController {
 
     ////////////////////////////////////////////  CURRENCY  ////////////////////////////////////////////
 
-    @GetMapping("/currencies")
+    @GetMapping("/currency")
     public Page<Currency> getAllCurrencies(Pageable pageable) {
         return currencyservice.getCurrencies(pageable);
     }
 
-    @PostMapping("/currencies")
+    @PostMapping("/currency")
     public Currency createCurrencies(@RequestBody Currency currency){
         return currencyservice.saveCurrency(currency);
     }
     
-    /* @GetMapping("/currencies/{id}/market")
-    public Page<Currency> getMarketsByCurrency(Pageable pageable, @PathVariable int id) {
-        marketservice.getPrice();
-        return currencyservice.getCurrencies(pageable);
-    }  */
-   
+    @GetMapping("/currency/{id}")
+    public List<Market> getCurrenciesById(@PathVariable(value = "id") int currencyId) {
+        Currency currencia = currencyservice.getCurrencyById(currencyId);        
+        return currencia.getList_origin_currency();
+    }    
 
 
     ////////////////////////////////////////////  EXTENSION  ////////////////////////////////////////////
@@ -101,14 +101,16 @@ public class FinanceController {
         return portfolioservice.savePortfolio(portfolio);
     }
 
-    /* @PostMapping("/portfolios")
+    /* 
+    @PostMapping("/portfolios")
     public Portfolio createPortfolio(@RequestBody Portfolio portfolio){
         Portfolio p = new Portfolio();
         String name = "nome"; // ir buscar o input do user 
         p.setName(name);
         p.setPublic_key(); // o que é suposto ser a public_key? um numero random grande?
         return p;
-    } */
+    } 
+    */
 
 
     ////////////////////////////////////////////  MARKET  ////////////////////////////////////////////
@@ -123,11 +125,19 @@ public class FinanceController {
         return marketservice.getMarkets(pageable);
     }
 
-    // obter o preço da última moeda de um determinado mercado
-    /* @GetMapping("/markets")
-    public Page<Market> getPrice(Pageable pageable) {
-        return marketservice.getPrice(pageable);
-    } */
+    @GetMapping("/markets")
+    public List<Float> getPrice() {
+        Pageable pageRequest = PageRequest.of(0, 100);
+        Page<Market>  markets = marketservice.getMarkets(pageRequest);
+        List<Float> prices = new ArrayList<>();
+
+        while (!markets.isEmpty()) {
+            pageRequest = pageRequest.next();
+            markets.forEach(entity -> prices.add( entity.getTickers().get(0).getPrev_value() ) );
+        }
+
+        return prices;
+    }
 
 
     ////////////////////////////////////////////  ORDER  ////////////////////////////////////////////
