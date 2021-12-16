@@ -97,16 +97,16 @@ public class Order {
         this.destiny_orders = destiny_orders;
     }
 
-    public Portfolio getPortfolio() {
-        return this.portfolio;
+    public int getPortfolioId() {
+        return this.portfolio.getId();
     }
 
     public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
     }
 
-    public Market getMarket() {
-        return this.market;
+    public int getMarketId() {
+        return this.market.getId();
     }
 
     public void setMarket(Market market) {
