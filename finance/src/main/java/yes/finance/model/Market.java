@@ -30,10 +30,10 @@ public class Market {
     @JoinColumn(name = "destiny_currency_id")
     private Currency destiny_currency;
 
-    @OneToMany(mappedBy = "market")
+    @OneToMany(mappedBy = "id")
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "market")
+    @OneToMany(mappedBy = "id")
     private List<Ticker> tickers = new ArrayList<>();
 
     public Market(){}
@@ -64,6 +64,13 @@ public class Market {
     }
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public List<Ticker> getTickers() {
+        return this.tickers;
+    }
+    public void setTicker(List<Ticker> tickers) {
+        this.tickers = tickers;
     }
 
     @Override

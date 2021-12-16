@@ -1,78 +1,105 @@
 package yes.finance.model;
 
-import javax.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import java.lang.Float;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import java.util.Date;
-
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "Ticker")
 public class Ticker {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    private Float lastValue;
-    private Float maxBuyerValue;
-    private Float minSellerValue;
-
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at")
-    private Date created_at;
+    private float prev_value;
+    private float max_buyer_value;
+    private float min_seller_value;
+    private Timestamp created_at; 
 
     @ManyToOne
     @JoinColumn(name = "market_id")
     private Market market;
 
-    public Ticker() {
+    public Ticker(){}
+
+    public Ticker( float prev_value, float max_buyer_value, float min_seller_value) {
+        this.prev_value = prev_value;
+        this.max_buyer_value = max_buyer_value;
+        this.min_seller_value = min_seller_value;
+        this.created_at = new Timestamp(System.currentTimeMillis()); 
     }
 
-    public Ticker(Market market, float last_value, float max_buyer_value, float min_seller_value) {
-        this.market = market;
-        this.lastValue = last_value;
-        this.maxBuyerValue = max_buyer_value;
-        this.minSellerValue = min_seller_value;
+    public int getId() {
+        return id;
+    }
+
+
+    @Column(name = "max_buyer_value", nullable = false)
+    public float getMax_buyer_value() {
+        return max_buyer_value;
+    }
+
+    public void setMax_buyer_value(float max_buyer_value) {
+        this.max_buyer_value = max_buyer_value;
+    }
+
+    @Column(name = "min_seller_value", nullable = false)
+    public float getMin_seller_value() {
+        return min_seller_value;
+    }
+
+    public void setMin_seller_value(float min_seller_value) {
+        this.min_seller_value = min_seller_value;
     }
 
     @Column(name = "created_at", nullable = false)
-    public Date getCreated_at() {
+    public Timestamp getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
     }
 
-    @Column(name = "lastValue", nullable = false)
-    public Float getlastValue() {
-        return lastValue;
+    public Market getMarket() {
+        return this.market;
     }
 
-    public void setlastValue(Float lastValue) {
-        this.lastValue = lastValue;
+    public void setMarket(Market market) {
+        this.market = market;
     }
 
-    @Column(name = "maxBuyerValue", nullable = false)
-    public Float getmaxBuyerValue() {
-        return maxBuyerValue;
+
+    @Column(name = "prev_value", nullable = false)
+    public float getPrev_value() {
+        return this.prev_value;
     }
 
-    public void setMmaxBuyerValue(Float maxBuyerValue) {
-        this.maxBuyerValue = maxBuyerValue;
+    public void setprev_value(float prev_value) {
+        this.prev_value = prev_value;
     }
 
-    @Column(name = "minSellerValue", nullable = false)
-    public Float getminSellerValue() {
-        return minSellerValue;
+
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", max_buyer_value='" + getMax_buyer_value() + "'" +
+            ", min_seller_value='" + getMin_seller_value() + "'" +
+            ", created_at='" + getCreated_at() + "'" +
+            ", prev_value='" + getPrev_value() + "'" +
+            ", market='" + getMarket() + "'" +
+            "}";
     }
 
-    public void setminSellerValue(Float minSellerValue) {
-        this.minSellerValue = minSellerValue;
-    }
 
 }

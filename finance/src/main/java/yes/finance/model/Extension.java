@@ -18,14 +18,14 @@ import javax.persistence.Table;
 public class Extension {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
     private String path;
 
     @ManyToOne
-    @JoinColumn(name = "User.id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany(mappedBy = "extensions")
@@ -43,8 +43,8 @@ public class Extension {
     }
     
     @Column(name = "user", nullable = false)
-    public User getUser() {
-        return this.user;
+    public int getUserId() {
+        return this.user.getId();
     }
     public void setUser(User new_user) {
         this.user = new_user;

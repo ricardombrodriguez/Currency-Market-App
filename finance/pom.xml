@@ -50,6 +50,9 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- websockets' dependencies -->
+
 	</dependencies>
 
 	<build>

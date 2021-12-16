@@ -10,28 +10,32 @@ public class Transaction{
     public Transaction(){}  
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "tid")
-    private int tid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
     @ManyToOne
-    @JoinColumn(name = "origin_order")
+    @JoinColumn(name = "origin_order_id")
     private Order origin_order;
 
     @ManyToOne
-    @JoinColumn(name = "destiny_order")
+    @JoinColumn(name = "destiny_order_id")
     private Order destiny_order;
 
-    public Order getOrigin_order() {
-        return this.origin_order;
+    public int getId() {
+        return id;
+    }
+
+    public int getOrigin_orderId() {
+        return this.origin_order.getId();
     }
 
     public void setOrigin_order(Order origin_order) {
         this.origin_order = origin_order;
     }
 
-    public Order getDestiny_order() {
-        return this.destiny_order;
+    public int getDestiny_orderId() {
+        return this.destiny_order.getId();
     }
 
     public void setDestiny_order(Order destiny_order) {

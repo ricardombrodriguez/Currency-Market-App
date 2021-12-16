@@ -8,8 +8,7 @@ import java.util.*;
 public class Portfolio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
@@ -93,7 +92,7 @@ public class Portfolio {
             ", public_key='" + getPublic_key() + "'" +
             ", extensions='" + getExtensions() + "'" +
             ", users='" + getUsers() + "'" +
-            ", orders='" + getOrders() + "'" +
+            //", orders='" + getOrders() + "'" +
             "}";
     }
 
