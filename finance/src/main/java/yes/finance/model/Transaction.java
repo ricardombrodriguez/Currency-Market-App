@@ -26,16 +26,16 @@ public class Transaction{
         return id;
     }
 
-    public Order getOrigin_order() {
-        return this.origin_order;
+    public int getOrigin_orderId() {
+        return this.origin_order.getId();
     }
 
     public void setOrigin_order(Order origin_order) {
         this.origin_order = origin_order;
     }
 
-    public Order getDestiny_order() {
-        return this.destiny_order;
+    public int getDestiny_orderId() {
+        return this.destiny_order.getId();
     }
 
     public void setDestiny_order(Order destiny_order) {

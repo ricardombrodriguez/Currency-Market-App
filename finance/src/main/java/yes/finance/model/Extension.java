@@ -45,8 +45,8 @@ public class Extension {
     }
     
     @Column(name = "user", nullable = false)
-    public User getUser() {
-        return this.user;
+    public int getUserId() {
+        return this.user.getId();
     }
     public void setUser(User new_user) {
         this.user = new_user;
