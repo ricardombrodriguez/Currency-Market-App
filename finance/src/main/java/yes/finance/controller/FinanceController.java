@@ -34,6 +34,9 @@ public class FinanceController {
     @Autowired
     private TickerService tickerservice;
 
+
+    ////////////////////////////////////////////  USER  ////////////////////////////////////////////
+
     @GetMapping("/users")
     public Page<User> getAllUsers(Pageable pageable) {
         return service.getUsers(pageable);
@@ -49,6 +52,8 @@ public class FinanceController {
     }
 
 
+    ////////////////////////////////////////////  CURRENCY  ////////////////////////////////////////////
+
     @GetMapping("/currencies")
     public Page<Currency> getAllCurrencies(Pageable pageable) {
         return currencyservice.getCurrencies(pageable);
@@ -58,7 +63,16 @@ public class FinanceController {
     public Currency createCurrencies(@RequestBody Currency currency){
         return currencyservice.saveCurrency(currency);
     }
+    
+    /* @GetMapping("/currencies/{id}/market")
+    public Page<Currency> getMarketsByCurrency(Pageable pageable, @PathVariable int id) {
+        marketservice.getPrice();
+        return currencyservice.getCurrencies(pageable);
+    }  */
+   
 
+
+    ////////////////////////////////////////////  EXTENSION  ////////////////////////////////////////////
 
     @GetMapping("/extensions")
     public Page<Extension> getAllExtensions(Pageable pageable) {
@@ -75,6 +89,8 @@ public class FinanceController {
     }
 
 
+    ////////////////////////////////////////////  PORTFOLIO  ////////////////////////////////////////////
+
     @GetMapping("/portfolios")
     public Page<Portfolio> getAllPortfolios(Pageable pageable) {
         return portfolioservice.getPortfolios(pageable);
@@ -85,6 +101,17 @@ public class FinanceController {
         return portfolioservice.savePortfolio(portfolio);
     }
 
+    /* @PostMapping("/portfolios")
+    public Portfolio createPortfolio(@RequestBody Portfolio portfolio){
+        Portfolio p = new Portfolio();
+        String name = "nome"; // ir buscar o input do user 
+        p.setName(name);
+        p.setPublic_key(); // o que é suposto ser a public_key? um numero random grande?
+        return p;
+    } */
+
+
+    ////////////////////////////////////////////  MARKET  ////////////////////////////////////////////
 
     @PostMapping("/markets")
     public Market createMarkets(@RequestBody Market market){
@@ -96,6 +123,14 @@ public class FinanceController {
         return marketservice.getMarkets(pageable);
     }
 
+    // obter o preço da última moeda de um determinado mercado
+    /* @GetMapping("/markets")
+    public Page<Market> getPrice(Pageable pageable) {
+        return marketservice.getPrice(pageable);
+    } */
+
+
+    ////////////////////////////////////////////  ORDER  ////////////////////////////////////////////
 
     @GetMapping("/orders")
     public Page<Order> getAllOrders(Pageable pageable) {
@@ -108,6 +143,7 @@ public class FinanceController {
     }
 
 
+    ////////////////////////////////////////////  TRANSACTION  ////////////////////////////////////////////
 
     @GetMapping("/transactions")
     public Page<Transaction> getAllTransactions(Pageable pageable) {
@@ -119,6 +155,8 @@ public class FinanceController {
         return transactionservice.saveTransaction(transaction);
     }
 
+
+    ////////////////////////////////////////////  TICKER  ////////////////////////////////////////////
 
     @GetMapping("/tickers")
     public Page<Ticker> getAllTickers(Pageable pageable) {
