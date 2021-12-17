@@ -10,9 +10,6 @@ import yes.finance.repository.*;
 import yes.finance.exception.ResourceNotFoundException;
 import yes.finance.model.*;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
 /**
  * Tickers
  * Orders
@@ -44,6 +41,9 @@ public class MessageQueue {
     @Autowired
     public UserRepository userRepository;
 
+    @Autowired
+    public TickerRepository tickerRepository;
+
     // Queues:
 
     @RabbitListener(queues = "Tickers")
@@ -74,6 +74,17 @@ public class MessageQueue {
             case 1:
                 //tickers
                 // vão dar informação a cada x minutos sobre um mercado
+
+                // mudar parametros, estão mal
+                Float prevValue = data.getFloat("prevValue");
+                Float maxBuyerValue = data.getFloat("maxBuyerValue");
+                Float minSellerValue = data.getFloat("minSellerValue");
+                Ticker ticker = new Ticker(prevValue, maxBuyerValue, minSellerValue);
+                tickerRepository.save(ticker);
+
+                // mandar informação à api
+
+
                 break;
 
             case 2:
@@ -81,6 +92,9 @@ public class MessageQueue {
                 Float quantity = data.getFloat("quantity");
                 Float value = data.getFloat("value");
                 Order order = new Order(quantity,value);
+                orderRepository.save(order);
+
+                // mandar informação à api
 
                 break;
 
@@ -91,6 +105,9 @@ public class MessageQueue {
                 String logoUrl = data.getString("logoUrl");
                 Byte online = (Byte) data.get("online");
                 Currency currency = new Currency(name,symbol,logoUrl,online);
+                currencyRepository.save(currency);
+
+                // mandar informação à api
 
                 break;
 
@@ -98,6 +115,11 @@ public class MessageQueue {
                 
                 // infomração base sobre um mercado
                 Market market = new Market();
+                marketRepository.save(market);
+
+                // mandar informação à api
+                
+
                 break;
 
             default:
