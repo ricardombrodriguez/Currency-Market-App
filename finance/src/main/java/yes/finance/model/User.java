@@ -7,9 +7,8 @@ import java.util.*;
 @Table(name = "User")
 public class User {
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -19,7 +18,7 @@ public class User {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "User")
+    @OneToMany(mappedBy = "user")
     private List<Extension> extensions = new ArrayList<>();
 
     @ManyToMany

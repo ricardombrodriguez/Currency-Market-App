@@ -8,8 +8,7 @@ import java.util.*;
 public class Portfolio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
@@ -22,10 +21,10 @@ public class Portfolio {
         inverseJoinColumns = @JoinColumn(name = "Extension.id"))
     private List<Extension> extensions = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "UserPortfolio")
+    @ManyToMany(mappedBy = "portfolios")
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "Portfolio")
+    @OneToMany(mappedBy = "portfolio")
     private List<Order> orders = new ArrayList<>();
 
 
@@ -93,7 +92,7 @@ public class Portfolio {
             ", public_key='" + getPublic_key() + "'" +
             ", extensions='" + getExtensions() + "'" +
             ", users='" + getUsers() + "'" +
-            ", orders='" + getOrders() + "'" +
+            //", orders='" + getOrders() + "'" +
             "}";
     }
 

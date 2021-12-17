@@ -17,7 +17,7 @@ public class Currency {
     
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -27,10 +27,10 @@ public class Currency {
     private String logoUrl;
     private Byte online;
 
-    @OneToMany(mappedBy = "Currency")
+    @OneToMany(mappedBy = "origin_currency")
     private List<Market> list_origin_currency = new ArrayList<>();
 
-    @OneToMany(mappedBy = "Currency")
+    @OneToMany(mappedBy = "destiny_currency")
     private List<Market> list_destiny_currency = new ArrayList<>();  
 
     public Currency(){}
@@ -41,7 +41,6 @@ public class Currency {
         this.logoUrl = logoUrl;
         this.online = online;
     }
-    
     
     public int getId() {
         return id;
@@ -101,8 +100,8 @@ public class Currency {
             ", symbol='" + getSymbol() + "'" +
             ", logoUrl='" + getLogoUrl() + "'" +
             ", online='" + getOnline() + "'" +
-            ", list_origin_currency='" + getList_origin_currency() + "'" +
-            ", list_destiny_currency='" + getList_destiny_currency() + "'" +
+            // ", list_origin_currency='" + getList_origin_currency() + "'" +
+            // ", list_destiny_currency='" + getList_destiny_currency() + "'" +
             "}";
     }
     

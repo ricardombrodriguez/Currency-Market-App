@@ -1,5 +1,7 @@
 version: "3.3"
 
+# docker run --name database -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=ies -e MYSQL_USER=ies -e MYSQL_PASSWORD=password -p 3306:3306 -d mysql:8.0.27
+
 # services -> database, client, backend, message_broker, data_generation
 services:
 
