@@ -12,6 +12,7 @@ import yes.finance.model.*;
 import yes.finance.model.Currency;
 import yes.finance.services.*;
 
+@CrossOrigin
 @RestController
 public class FinanceController {
     

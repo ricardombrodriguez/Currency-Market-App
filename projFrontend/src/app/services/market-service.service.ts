@@ -9,11 +9,11 @@ export class MarketServiceService {
 
   constructor(private http: HttpClient) { }
 
-  getAll() : Market[] {
+  getPage() : Market[] {
     return []
   }
 
-  getByCoin(id: number) : Market[] {
+  getPageByCoin(id: number) : Market[] {
     return []
   }
 

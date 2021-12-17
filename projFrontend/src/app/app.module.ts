@@ -15,6 +15,8 @@ import { PortfolioListComponent } from './components/portfolio-list/portfolio-li
 
 import { NgChartsModule } from 'ng2-charts';
 import { DataTablesModule } from 'angular-datatables';
+import { DataTableComponent } from './components/data-table/data-table.component';
+import { GraphComponent } from './components/graph/graph.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { DataTablesModule } from 'angular-datatables';
     CoinComponent,
     MarketComponent,
     PortfolioComponent,
-    PortfolioListComponent
+    PortfolioListComponent,
+    DataTableComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule,
