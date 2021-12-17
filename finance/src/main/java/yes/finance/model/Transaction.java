@@ -10,7 +10,7 @@ public class Transaction{
     public Transaction(){}  
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -22,12 +22,24 @@ public class Transaction{
     @JoinColumn(name = "destiny_order_id")
     private Order destiny_order;
 
+    public int getId() {
+        return id;
+    }
+
+    public int getOrigin_orderId() {
+        return this.origin_order.getId();
+    }
+
     public Order getOrigin_order() {
         return this.origin_order;
     }
 
     public void setOrigin_order(Order origin_order) {
         this.origin_order = origin_order;
+    }
+
+    public int getDestiny_orderId() {
+        return this.destiny_order.getId();
     }
 
     public Order getDestiny_order() {

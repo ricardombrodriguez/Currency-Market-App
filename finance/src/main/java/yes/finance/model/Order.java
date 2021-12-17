@@ -1,22 +1,30 @@
 package yes.finance.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "Order")
+@Table(name = "Orders")
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-
-
+  
     private float quantity;
-    private float value;
+    private float order_value;
     private Timestamp created_at;
 
     @OneToMany(mappedBy = "origin_order")
@@ -33,12 +41,11 @@ public class Order {
     @JoinColumn(name = "market_id")
     private Market market;
 
-    public Order() {
-    }
+    public Order(){}
 
-    public Order(float quantity, float value) {
+    public Order(float quantity, float order_value) {
         this.quantity = quantity;
-        this.value = value;
+        this.order_value = order_value;
         this.created_at = new Timestamp(System.currentTimeMillis());
     }
 
@@ -56,13 +63,13 @@ public class Order {
         this.quantity = quantity;
     }
 
-    @Column(name = "value", nullable = false)
-    public float getValue() {
-        return value;
+    @Column(name = "order_value", nullable = false)
+    public float getOrder_value() {
+        return order_value;
     }
 
-    public void setValue(float value) {
-        this.value = value;
+    public void setOrder_value(float order_value) {
+        this.order_value = order_value;
     }
 
     @Column(name = "created_at", nullable = false)
@@ -90,12 +97,20 @@ public class Order {
         this.destiny_orders = destiny_orders;
     }
 
+    public int getPortfolioId() {
+        return this.portfolio.getId();
+    }
+
     public Portfolio getPortfolio() {
         return this.portfolio;
     }
 
     public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
+    }
+
+    public int getMarketId() {
+        return this.market.getId();
     }
 
     public Market getMarket() {
@@ -111,7 +126,7 @@ public class Order {
         return "{" +
             " id='" + getId() + "'" +
             ", quantity='" + getQuantity() + "'" +
-            ", value='" + getValue() + "'" +
+            ", order_value='" + getOrder_value() + "'" +
             ", created_at='" + getCreated_at() + "'" +
             ", origin_orders='" + getOrigin_orders() + "'" +
             ", destiny_orders='" + getDestiny_orders() + "'" +

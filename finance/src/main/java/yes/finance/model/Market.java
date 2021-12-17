@@ -18,15 +18,11 @@ import javax.persistence.Table;
 public class Market {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")    
     private int id;
     
-    private double last_value;
-    private double max_bid;
-    private double max_sell;
-
-    @ManyToOne
+    @ManyToOne  
     @JoinColumn(name = "origin_currency_id")
     private Currency origin_currency;
 
@@ -34,17 +30,13 @@ public class Market {
     @JoinColumn(name = "destiny_currency_id")
     private Currency destiny_currency;
 
-    @OneToMany
+    @OneToMany(mappedBy = "id")
     private List<Order> orders = new ArrayList<>();
 
-    public Market(){}
+    @OneToMany(mappedBy = "id")
+    private List<Ticker> tickers = new ArrayList<>();
 
-    public Market(double last_value, double max_bid, double max_sell) {
-        this.last_value = last_value;
-        this.max_bid = max_bid;
-        this.max_sell = max_sell;
-    }
-    
+    public Market(){}
     
     public int getId() {
         return id;
@@ -66,29 +58,6 @@ public class Market {
         this.destiny_currency = destiny_currency;
     }
 
-    @Column(name = "last_value", nullable = false)
-    public double getLast_value() {
-        return this.last_value;
-    }
-    public void setLast_value(double last_value) {
-        this.last_value = last_value;
-    }
-
-    @Column(name = "max_bid", nullable = false)
-    public double getMax_bid() {
-        return this.max_bid;
-    }
-    public void setMax_bid(double max_bid) {
-        this.max_bid = max_bid;
-    }
-
-    @Column(name = "max_sell", nullable = false)
-    public double getMax_sell() {
-        return this.max_sell;
-    }
-    public void setMax_sell(double max_sell) {
-        this.max_sell = max_sell;
-    }
 
     public List<Order> getOrders() {
         return this.orders;
@@ -97,20 +66,20 @@ public class Market {
         this.orders = orders;
     }
 
+    public List<Ticker> getTickers() {
+        return this.tickers;
+    }
+    public void setTicker(List<Ticker> tickers) {
+        this.tickers = tickers;
+    }
 
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
-            ", last_value='" + getLast_value() + "'" +
-            ", max_bid='" + getMax_bid() + "'" +
-            ", max_sell='" + getMax_sell() + "'" +
             ", origin_currency='" + getOrigin_currency() + "'" +
             ", destiny_currency='" + getDestiny_currency() + "'" +
             ", orders='" + getOrders() + "'" +
             "}";
     }
-
-
-
 }

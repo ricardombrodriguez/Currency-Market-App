@@ -8,6 +8,7 @@ import yes.finance.repository.ExtensionRepository;
 import yes.finance.repository.MarketRepository;
 import yes.finance.repository.OrderRepository;
 import yes.finance.repository.PortfolioRepository;
+import yes.finance.repository.TickerRepository;
 import yes.finance.repository.TransactionRepository;
 import yes.finance.repository.UserRepository;
 
