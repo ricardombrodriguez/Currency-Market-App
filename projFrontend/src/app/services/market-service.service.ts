@@ -1,3 +1,5 @@
+import { Market } from './../interfaces/market';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,5 +7,14 @@ import { Injectable } from '@angular/core';
 })
 export class MarketServiceService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  getAll() : Market[] {
+    return []
+  }
+
+  getByCoin(id: number) : Market[] {
+    return []
+  }
+
 }
