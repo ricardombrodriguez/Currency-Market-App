@@ -46,6 +46,11 @@ public class Extension {
     public int getUserId() {
         return this.user.getId();
     }
+
+    public User getUser() {
+        return this.user;
+    }
+
     public void setUser(User new_user) {
         this.user = new_user;
     }
@@ -54,6 +59,7 @@ public class Extension {
     public String getPath() {
         return this.path;
     }
+
     public void setPath(String new_path) {
         this.path = new_path;
     }
@@ -61,6 +67,7 @@ public class Extension {
     public List<Portfolio> getPortfolios() {
         return this.portfolios;
     }
+
     public void setPortfolios(List<Portfolio> portfolios) {
         this.portfolios = portfolios;
     }
