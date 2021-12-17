@@ -33,7 +33,7 @@ public class MessageQueue {
     }
 
     public void subscribe(Notificable notificable) {
-
+        subscribers.add(notificable);
     }
 
 }

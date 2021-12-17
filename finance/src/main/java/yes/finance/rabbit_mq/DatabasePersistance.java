@@ -13,6 +13,8 @@ import yes.finance.repository.UserRepository;
 
 public class DatabasePersistance implements Notificable {
 
+    private MessageQueue messageQueue;
+
     @Autowired
     public CurrencyRepository currencyRepository;
 
@@ -37,6 +39,9 @@ public class DatabasePersistance implements Notificable {
     @Autowired
     public TickerRepository tickerRepository;
 
+    public DatabasePersistance() {
+        messageQueue.add(this);
+    }
 
     @Override
     public void notification(String input, MQChannels channel) {
