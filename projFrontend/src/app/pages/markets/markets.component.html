@@ -2,47 +2,4 @@
   <h1 class="h2">Markets</h1>
 </div>
 
-<div class="table-responsive">
-  <table class="table table-striped table-sm">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Market</th>
-        <th scope="col">Price</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1,001</td>
-        <td><a routerLink="/coins/1">BTC</a>-<a routerLink="/coins/2">EUR</a></td>
-        <td>50000€</td>
-        <td><a routerLink="/markets/1">Details</a></td>
-      </tr>
-      <tr>
-        <td>1,001</td>
-        <td><a routerLink="/coins/1">BTC</a>-<a routerLink="/coins/2">EUR</a></td>
-        <td>50000€</td>
-        <td><a routerLink="/markets/1">Details</a></td>
-      </tr>
-      <tr>
-        <td>1,001</td>
-        <td><a routerLink="/coins/1">BTC</a>-<a routerLink="/coins/2">EUR</a></td>
-        <td>50000€</td>
-        <td><a routerLink="/markets/1">Details</a></td>
-      </tr>
-      <tr>
-        <td>1,001</td>
-        <td><a routerLink="/coins/1">BTC</a>-<a routerLink="/coins/2">EUR</a></td>
-        <td>50000€</td>
-        <td><a routerLink="/markets/1">Details</a></td>
-      </tr>
-      <tr>
-        <td>1,001</td>
-        <td><a routerLink="/coins/1">BTC</a>-<a routerLink="/coins/2">EUR</a></td>
-        <td>50000€</td>
-        <td><a routerLink="/markets/1">Details</a></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<app-data-table [columns]="columns" [service]="service"></app-data-table>

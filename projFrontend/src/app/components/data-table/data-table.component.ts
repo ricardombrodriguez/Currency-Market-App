@@ -11,33 +11,35 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DataTableComponent implements OnInit {
 
-  @Input() columns: ColumnInterface[] = []
-  @Input() getPage: (parameters: Object) => Observable<Page<any>> = () => of({ content: [], numberOfElements: 0 })
+  @Input() columns: DataTables.ColumnSettings[] = []
   @Input() service: PageableService | null = null
   
-  public dtOptions: DataTables.Settings = {
-    responsive: true,
-    
-    serverSide: true,
-    ajax: (parameters: Object, callback) => {
-      if (this.service != null) {
-        this.service.getPage(parameters).subscribe(result => {
-          callback({
-            data: result.content,
-            recordsTotal: result.numberOfElements,
-            recordsFiltered: result.numberOfElements
-          })
-        })
-      }
-    },
-
-    dom: "t<<'d-flex'<'flex-grow-1'i><p>><l>>",
-    searching: false
-  }
+  dtOptions: DataTables.Settings = {}
 
   constructor() { }
 
   ngOnInit(): void {
+    this.dtOptions = {
+      responsive: true,
+
+      columns: this.columns,
+      
+      serverSide: true,
+      ajax: (parameters: Object, callback: any) => {
+        if (this.service != null) {
+          this.service.getPage(parameters).subscribe(result => {
+            callback({
+              data: result.content,
+              recordsTotal: result.numberOfElements,
+              recordsFiltered: result.numberOfElements
+            })
+          })
+        }
+      },
+
+      dom: "t<<'d-flex'<'flex-grow-1'i><p>><l>>",
+      searching: false
+    }
   }
 
 }

@@ -2,15 +2,9 @@
   <h1 class="h2">Market BTC-EUR</h1>
 </div>
 
-<canvas baseChart class="my-4 w-100" width="900" height="380"
-    [datasets]="lineChartData"
-    [labels]="lineChartLabels"
-    [options]="lineChartOptions"
-    [type]="'line'"
-    [legend] = "lineChartLegend"
-    [plugins]="lineChartPlugins"></canvas>
+<app-graph [data]="data" [labels]="labels"></app-graph>
 
-<div class="row m-5">
+<div class="row m-5" *ngIf="false">
   <div class="col-4">
     <h2>Sell orders</h2>
     <div class="table-responsive">

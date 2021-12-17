@@ -1,6 +1,4 @@
-import { PageableService } from './../../components/data-table/pageable-service';
 import { CoinServiceService } from './../../services/coin-service.service';
-import { ColumnInterface } from './../../components/data-table/column-interface';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -10,11 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoinsComponent implements OnInit {
 
-  columns: ColumnInterface[] = [
-    { name: '#' },
-    { name: 'Symbol' },
-    { name: 'Name' },
-    { name: '', sort: false },
+  columns: DataTables.ColumnSettings[] = [
+    { name: '#', data: 'id' },
+    { name: 'Symbol', data: 'symbol' },
+    { name: 'Name', data: 'name' },
+    { name: '', render: () => `<a href="/coins/1">Details<a>`, orderable: false },
   ]
 
   constructor(public service: CoinServiceService) { }
