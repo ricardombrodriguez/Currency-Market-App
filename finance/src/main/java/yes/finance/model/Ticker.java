@@ -70,9 +70,13 @@ public class Ticker {
         this.created_at = created_at;
     }
 
-    public Market getMarket() {
-        return this.market;
+    @Column(name = "market", nullable = false)
+    public int getMarketId() {
+        return this.market.getId();
     }
+    // public Market getMarket() {
+    //     return this.market;
+    // }
 
     public void setMarket(Market market) {
         this.market = market;
@@ -84,7 +88,7 @@ public class Ticker {
         return this.prev_value;
     }
 
-    public void setprev_value(float prev_value) {
+    public void setPrev_value(float prev_value) {
         this.prev_value = prev_value;
     }
 
@@ -97,7 +101,7 @@ public class Ticker {
             ", min_seller_value='" + getMin_seller_value() + "'" +
             ", created_at='" + getCreated_at() + "'" +
             ", prev_value='" + getPrev_value() + "'" +
-            ", market='" + getMarket() + "'" +
+            ", market='" + getMarketId() + "'" +
             "}";
     }
 

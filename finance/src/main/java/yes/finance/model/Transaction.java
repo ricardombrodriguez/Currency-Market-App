@@ -30,9 +30,9 @@ public class Transaction{
         return this.origin_order.getId();
     }
 
-    public Order getOrigin_order() {
-        return this.origin_order;
-    }
+    // public Order getOrigin_order() {
+    //     return this.origin_order;
+    // }
 
     public void setOrigin_order(Order origin_order) {
         this.origin_order = origin_order;
@@ -42,9 +42,9 @@ public class Transaction{
         return this.destiny_order.getId();
     }
 
-    public Order getDestiny_order() {
-        return this.destiny_order;
-    }
+    // public Order getDestiny_order() {
+    //     return this.destiny_order;
+    // }
 
     public void setDestiny_order(Order destiny_order) {
         this.destiny_order = destiny_order;
@@ -53,8 +53,8 @@ public class Transaction{
     @Override
     public String toString() {
         return "{" +
-            " origin_order='" + getOrigin_order() + "'" +
-            ", destiny_order='" + getDestiny_order() + "'" +
+            " origin_order='" + getOrigin_orderId() + "'" +
+            ", destiny_order='" + getDestiny_orderId() + "'" +
             "}";
     }
 
