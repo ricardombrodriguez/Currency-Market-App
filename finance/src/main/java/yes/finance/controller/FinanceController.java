@@ -63,13 +63,33 @@ public class FinanceController {
     public Currency createCurrencies(@RequestBody Currency currency){
         return currencyservice.saveCurrency(currency);
     }
-    /*
+
+    @DeleteMapping("/currency/{id}")
+    public String deleteCurrency(@PathVariable int id) {
+        return currencyservice.deleteCurrency(id);
+    }
+
+    
     @GetMapping("/currency/{id}")
     public List<Market> getCurrenciesById(@PathVariable(value = "id") int currencyId) {
-        Currency currencia = currencyservice.getCurrencyById(currencyId);        
-        return currencia.getList_origin_currency();
+
+        List<Market> markets_by_currency = new ArrayList<>();
+
+        Pageable pageRequest = PageRequest.of(0, 100);
+        Page<Market>  markets = marketservice.getMarkets(pageRequest);
+
+        while (!markets.isEmpty()) {
+            pageRequest = pageRequest.next();
+            
+            markets.forEach(entity -> {
+                if (entity.getOrigin_currencyId() == currencyId) 
+                    markets_by_currency.add( entity );
+            } );
+        }
+
+        return markets_by_currency;
     }    
-*/
+
 
     ////////////////////////////////////////////  EXTENSION  ////////////////////////////////////////////
 
@@ -116,7 +136,6 @@ public class FinanceController {
         return p;
     } 
     */
-
 
     ////////////////////////////////////////////  MARKET  ////////////////////////////////////////////
 
