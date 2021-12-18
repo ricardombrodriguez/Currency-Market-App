@@ -1,0 +1,7 @@
+<table datatable class="table table-striped table-sm display responsive nowrap" [dtOptions]="dtOptions">
+  <thead>
+    <tr>
+      <th scope="col" [attr.data-sorting]="col.name" *ngFor="let col of columns">{{ col.name }}</th>
+    </tr>
+  </thead>
+</table>
