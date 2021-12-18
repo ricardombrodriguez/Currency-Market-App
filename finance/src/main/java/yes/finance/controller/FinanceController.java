@@ -206,7 +206,6 @@ public class FinanceController {
         return tickerservice.deleteTicker(id);
     }
 
-
     // EndPoint para os gráficos
     @GetMapping("/currency/{id1}/market/{id2}")
     public List<Ticker> getTickersByMarketId(@PathVariable(value = "id1") int currencyId, @PathVariable(value = "id2") int marketId) {
