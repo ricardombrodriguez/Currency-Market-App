@@ -36,6 +36,17 @@ services:
         timeout: 10s
         retries: 5
 
+  client:
+    build: ./projFrontend
+    ports:
+      - 4200:80
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    
+
   data_gen:
     build: ./projDataGenerator/
     restart: on-failure
