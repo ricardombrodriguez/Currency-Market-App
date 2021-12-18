@@ -1,21 +1,15 @@
-FROM maven:3.6.0-jdk-8
+#
+# Build stage
+#
+FROM maven:3.6.0-jdk-11-slim AS build
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -f /home/app/pom.xml clean package -Dmaven.test.skip
 
+#
+# Package stage
+#
+FROM openjdk:11-jre-slim
+COPY --from=build /home/app/target/finance-0.0.1-SNAPSHOT.jar /usr/local/lib/finance.jar
 EXPOSE 8080
-
-RUN mkdir /docker
-
-WORKDIR /docker
-
-COPY . .
-
-RUN mvn -B dependency:resolve dependency:resolve-plugins
-
-RUN mvn package
-
-ENTRYPOINT ["java","-jar","/app.jar"]
-
-# FROM openjdk:11
-# VOLUME /tmp
-# ARG JAR_FILE
-# COPY ./target/finance-0.0.1-SNAPSHOT.jar app.jar
-# ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/usr/local/lib/finance.jar"]

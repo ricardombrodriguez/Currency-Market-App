@@ -1,21 +1,17 @@
 package yes.finance.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Currency")
 public class Currency {
     
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -25,11 +21,11 @@ public class Currency {
     private String name;
     private String symbol;
     private String logoUrl;
-    private Byte online;
+    private boolean online;
 
     public Currency(){}
 
-    public Currency(String name, String symbol, String logoUrl, Byte online) {
+    public Currency(String name, String symbol, String logoUrl, Boolean online) {
         this.name = name;
         this.symbol = symbol;
         this.logoUrl = logoUrl;
@@ -56,18 +52,20 @@ public class Currency {
         this.symbol = new_symbol;
     }
 
-    @Column(name = "logoUrl", nullable = false)
+    @Column(name = "logoUrl")
     public String getLogoUrl() {
         return this.logoUrl;
     }
+
     public void setLogoUrl(String new_logo) {
         this.logoUrl = new_logo;
     }
 
-    public Byte getOnline() {
+    @Column(name = "online", nullable = false)
+    public Boolean getOnline() {
         return this.online;
     }
-    public void setOnline(Byte online) {
+    public void setOnline(Boolean online) {
         this.online = online;
     }
 
