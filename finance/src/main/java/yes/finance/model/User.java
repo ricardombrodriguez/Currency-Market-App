@@ -12,7 +12,6 @@ public class User {
     @Column(name = "id")
     private int id;
 
-    
     private String username;
     private String fullname;
     private String email;
