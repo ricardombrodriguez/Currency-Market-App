@@ -12,6 +12,7 @@ import yes.finance.model.*;
 import yes.finance.model.Currency;
 import yes.finance.services.*;
 
+@CrossOrigin
 @RestController
 public class FinanceController {
     
@@ -62,17 +63,13 @@ public class FinanceController {
     public Currency createCurrencies(@RequestBody Currency currency){
         return currencyservice.saveCurrency(currency);
     }
-    
+    /*
     @GetMapping("/currency/{id}")
     public List<Market> getCurrenciesById(@PathVariable(value = "id") int currencyId) {
         Currency currencia = currencyservice.getCurrencyById(currencyId);        
         return currencia.getList_origin_currency();
     }    
-
-    @DeleteMapping("/currency/{id}")
-    public String deleteCurrency(@PathVariable int id) {
-        return currencyservice.deleteCurrency(id);
-    }
+*/
 
     ////////////////////////////////////////////  EXTENSION  ////////////////////////////////////////////
 
