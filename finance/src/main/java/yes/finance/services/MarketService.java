@@ -27,6 +27,10 @@ public class MarketService {
         return repository.findAll(pageable);
     }
 
+    public List<Market> getMarkets() {
+        return repository.findAll();
+    }
+
     public Market getMarketById(int id) {
         return repository.findById((int)id).orElse(null);
     }

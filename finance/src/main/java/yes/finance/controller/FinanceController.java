@@ -74,17 +74,11 @@ public class FinanceController {
     public List<Market> getCurrenciesById(@PathVariable(value = "id") int currencyId) {
 
         List<Market> markets_by_currency = new ArrayList<>();
+        List<Market>  markets = marketservice.getMarkets();
 
-        Pageable pageRequest = PageRequest.of(0, 100);
-        Page<Market>  markets = marketservice.getMarkets(pageRequest);
-
-        while (!markets.isEmpty()) {
-            pageRequest = pageRequest.next();
-            
-            markets.forEach(entity -> {
-                if (entity.getOrigin_currencyId() == currencyId) 
-                    markets_by_currency.add( entity );
-            } );
+        for (Market market : markets) {
+            if (market.getOrigin_currencyId() == currencyId) 
+                markets_by_currency.add( market );
         }
 
         return markets_by_currency;
@@ -156,13 +150,12 @@ public class FinanceController {
 
     @GetMapping("/market2")
     public List<Float> getPrice() {
-        Pageable pageRequest = PageRequest.of(0, 100);
-        Page<Market>  markets = marketservice.getMarkets(pageRequest);
+        List<Market>  markets = marketservice.getMarkets();
         List<Float> prices = new ArrayList<>();
 
-        while (!markets.isEmpty()) {
-            pageRequest = pageRequest.next();
-            markets.forEach(entity -> prices.add( entity.getTickers().get(0).getPrev_value() ) );
+        for (Market market : markets) {
+            Ticker last_ticker = market.getTickers().get(0);
+            prices.add( last_ticker.getPrev_value() );
         }
 
         return prices;
