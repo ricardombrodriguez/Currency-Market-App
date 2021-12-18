@@ -101,9 +101,9 @@ public class Order {
         return this.portfolio.getId();
     }
 
-    public Portfolio getPortfolio() {
-        return this.portfolio;
-    }
+    // public Portfolio getPortfolio() {
+    //     return this.portfolio;
+    // }
 
     public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
@@ -113,9 +113,9 @@ public class Order {
         return this.market.getId();
     }
 
-    public Market getMarket() {
-        return this.market;
-    }
+    // public Market getMarket() {
+    //     return this.market;
+    // }
 
     public void setMarket(Market market) {
         this.market = market;
@@ -130,8 +130,8 @@ public class Order {
             ", created_at='" + getCreated_at() + "'" +
             ", origin_orders='" + getOrigin_orders() + "'" +
             ", destiny_orders='" + getDestiny_orders() + "'" +
-            ", portfolio='" + getPortfolio() + "'" +
-            ", market='" + getMarket() + "'" +
+            ", portfolio='" + getPortfolioId() + "'" +
+            ", market='" + getMarketId() + "'" +
             "}";
     }
 

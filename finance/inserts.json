@@ -1,0 +1,48 @@
+// USERS
+{"username":"broth","fullname":"Nunisse Santo Fahla","email":"vFAT@ua.pt","password":"zabuzamomochi24"}
+{"username":"pedrolfio","fullname":"Pedro duarte","email":"pedrfol@ua.pt","password":"pingodoce3"}
+{"username":"frosty","fullname":"Ricardo 'Cigano' Martinez","email":"ric_mart@ua.pt","password":"amt_paulo_dx_<3"}
+{"username":"jonikings","fullname":"Joao Reis","email":"joni@ua.pt","password":"ovartrapstar"}
+{"username":"vasgo","fullname":"Vasgo ReGaL","email":"vasgordo@ua.pt","password":"hmmmerasmus"}
+
+
+// EXTENSIONS
+{"path": "duas drogas","user": {"id":1}}
+{"path": "kebab de vaca com tudo, so kebab","user": {"id":2}}
+{"path": "fleetwood mac e uma banda tao boa como disfuncional","user": {"id":3}}
+{"path": "mcroyal bacon extra carne menu cola sem gelo e um chicken bacon","user": {"id":4}}
+{"path": "file path template","user": {"id":2}}
+
+// PORTFOLIOS
+{"name":"susana gomes", "public_key":"bofa", "users":{"id:2"}}
+
+// CURRENCIES
+{"name":"euro", "symbol":"€", "logoUrl":"outlook.pt/tradutor","online":0}
+{"name":"dolla", "symbol":"$", "logoUrl":"ua.pt","online":0}
+{"name":"ingles", "symbol":"£", "logoUrl":"google.pt","online":0}
+{"name":"cavalo", "symbol":"💉", "logoUrl":"youtube.com","online":0}
+
+// MARKETS
+{"origin_currency":{"id":1}, "destiny_currency":{"id":2}}
+{"origin_currency":{"id":1}, "destiny_currency":{"id":3}}
+{"origin_currency":{"id":2}, "destiny_currency":{"id":4}}
+{"origin_currency":{"id":2}, "destiny_currency":{"id":3}}
+{"origin_currency":{"id":2}, "destiny_currency":{"id":1}}
+{"origin_currency":{"id":3}, "destiny_currency":{"id":2}}
+{"origin_currency":{"id":3}, "destiny_currency":{"id":1}}
+{"origin_currency":{"id":4}, "destiny_currency":{"id":2}}
+
+// TICKERS
+{"prev_value":19.2, "max_buyer_value":83.3, "min_seller_value":654.2, "market":{"id":1}}
+{"prev_value":22.0, "max_buyer_value":16.0, "min_seller_value":5.354, "market":{"id":2}}
+{"prev_value":11.54, "max_buyer_value":987.1, "min_seller_value":5.875, "market":{"id":3}}
+{ "prev_value":35.907, "max_buyer_value":12.8, "min_seller_value":8.232, "market":{"id":4}}
+{"prev_value":15.1, "max_buyer_value":765.3, "min_seller_value":8.2332, "market":{"id":5}}
+{"prev_value":18.0, "max_buyer_value":4535.2, "min_seller_value":1.6346, "market":{"id":6}}
+{"prev_value":16.1, "max_buyer_value":543.2, "min_seller_value":58.876, "market":{"id":7}}
+{ "prev_value":4.9, "max_buyer_value":5.2, "min_seller_value":20.1, "market":{"id":8}}
+
+// ORDERS
+{"portfolio":{"id":1}, "market":{"id":1}, "quantity":43.1, "order_value":124.9123}
+{"portfolio":{"id":1}, "market":{"id":3}, "quantity":12.1, "order_value":0.21}
+{"portfolio":{"id":1}, "market":{"id":4}, "quantity":0.1, "order_value":91.23}
