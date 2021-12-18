@@ -2,10 +2,7 @@ package yes.finance.controller;
 
 import java.util.*;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -125,7 +122,7 @@ public class FinanceController {
         return marketservice.getMarkets(pageable);
     }
 
-    @GetMapping("/markets")
+    @GetMapping("/markets2")
     public List<Float> getPrice() {
         Pageable pageRequest = PageRequest.of(0, 100);
         Page<Market>  markets = marketservice.getMarkets(pageRequest);
