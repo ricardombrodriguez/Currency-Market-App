@@ -22,8 +22,6 @@ class RabbitMQ(MQInterface):
     self._queues = []
     
   def publish(self, queue: str, body: str):
-    print('[{}] {}'.format(queue.upper(), body[:20]))
-
     channel = self._connection.channel()
 
     if queue not in self._queues:

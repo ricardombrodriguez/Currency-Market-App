@@ -36,7 +36,8 @@ public class Market {
     @OneToMany(mappedBy = "id")
     private List<Ticker> tickers = new ArrayList<>();
 
-    public Market(){}
+    public Market() {
+    }
     
     public int getId() {
         return id;
