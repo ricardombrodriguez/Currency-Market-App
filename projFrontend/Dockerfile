@@ -1,5 +1,5 @@
 # Define node version
-FROM node:12.16.1-alpine as build
+FROM node:17-alpine3.12 as build
 
 # Define container directory
 WORKDIR /usr/src/app
