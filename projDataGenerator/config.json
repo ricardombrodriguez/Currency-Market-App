@@ -1,0 +1,19 @@
+{
+  "bittrex_ws": {
+    "url": "https://socket-v3.bittrex.com/signalr",
+    "events": {
+      "tickers": "on_tickers"
+    }
+  },
+
+  "bittrex_rest": {
+    "url": "https://api.bittrex.com/v3/",
+    "loaded": ["currencies", "markets"]
+  },
+
+  "rabbitmq": {
+    "host": "localhost",
+    "port": 5672
+  }
+
+}

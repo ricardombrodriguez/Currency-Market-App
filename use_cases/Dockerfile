@@ -1,6 +1,6 @@
 FROM nginx:alpine
 
-EXPOSE 5500
+EXPOSE 3000
 
 RUN rm -rf /usr/share/nginx/html
 

@@ -1,6 +1,7 @@
 package yes.finance.rabbit_mq;
 
 import java.util.ArrayList;
+
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import yes.finance.exception.ResourceNotFoundException;
 
@@ -14,6 +15,7 @@ public class MessageQueue {
 
     @RabbitListener(queues = "Tickers")
     public void tickersReceiver(String input) throws InterruptedException, ResourceNotFoundException {
+        System.out.println("tickers received: ");
         databasePersistance.notification(input, MQChannels.Tickers);
     }
 

@@ -3,6 +3,10 @@ package yes.finance.rabbit_mq;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import yes.finance.model.Currency;
+import yes.finance.model.Market;
+import yes.finance.model.Order;
+import yes.finance.model.Ticker;
 import yes.finance.repository.CurrencyRepository;
 import yes.finance.repository.ExtensionRepository;
 import yes.finance.repository.MarketRepository;
@@ -39,10 +43,6 @@ public class DatabasePersistance implements Notificable {
 
     @Autowired
     public TickerRepository tickerRepository;
-
-    public DatabasePersistance() {
-        messageQueue.add(this);
-    }
 
     @Override
     public void notification(String input, MQChannels channel) {
