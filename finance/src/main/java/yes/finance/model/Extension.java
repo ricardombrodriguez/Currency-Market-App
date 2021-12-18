@@ -49,9 +49,9 @@ public class Extension {
         return this.user.getId();
     }
 
-    public User getUser() {
-        return this.user;
-    }
+    // public User getUser() {
+    //     return this.user;
+    // }
 
     public void setUser(User new_user) {
         this.user = new_user;
@@ -80,7 +80,7 @@ public class Extension {
         return "{" +
             " id='" + getId() + "'" +
             ", path='" + getPath() + "'" +
-            ", user='" + getUser() + "'" +
+            ", user='" + getUserId() + "'" +
             ", portfolios='" + getPortfolios() + "'" +
             "}";
     }

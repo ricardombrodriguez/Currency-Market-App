@@ -97,6 +97,10 @@ public class FinanceController {
     public Portfolio createPortfolios(@RequestBody Portfolio portfolio){
         return portfolioservice.savePortfolio(portfolio);
     }
+    @DeleteMapping("/portfolios/{id}")
+    public String deletePortfolios(@PathVariable int id) {
+        return portfolioservice.deletePortfolio(id);
+    }
 
     /* 
     @PostMapping("/portfolios")
@@ -147,6 +151,11 @@ public class FinanceController {
     @PostMapping("/orders")
     public Order createOrders(@RequestBody Order order) {
         return orderservice.saveOrder(order);
+    }
+
+    @DeleteMapping("/orders/{id}")
+    public String deleteOrders(@PathVariable int id) {
+        return orderservice.deleteOrder(id);
     }
 
 

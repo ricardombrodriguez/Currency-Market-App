@@ -33,7 +33,7 @@ public class Market {
     @OneToMany(mappedBy = "id")
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "market")
     private List<Ticker> tickers = new ArrayList<>();
 
     public Market(){}
@@ -43,17 +43,25 @@ public class Market {
     }
     
     @Column(name = "origin_currency", nullable = false)
-    public Currency getOrigin_currency() {
-        return this.origin_currency;
+    public int getOrigin_currencyId() {
+        return this.origin_currency.getId();
     }
+
+    // public Currency getOrigin_currency() {
+    //     return this.origin_currency;
+    // }
+
     public void setOrigin_currency(Currency origin_currency) {
         this.origin_currency = origin_currency;
     }
     
     @Column(name = "destiny_currency", nullable = false)
-    public Currency getDestiny_currency() {
-        return this.destiny_currency;
+    public int getDestiny_currencyId() {
+        return this.destiny_currency.getId();
     }
+    // public Currency getDestiny_currency() {
+    //     return this.destiny_currency;
+    // }
     public void setDestiny_currency(Currency destiny_currency) {
         this.destiny_currency = destiny_currency;
     }
@@ -77,8 +85,8 @@ public class Market {
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
-            ", origin_currency='" + getOrigin_currency() + "'" +
-            ", destiny_currency='" + getDestiny_currency() + "'" +
+            ", origin_currency='" + getOrigin_currencyId() + "'" +
+            ", destiny_currency='" + getDestiny_currencyId() + "'" +
             ", orders='" + getOrders() + "'" +
             "}";
     }
