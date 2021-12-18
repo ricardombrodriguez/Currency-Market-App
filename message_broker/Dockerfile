@@ -1,18 +1,4 @@
-# syntax=docker/dockerfile:1
-
-FROM python:3.8:10
-
-# WORKDIR /
-
-# COPY . .
-
-RUN pip3 install -r requirements.txt
-
-EXPOSE 5672 
-
-# RUN pip install requests
-
-# ADD wait-for-it.sh /
-# RUN chmod u+x ./wait-for-it.sh
-
-# CMD ["./wait-for-it.sh","rabbit:5672","--","python3","producer.py"]
+FROM rabbitmq:3-management
+RUN apt-get update
+RUN apt-get install -y curl 
+EXPOSE 4369 5671 5672 25672 15671 15672
