@@ -74,8 +74,12 @@ public class Market {
         this.orders = orders;
     }
 
-    public List<Ticker> getTickers() {
-        return this.tickers;
+    public List<Integer> getTickers() {
+        List<Integer> lista = new ArrayList<Integer>();
+        for (Ticker tick:this.tickers){
+            lista.add(tick.getId());
+        }
+        return lista;
     }
     public void setTicker(List<Ticker> tickers) {
         this.tickers = tickers;
