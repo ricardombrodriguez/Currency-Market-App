@@ -18,46 +18,56 @@ public class Ticker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
-    private float prev_value;
-    private float max_buyer_value;
-    private float min_seller_value;
+    private Float prev_value;
+    private Float max_buyer_value;
+    private Float min_seller_value;
     private Timestamp created_at; 
 
     @ManyToOne
     @JoinColumn(name = "market_id")
     private Market market;
 
-    public Ticker(){}
+    public Ticker() {}
 
-    public Ticker( float prev_value, float max_buyer_value, float min_seller_value) {
+    public Ticker(Market market, Float prev_value, Float max_buyer_value, Float min_seller_value) {
+        this.market = market;
         this.prev_value = prev_value;
         this.max_buyer_value = max_buyer_value;
         this.min_seller_value = min_seller_value;
         this.created_at = new Timestamp(System.currentTimeMillis()); 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    @Column(name = "market", nullable = false)
+    public Market getmarket() {
+        return market;
+    }
+
+    public void setmarket(Market market) {
+        this.market = market;
     }
 
 
     @Column(name = "max_buyer_value", nullable = false)
-    public float getMax_buyer_value() {
+    public Float getMax_buyer_value() {
         return max_buyer_value;
     }
 
-    public void setMax_buyer_value(float max_buyer_value) {
+    public void setMax_buyer_value(Float max_buyer_value) {
         this.max_buyer_value = max_buyer_value;
     }
 
     @Column(name = "min_seller_value", nullable = false)
-    public float getMin_seller_value() {
+    public Float getMin_seller_value() {
         return min_seller_value;
     }
 
-    public void setMin_seller_value(float min_seller_value) {
+    public void setMin_seller_value(Float min_seller_value) {
         this.min_seller_value = min_seller_value;
     }
 
@@ -71,7 +81,7 @@ public class Ticker {
     }
 
     @Column(name = "market", nullable = false)
-    public int getMarketId() {
+    public Integer getMarketId() {
         return this.market.getId();
     }
     // public Market getMarket() {
@@ -84,11 +94,11 @@ public class Ticker {
 
 
     @Column(name = "prev_value", nullable = false)
-    public float getPrev_value() {
+    public Float getPrev_value() {
         return this.prev_value;
     }
 
-    public void setPrev_value(float prev_value) {
+    public void setPrev_value(Float prev_value) {
         this.prev_value = prev_value;
     }
 

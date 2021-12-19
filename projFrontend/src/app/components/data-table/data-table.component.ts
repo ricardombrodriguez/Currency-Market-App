@@ -9,6 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css']
 })
+
 export class DataTableComponent implements OnInit {
 
   @Input() columns: DataTables.ColumnSettings[] = []

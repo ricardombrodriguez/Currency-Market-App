@@ -30,7 +30,7 @@ services:
     healthcheck:
         test: nc -z localhost 8080
         interval: 30s
-        timeout: 10s
+        timeout: 500s
         retries: 5
 
   rabbitmq:
@@ -41,13 +41,13 @@ services:
         timeout: 10s
         retries: 5
 
-  #client:
-  #  build: ./projFrontend
-  #  ports:
-  #    - 4200:80
-  #  depends_on:
-  #    backend:
-  #      condition: service_healthy
+  client:
+    build: ./projFrontend
+    ports:
+      - 4200:80
+    depends_on:
+        backend:
+          condition: service_healthy
     
 
   data_gen:

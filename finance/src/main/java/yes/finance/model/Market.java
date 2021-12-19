@@ -20,7 +20,9 @@ public class Market {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")    
-    private int id;
+    private Integer id;
+
+    private String symbol;
     
     @ManyToOne  
     @JoinColumn(name = "origin_currency_id")
@@ -39,12 +41,27 @@ public class Market {
     public Market() {
     }
     
-    public int getId() {
+    public Market(String symbol, Currency origin_currency, Currency destiny_currency) {
+        this.symbol = symbol;
+        this.origin_currency = origin_currency;
+        this.destiny_currency = destiny_currency;
+    }
+
+    public Integer getId() {
         return id;
+    }
+
+    @Column(name = "symbol", nullable = false)
+    public String getSymbol() {
+        return this.symbol;
+    }
+    
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
     
     @Column(name = "origin_currency", nullable = false)
-    public int getOrigin_currencyId() {
+    public Integer getOrigin_currencyId() {
         return this.origin_currency.getId();
     }
 
@@ -57,7 +74,7 @@ public class Market {
     }
     
     @Column(name = "destiny_currency", nullable = false)
-    public int getDestiny_currencyId() {
+    public Integer getDestiny_currencyId() {
         return this.destiny_currency.getId();
     }
     // public Currency getDestiny_currency() {
