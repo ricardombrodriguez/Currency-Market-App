@@ -123,6 +123,7 @@ public class FinanceController {
         return marketservice.getMarkets(pageable);
     }
 
+    /*
     @GetMapping("/markets2")
     public List<Float> getPrice() {
         Pageable pageRequest = PageRequest.of(0, 100);
@@ -135,7 +136,7 @@ public class FinanceController {
         }
 
         return prices;
-    }
+    }*/
 
 
     ////////////////////////////////////////////  ORDER  ////////////////////////////////////////////
