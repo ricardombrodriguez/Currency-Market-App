@@ -28,6 +28,10 @@ public class TickerService {
         return repository.findAll(pageable);
     }
 
+    public List<Ticker> getTickers() {
+        return repository.findAll();
+    }
+
     public Ticker getTickerById(int id) {
         return repository.findById((int)id).orElse(null);
     }

@@ -143,14 +143,10 @@ public class FinanceController {
         return marketservice.getMarkets(pageable);
     }
 
-    @DeleteMapping("/market/{id}")
-    public String deleteMarket(@PathVariable int id) {
-        return marketservice.deleteMarket(id);
-    }
-
-/*     @GetMapping("/market2")
+    
+    /* @GetMapping("/markets2")
     public List<Float> getPrice() {
-        List<Market>  markets = marketservice.getMarkets();
+        /* List<Market>  markets = marketservice.getMarkets();
         List<Float> prices = new ArrayList<>();
 
         for (Market market : markets) {
@@ -158,9 +154,29 @@ public class FinanceController {
             prices.add( last_ticker.getPrev_value() );
         }
 
+        return prices;*/
+        List<Float> prices = new ArrayList<>();
+
+        List<Market>  markets = marketservice.getMarkets();
+
+        for (Market market : markets) {
+            List<Ticker> tickers = tickerservice.getTickersByMarketId();
+            Collections.sort(tickers, new CustomComparator());
+            Ticker last_ticker = tickers.get(0);
+            prices.add( last_ticker.getPrev_value() );
+        }
+
         return prices;
+
+    }  */
+
+    public class CustomComparator implements Comparator<Ticker> {
+        @Override
+        public int compare(Ticker o1, Ticker o2) {
+            return o1.getCreated_at().compareTo(o2.getCreated_at());
+        }
     }
- */
+
 
     ////////////////////////////////////////////  ORDER  ////////////////////////////////////////////
 
@@ -216,10 +232,18 @@ public class FinanceController {
     }
 
     // EndPoint para os gráficos
-/*     @GetMapping("/currency/{id1}/market/{id2}")
+    @GetMapping("/currency/{id1}/market/{id2}")
     public List<Ticker> getTickersByMarketId(@PathVariable(value = "id1") int currencyId, @PathVariable(value = "id2") int marketId) {
-        Market market = marketservice.getMarketById(marketId);        
-        return market.getTickers();
-    }   */  
+        /* Market market = marketservice.getMarketById(marketId);        
+        return market.getTickers(); */
+        List<Ticker> tickersByMarket = new ArrayList<>();
+        List<Ticker> tickers = tickerservice.getTickers();
+        for (Ticker t : tickers) {
+            if (t.getMarketId() == marketId) {
+                tickersByMarket.add( t );
+            }
+        }
+        return tickersByMarket;
+    }   
 
 }

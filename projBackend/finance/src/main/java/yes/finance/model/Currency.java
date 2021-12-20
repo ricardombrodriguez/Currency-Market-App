@@ -15,13 +15,13 @@ public class Currency {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
 
     private String name;
     private String symbol;
     private String logoUrl;
-    private boolean online;
+    private Boolean online;
 
     public Currency(){}
 
@@ -32,7 +32,7 @@ public class Currency {
         this.online = online;
     }
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     

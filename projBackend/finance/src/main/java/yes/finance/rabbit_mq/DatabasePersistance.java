@@ -36,16 +36,15 @@ public class DatabasePersistance implements Notificable {
                 Market market = SpringContext.getBean(MarketRepository.class).findBySymbol(symbol);
 
                 if (market == null) return;
-
+                
                 Float lastTradeRate =  Float.parseFloat( data.getString("lastTradeRate") );
                 Float bidRate = Float.parseFloat( data.getString("bidRate") );
                 Float askRate =  Float.parseFloat( data.getString("askRate") );
-                Ticker ticker = new Ticker(lastTradeRate, bidRate, askRate);
+                Ticker ticker = new Ticker(market, lastTradeRate, bidRate, askRate);
                 SpringContext.getBean(TickerRepository.class).save(ticker);
                 break;
 
             case Currencies:
-                System.out.println("CONAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 String name = data.getString("name");
                 String csymbol = data.getString("symbol");
                 String logoUrl = data.has("logoUrl") ? data.getString("logoUrl") : null;

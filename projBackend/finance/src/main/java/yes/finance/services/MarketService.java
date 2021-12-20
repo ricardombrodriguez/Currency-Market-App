@@ -35,6 +35,10 @@ public class MarketService {
         return repository.findById((int)id).orElse(null);
     }
 
+    /* public List<Ticker> getTickersByMarket(int id) {
+
+    } */
+
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO MarketRepository.java
 
     public String deleteMarket(int id) {

@@ -9,7 +9,7 @@ public class Portfolio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
     private String public_key;

@@ -12,7 +12,7 @@ public class Transaction{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "origin_order_id")
@@ -22,11 +22,11 @@ public class Transaction{
     @JoinColumn(name = "destiny_order_id")
     private Order destiny_order;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public int getOrigin_orderId() {
+    public Integer getOrigin_orderId() {
         return this.origin_order.getId();
     }
 
@@ -38,7 +38,7 @@ public class Transaction{
         this.origin_order = origin_order;
     }
 
-    public int getDestiny_orderId() {
+    public Integer getDestiny_orderId() {
         return this.destiny_order.getId();
     }
 
