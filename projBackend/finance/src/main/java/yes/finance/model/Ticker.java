@@ -26,12 +26,12 @@ public class Ticker {
     private Timestamp created_at; 
 
     @ManyToOne
-    @JoinColumn(name = "market_id")
+    @JoinColumn(name = "market_id", nullable = false)
     private Market market;
 
     public Ticker(){}
 
-    public Ticker( float prev_value, float max_buyer_value, float min_seller_value) {
+    public Ticker(float prev_value, float max_buyer_value, float min_seller_value) {
         this.prev_value = prev_value;
         this.max_buyer_value = max_buyer_value;
         this.min_seller_value = min_seller_value;
@@ -70,7 +70,6 @@ public class Ticker {
         this.created_at = created_at;
     }
 
-    @Column(name = "market", nullable = false)
     public int getMarketId() {
         return this.market.getId();
     }

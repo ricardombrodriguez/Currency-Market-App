@@ -13,7 +13,7 @@ services:
         retries: 5  
 
   backend:
-    build: ./finance
+    build: ./projBackend/finance
     ports:
       - 8080:8080
     depends_on:
@@ -41,15 +41,14 @@ services:
         timeout: 10s
         retries: 5
 
-  #client:
-  #  build: ./projFrontend
-  #  ports:
-  #    - 4200:80
-  #  depends_on:
-  #    backend:
-  #      condition: service_healthy
+  # client:
+  #   build: ./projFrontend
+  #   ports:
+  #     - 4200:80
+  #   depends_on:
+  #     backend:
+  #       condition: service_healthy
     
-
   data_gen:
     build: ./projDataGenerator/
     restart: on-failure

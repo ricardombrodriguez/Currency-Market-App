@@ -1,12 +1,18 @@
+# YesFinance
+
 ## How to run
-
 ```
-docker run --name database -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=ies -e MYSQL_USER=ies -e MYSQL_PASSWORD=password -p 3306:3306 -d mysql:8.0.27
-
-mvnw spring-boot:run
+docker-compose build
+docker-compose up
 ```
 
-## Base de dados:
+## How to shutdown
+```
+docker-compose stop
+docker-compose down
+```
+
+## Base de dados
 
 ENTIDADES
 
@@ -38,7 +44,7 @@ Table -> User
 - telephone
 - creditCard (será que é seguro ou não?)
 
-## Autores:
+## Autores
 
 | NMec | Name | Email | Roles |
 |--:|---|---|---|
