@@ -15,7 +15,7 @@ export class MarketsComponent implements OnInit {
     { name: 'Price', render: (a, b, row) => `` },
     { name: '', render: (a, b, row) => `<a href="/markets/${row.id}">Details</a>`, orderable: false },
   ]
-
+  
   constructor(public service: MarketServiceService) { }
 
   ngOnInit(): void {

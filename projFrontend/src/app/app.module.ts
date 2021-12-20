@@ -8,6 +8,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CoinsComponent } from './pages/coins/coins.component';
 import { MarketsComponent } from './pages/markets/markets.component';
 import { CoinComponent } from './pages/coin/coin.component';
+import { TickerComponent } from './pages/ticker/ticker.component';
 import { MarketComponent } from './pages/market/market.component';
 import { PortfolioComponent } from './pages/portfolio/portfolio.component';
 
@@ -25,6 +26,7 @@ import { GraphComponent } from './components/graph/graph.component';
     CoinsComponent,
     MarketsComponent,
     CoinComponent,
+    TickerComponent,
     MarketComponent,
     PortfolioComponent,
     PortfolioListComponent,

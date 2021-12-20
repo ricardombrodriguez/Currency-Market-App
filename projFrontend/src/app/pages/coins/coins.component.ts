@@ -12,7 +12,7 @@ export class CoinsComponent implements OnInit {
     { name: '#', data: 'id' },
     { name: 'Symbol', data: 'symbol' },
     { name: 'Name', data: 'name' },
-    { name: '', render: () => `<a href="/coins/1">Details<a>`, orderable: false },
+    { name: '', render: (row) => `<a href="/coins/${row.id}">Details<a>`, orderable: false },
   ]
 
   constructor(public service: CoinServiceService) { }
