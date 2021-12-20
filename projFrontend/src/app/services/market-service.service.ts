@@ -12,7 +12,7 @@ export class MarketServiceService {
   constructor(private http: HttpClient) { }
 
   getPage(parameters: Object): Observable<Page<Market>> {
-    return this.http.get<Page<Market>>('http://localhost:8080/markets', parameters)
+    return this.http.get<Page<Market>>('http://localhost:8080/market', parameters)
   }
 
   getPageByCoin(id: number) : Market[] {

@@ -27,11 +27,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_RABBITMQ_HOST: rabbitmq
     restart: always
-    healthcheck:
-        test: nc -z localhost 8080
-        interval: 30s
-        timeout: 500s
-        retries: 5
 
   rabbitmq:
     image: rabbitmq:alpine
@@ -46,8 +41,7 @@ services:
     ports:
       - 4200:80
     depends_on:
-        backend:
-          condition: service_healthy
+      - backend
     
 
   data_gen:

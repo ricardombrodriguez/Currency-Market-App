@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tomcat.util.digester.SystemPropertySource;
 import org.json.JSONObject;
 
 import yes.finance.SpringContext;
@@ -21,7 +22,9 @@ public class DatabasePersistance implements Notificable {
     private Map<String, List<String>> markets = new HashMap<>();
 
     public DatabasePersistance() {
-        MessageQueue.getInstance().subscribe(this);
+        MessageQueue mq = MessageQueue.getInstance();
+        System.out.println(mq);
+        mq.subscribe(this);
     }
 
     @Override
@@ -45,6 +48,8 @@ public class DatabasePersistance implements Notificable {
 
             case Currencies:
                 String name = data.getString("name");
+                System.out.println("=================================================");
+                System.out.println(name);
                 String symbol = data.getString("symbol");
                 String logoUrl = data.has("logoUrl") ? data.getString("logoUrl") : null;
                 boolean online = data.getString("status").equals("ONLINE");
