@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CoinServiceService {
-
+export class TickerServiceService {
+  
   constructor(private http: HttpClient) { }
 
   getPage(parameters: Object): Observable<Page<Ticker>> {

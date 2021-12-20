@@ -12,20 +12,28 @@ import com.rabbitmq.client.Delivery;
 
 public class MessageQueue {
 
-    static private MessageQueue instance = null;
-    private MessageQueue() throws IOException, TimeoutException {
+
+    static private MessageQueue instance;
+    
+    private MessageQueue() {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("rabbitmq");
-        Connection connection = factory.newConnection();
-        Channel channel = connection.createChannel();
-        
-        channel.queueDeclare("Tickers", false, false, false, null);
-        channel.queueDeclare("Currencies", false, false, false, null);
-        channel.queueDeclare("Markets", false, false, false, null);
 
-        channel.basicConsume("Tickers", true, this::tickersReceiver, consumerTag -> {});
-        channel.basicConsume("Currencies", true, this::currenciesReceiver, consumerTag -> {});
-        channel.basicConsume("Markets", true, this::marketReceiver, consumerTag -> {});
+        try {
+
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
+            
+            channel.queueDeclare("Tickers", false, false, false, null);
+            channel.queueDeclare("Currencies", false, false, false, null);
+            channel.queueDeclare("Markets", false, false, false, null);
+
+            channel.basicConsume("Tickers", true, this::tickersReceiver, consumerTag -> {});
+            channel.basicConsume("Currencies", true, this::currenciesReceiver, consumerTag -> {});
+            channel.basicConsume("Markets", true, this::marketReceiver, consumerTag -> {});
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private ArrayList<Notificable> subscribers = new ArrayList<Notificable>();
@@ -59,6 +67,7 @@ public class MessageQueue {
             if (instance == null) instance = new MessageQueue();
         } 
         catch (Exception e) {
+            System.out.println("erro no singleton");
             System.err.println(e.getStackTrace());
         }
         return instance;
