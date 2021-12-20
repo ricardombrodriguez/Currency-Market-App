@@ -31,7 +31,15 @@ public class DatabasePersistance implements Notificable {
 
         switch (channel) {
             case Tickers:
-                Ticker ticker = new Ticker();
+                String tsymbol = data.getString("symbol");
+                Market tmarket = SpringContext.getBean(MarketRepository.class).findBySymbol(tsymbol);
+
+                if (tmarket == null) return;
+
+                Float lastTradeRate = data.getFloat("lastTradeRate");
+                Float bidRate = data.getFloat("bidRate");
+                Float askRate = data.getFloat("askRate");
+                Ticker ticker = new Ticker(tmarket,lastTradeRate,bidRate,askRate);
                 SpringContext.getBean(TickerRepository.class).save(ticker);
                 break;
 

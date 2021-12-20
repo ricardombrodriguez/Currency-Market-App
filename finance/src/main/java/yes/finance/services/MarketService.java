@@ -27,13 +27,13 @@ public class MarketService {
         return repository.findAll(pageable);
     }
 
+    public List<Market> getMarkets() {
+        return repository.findAll();
+    }
+
     public Market getMarketById(int id) {
         return repository.findById((int)id).orElse(null);
     }
-
-    // public Page<Market> getPrice(Pageable pageable){
-    //     return // obter o preço da coin mais recente
-    // }
 
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO MarketRepository.java
 

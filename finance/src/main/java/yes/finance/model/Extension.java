@@ -20,7 +20,7 @@ public class Extension {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     private String path;
 
@@ -38,18 +38,18 @@ public class Extension {
     }
     
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     
     @Column(name = "user", nullable = false)
-    public int getUserId() {
+    public Integer getUserId() {
         return this.user.getId();
     }
 
-    public User getUser() {
-        return this.user;
-    }
+    // public User getUser() {
+    //     return this.user;
+    // }
 
     public void setUser(User new_user) {
         this.user = new_user;
@@ -78,7 +78,7 @@ public class Extension {
         return "{" +
             " id='" + getId() + "'" +
             ", path='" + getPath() + "'" +
-            ", user='" + getUser() + "'" +
+            ", user='" + getUserId() + "'" +
             ", portfolios='" + getPortfolios() + "'" +
             "}";
     }

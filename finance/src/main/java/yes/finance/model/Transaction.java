@@ -12,7 +12,7 @@ public class Transaction{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "origin_order_id")
@@ -22,29 +22,29 @@ public class Transaction{
     @JoinColumn(name = "destiny_order_id")
     private Order destiny_order;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public int getOrigin_orderId() {
+    public Integer getOrigin_orderId() {
         return this.origin_order.getId();
     }
 
-    public Order getOrigin_order() {
-        return this.origin_order;
-    }
+    // public Order getOrigin_order() {
+    //     return this.origin_order;
+    // }
 
     public void setOrigin_order(Order origin_order) {
         this.origin_order = origin_order;
     }
 
-    public int getDestiny_orderId() {
+    public Integer getDestiny_orderId() {
         return this.destiny_order.getId();
     }
 
-    public Order getDestiny_order() {
-        return this.destiny_order;
-    }
+    // public Order getDestiny_order() {
+    //     return this.destiny_order;
+    // }
 
     public void setDestiny_order(Order destiny_order) {
         this.destiny_order = destiny_order;
@@ -53,8 +53,8 @@ public class Transaction{
     @Override
     public String toString() {
         return "{" +
-            " origin_order='" + getOrigin_order() + "'" +
-            ", destiny_order='" + getDestiny_order() + "'" +
+            " origin_order='" + getOrigin_orderId() + "'" +
+            ", destiny_order='" + getDestiny_orderId() + "'" +
             "}";
     }
 

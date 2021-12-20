@@ -15,13 +15,13 @@ public class Currency {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
 
     private String name;
     private String symbol;
     private String logoUrl;
-    private boolean online;
+    private Boolean online;
 
     public Currency(){}
 
@@ -32,7 +32,7 @@ public class Currency {
         this.online = online;
     }
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     
@@ -78,8 +78,6 @@ public class Currency {
             ", symbol='" + getSymbol() + "'" +
             ", logoUrl='" + getLogoUrl() + "'" +
             ", online='" + getOnline() + "'" +
-            // ", list_origin_currency='" + getList_origin_currency() + "'" +
-            // ", list_destiny_currency='" + getList_destiny_currency() + "'" +
             "}";
     }
     

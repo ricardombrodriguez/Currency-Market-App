@@ -21,10 +21,10 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
   
-    private float quantity;
-    private float order_value;
+    private Float quantity;
+    private Float order_value;
     private Timestamp created_at;
 
     @OneToMany(mappedBy = "origin_order")
@@ -43,32 +43,32 @@ public class Order {
 
     public Order(){}
 
-    public Order(float quantity, float order_value) {
+    public Order(Float quantity, Float order_value) {
         this.quantity = quantity;
         this.order_value = order_value;
         this.created_at = new Timestamp(System.currentTimeMillis());
     }
 
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
     @Column(name = "quantity", nullable = false)
-    public float getQuantity() {
+    public Float getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(float quantity) {
+    public void setQuantity(Float quantity) {
         this.quantity = quantity;
     }
 
     @Column(name = "order_value", nullable = false)
-    public float getOrder_value() {
+    public Float getOrder_value() {
         return order_value;
     }
 
-    public void setOrder_value(float order_value) {
+    public void setOrder_value(Float order_value) {
         this.order_value = order_value;
     }
 
@@ -97,25 +97,25 @@ public class Order {
         this.destiny_orders = destiny_orders;
     }
 
-    public int getPortfolioId() {
+    public Integer getPortfolioId() {
         return this.portfolio.getId();
     }
 
-    public Portfolio getPortfolio() {
-        return this.portfolio;
-    }
+    // public Portfolio getPortfolio() {
+    //     return this.portfolio;
+    // }
 
     public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
     }
 
-    public int getMarketId() {
+    public Integer getMarketId() {
         return this.market.getId();
     }
 
-    public Market getMarket() {
-        return this.market;
-    }
+    // public Market getMarket() {
+    //     return this.market;
+    // }
 
     public void setMarket(Market market) {
         this.market = market;
@@ -130,8 +130,8 @@ public class Order {
             ", created_at='" + getCreated_at() + "'" +
             ", origin_orders='" + getOrigin_orders() + "'" +
             ", destiny_orders='" + getDestiny_orders() + "'" +
-            ", portfolio='" + getPortfolio() + "'" +
-            ", market='" + getMarket() + "'" +
+            ", portfolio='" + getPortfolioId() + "'" +
+            ", market='" + getMarketId() + "'" +
             "}";
     }
 

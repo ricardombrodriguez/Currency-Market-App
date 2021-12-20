@@ -31,14 +31,14 @@ public class Market {
 
     public Market() {
     }
-
+    
     public Market(String symbol, Currency origin_currency, Currency destiny_currency) {
         this.symbol = symbol;
         this.origin_currency = origin_currency;
         this.destiny_currency = destiny_currency;
     }
-    
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
