@@ -77,7 +77,7 @@ public class FinanceController {
         List<Market>  markets = marketservice.getMarkets();
 
         for (Market market : markets) {
-            if (market.getOriginCurrencyId() == currencyId) 
+            if (market.getOrigin_currency().getId() == currencyId) 
                 markets_by_currency.add( market );
         }
 
@@ -144,7 +144,7 @@ public class FinanceController {
     }
 
     
-    /* @GetMapping("/markets2")
+/*     /* @GetMapping("/markets2")
     public List<Float> getPrice() {
         /* List<Market>  markets = marketservice.getMarkets();
         List<Float> prices = new ArrayList<>();
@@ -168,7 +168,7 @@ public class FinanceController {
 
         return prices;
 
-    }  */
+    }   */
 
     public class CustomComparator implements Comparator<Ticker> {
         @Override
@@ -234,8 +234,8 @@ public class FinanceController {
     // EndPoint para os gráficos
     @GetMapping("/currency/{id1}/market/{id2}")
     public List<Ticker> getTickersByMarketId(@PathVariable(value = "id1") int currencyId, @PathVariable(value = "id2") int marketId) {
-        //Market market = marketservice.getMarketById(marketId);        
-        //return market.getTickers();
+        /* Market market = marketservice.getMarketById(marketId);        
+        return market.getTickers(); */
         List<Ticker> tickersByMarket = new ArrayList<>();
         List<Ticker> tickers = tickerservice.getTickers();
         for (Ticker t : tickers) {
