@@ -1,16 +1,35 @@
 # YesFinance
 
-## How to run
+## Segunda iteração
+
+Tivemos alguns problemas a interligar o backend com o frontend, portanto, deixamos um pequeno "tutorial" de como fazemos para testar.
+
+## Como correr
 ```
-docker-compose build
-docker-compose up
+sudo docker-compose up
+docker ps -a
+
+[verificar qual o container do client]
+
+docker stop <container_do_client>
+docker rm <container_do_client>
 ```
 
-## How to shutdown
+noutro terminal
 ```
-docker-compose stop
-docker-compose down
+cd projFrontend/src/
+ng serve
 ```
+
+## Serviços a funcionar
+
+```
+localhost:4200/
+localhost:4200/coins/
+localhost:4200/ticker/
+localhost:4200/markets/
+```
+
 
 ## Base de dados
 
