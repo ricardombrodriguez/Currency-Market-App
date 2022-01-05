@@ -44,11 +44,11 @@ public class Ticker {
     }
 
     @Column(name = "market", nullable = false)
-    public Market getmarket() {
+    public Market getMarket() {
         return market;
     }
 
-    public void setmarket(Market market) {
+    public void setMarket(Market market) {
         this.market = market;
     }
 
@@ -83,13 +83,6 @@ public class Ticker {
     @Column(name = "market", nullable = false)
     public Integer getMarketId() {
         return this.market.getId();
-    }
-    // public Market getMarket() {
-    //     return this.market;
-    // }
-
-    public void setMarket(Market market) {
-        this.market = market;
     }
 
 

@@ -27,7 +27,11 @@ const routes: Routes = [
     { path: ':id', component: TickerComponent }
   ] },
 
-  { path: 'portfolio/:id', component: PortfolioComponent },
+  { path: 'portfolio', children: [
+    { path: '', component: PortfolioComponent },
+    { path: ':id', component: PortfolioComponent }
+  ] }
+
 ];
 
 @NgModule({

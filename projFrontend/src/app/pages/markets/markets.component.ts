@@ -12,7 +12,7 @@ export class MarketsComponent implements OnInit {
   columns: DataTables.ColumnSettings[] = [
     { name: '#', data: 'id' },
     { name: 'Market', render: (a, b, row) => `<a href="/coins/${row.origin_currency.id}">${row.origin_currency.name}</a>-<a href="/coins/${row.destiny_currency.id}">${row.destiny_currency.name}</a>` },
-    { name: 'Price', render: (a, b, row) => `` },
+    { name: 'Price', render: (a, b, row) => `${row.price}` },
     { name: '', render: (a, b, row) => `<a href="/markets/${row.id}">Details</a>`, orderable: false },
   ]
   

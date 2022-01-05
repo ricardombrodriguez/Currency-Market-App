@@ -2,6 +2,7 @@ package yes.finance.model;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.Random;
 
 @Entity
 @Table(name = "Portfolio")
@@ -28,12 +29,12 @@ public class Portfolio {
     private List<Order> orders = new ArrayList<>();
 
 
-    public Portfolio() {
-    }
+    public Portfolio() {}
 
-    public Portfolio(String name, String public_key) {
+    public Portfolio(String name) {
         this.name = name;
-        this.public_key = public_key;
+        Random rand = new Random();
+        this.public_key = String.valueOf( rand.nextInt(1000000) );
     }
 
     
@@ -92,7 +93,6 @@ public class Portfolio {
             ", public_key='" + getPublic_key() + "'" +
             ", extensions='" + getExtensions() + "'" +
             ", users='" + getUsers() + "'" +
-            //", orders='" + getOrders() + "'" +
             "}";
     }
 

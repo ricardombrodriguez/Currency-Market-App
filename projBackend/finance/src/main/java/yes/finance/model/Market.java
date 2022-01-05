@@ -20,6 +20,9 @@ public class Market {
 
     @Column(name = "symbol")
     private String symbol;
+
+    @Column(name = "price", nullable=true)
+    private Float price;
     
     @ManyToOne  
     @JoinColumn(name = "origin_currency_id", nullable = false)
@@ -29,13 +32,16 @@ public class Market {
     @JoinColumn(name = "destiny_currency_id", nullable = false)
     private Currency destiny_currency;
 
+
     public Market() {
+        this.price = 0f;
     }
     
     public Market(String symbol, Currency origin_currency, Currency destiny_currency) {
         this.symbol = symbol;
         this.origin_currency = origin_currency;
         this.destiny_currency = destiny_currency;
+        this.price = 0f;
     }
 
     public Integer getId() {
@@ -66,13 +72,25 @@ public class Market {
         this.destiny_currency = destiny_currency;
     }
 
+    public Float getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
+            ", symbol='" + getSymbol() + "'" +
+            ", price='" + getPrice() + "'" +
             ", origin_currency='" + getOrigin_currency() + "'" +
             ", destiny_currency='" + getDestiny_currency() + "'" +
             "}";
     }
+    
    
 }
