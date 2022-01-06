@@ -1,10 +1,11 @@
 import json
 
+from config import CONFIG
+
 
 class ConfigManager:
-  def __init__(self, config_file='config.json') -> None:
-      with open(config_file, 'r') as f:
-        self.config = json.load(f)
+  def __init__(self) -> None:
+    self.config = CONFIG
 
   def get_config(self, service:str, key:str) -> any:
     return self.config[service][key]
