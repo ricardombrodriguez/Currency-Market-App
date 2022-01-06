@@ -1,6 +1,7 @@
 package yes.finance.services;
 
 import yes.finance.model.User;
+import yes.finance.model.Portfolio;
 import yes.finance.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,10 @@ public class UserService {
         // FAZER SETS
 
         return saveUser(existingUser);
+    }
+
+    public List<Portfolio> getPortfoliosByUser(int id){
+        return repository.findById(id).getPortfolios();
+
     }
 }
