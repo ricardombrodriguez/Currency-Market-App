@@ -9,10 +9,10 @@ import { Component, OnInit } from '@angular/core';
 export class CoinsComponent implements OnInit {
 
   columns: DataTables.ColumnSettings[] = [
-    { name: '#', data: 'id' },
+    { name: '#', data: 'id' },  
     { name: 'Symbol', data: 'symbol' },
     { name: 'Name', data: 'name' },
-    { name: '', render: (row) => `<a href="/coins/${row.id}">Details<a>`, orderable: false },
+    { name: '', render: (a, b, row) => `<a href="/coins/${row.id}">Details<a>`, orderable: false },
   ]
 
   constructor(public service: CoinServiceService) { }
