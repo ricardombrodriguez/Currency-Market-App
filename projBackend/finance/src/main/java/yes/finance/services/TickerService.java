@@ -32,8 +32,8 @@ public class TickerService {
         return repository.findAll();
     }
 
-    public Ticker getTickerById(int id) {
-        return repository.findById((int)id).orElse(null);
+    public List<Ticker> getTickersbyMarketID(int id) {
+        return repository.findBymarket(id);
     }
 
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO TickerRepository.java

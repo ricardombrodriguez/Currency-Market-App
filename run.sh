@@ -28,13 +28,12 @@ docker run --name finance_mq --health-cmd='rabbitmq-diagnostics -q status' -p 56
 
 sleep 1
 
-until checkhealth finance_mq; do sleep 1; done;
+sleep 20;
 
 cd ./projDataGenerator
 python3 main.py &
 
-until checkhealth finance_db; do sleep 1; done;
-
+sleep 20;
 
 cd ../projBackend/finance
 ./mvnw spring-boot:run &

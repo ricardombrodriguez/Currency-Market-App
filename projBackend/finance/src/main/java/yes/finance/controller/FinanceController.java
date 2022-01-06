@@ -64,14 +64,14 @@ public class FinanceController {
         return currencyservice.saveCurrency(currency);
     }
 
-    @DeleteMapping("/currency/{id}")
+    @DeleteMapping("/currency/del/{id}")
     public String deleteCurrency(@PathVariable int id) {
         return currencyservice.deleteCurrency(id);
     }
 
     
-    /* @GetMapping("/currency/{id}")
-    public List<Market> getCurrenciesById(@PathVariable(value = "id") int currencyId) {
+    @GetMapping("/currency/{id}")
+    public List<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId) {
 
         List<Market> markets_by_currency = new ArrayList<>();
         List<Market>  markets = marketservice.getMarkets();
@@ -82,7 +82,7 @@ public class FinanceController {
         }
 
         return markets_by_currency;
-    }     */
+    }    
 
 
     ////////////////////////////////////////////  EXTENSION  ////////////////////////////////////////////
@@ -105,31 +105,27 @@ public class FinanceController {
 
     ////////////////////////////////////////////  PORTFOLIO  ////////////////////////////////////////////
 
+    // receber todos os portfolios de um user ID (tem de ter um parametro id!)
     @GetMapping("/portfolio")
     public Page<Portfolio> getAllPortfolios(Pageable pageable) {
         return portfolioservice.getPortfolios(pageable);
     }
 
-    @PostMapping("/portfolio")
-    public Portfolio createPortfolios(@RequestBody Portfolio portfolio){
-        return portfolioservice.savePortfolio(portfolio);
-    }
-    
     @DeleteMapping("/portfolio/{id}")
     public String deletePortfolios(@PathVariable int id) {
         return portfolioservice.deletePortfolio(id);
     }
 
-    /* 
-    @PostMapping("/portfolios")
-    public Portfolio createPortfolio(@RequestBody Portfolio portfolio){
-        Portfolio p = new Portfolio();
-        String name = "nome"; // ir buscar o input do user 
-        p.setName(name);
-        p.setPublic_key(); // o que é suposto ser a public_key? um numero random grande?
-        return p;
-    } 
-    */
+    // recebe um post do angular com os parametros name e user (maybe) 
+    @PostMapping("/portfolio")
+    public Portfolio createPortfolio(@RequestBody String name){
+
+        //TODO:  associar o portfolio criado ao user 
+
+        return portfolioservice.savePortfolio( new Portfolio(name) );
+    }  
+   
+   
 
     ////////////////////////////////////////////  MARKET  ////////////////////////////////////////////
 
@@ -140,21 +136,101 @@ public class FinanceController {
 
     @GetMapping("/market")
     public Page<Market> getAllMarkets(Pageable pageable) {
+
+        List<Market> markets = marketservice.getMarkets();
+
+        // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
+        for (Market market : markets) {
+
+            List<Ticker> tickers = tickerservice.getTickersbyMarketID(market.getId());
+            
+            if (tickers.isEmpty()) {
+                System.out.println("VAZIO");
+                market.setPrice( 0f );
+
+            } else {
+                System.out.println("COM CONTEÚDO");
+                Collections.sort(tickers, new CustomComparator());
+                Ticker last_ticker = tickers.get(0); // ou -1
+                market.setPrice( last_ticker.getPrev_value() );
+            }
+            
+        }
+
         return marketservice.getMarkets(pageable);
     }
 
-    
-/*     /* @GetMapping("/markets2")
-    public List<Float> getPrice() {
-        /* List<Market>  markets = marketservice.getMarkets();
-        List<Float> prices = new ArrayList<>();
+    /* @GetMapping("/market")
+    public List<Market> getAllMarkets() {
 
+        List<Market>  markets = marketservice.getMarkets();
+
+        // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
         for (Market market : markets) {
-            Ticker last_ticker = market.getTickers().get(0);
-            prices.add( last_ticker.getPrev_value() );
+
+            List<Ticker> tickers = tickerservice.getTickers();
+
+            for (Ticker t : tickers) {
+                if (t.getMarket().getId().equals( market.getId() ) ) {
+                    tickers.add(t);
+                }
+            }
+            
+            if (tickers.isEmpty()) {
+                market.setPrice( 0f );
+
+            } else {
+                // Collections.sort(tickers, new CustomComparator());
+                // System.out.println();4
+                // System.out.println();
+                // System.out.println();
+                // System.out.println();
+                // System.out.println(tickers);
+                
+                Ticker last_ticker = tickers.get(0); // ou -1
+                market.setPrice( last_ticker.getPrev_value() );
+            }
+            
         }
 
-        return prices;
+        return marketservice.getMarkets();
+    } */
+
+    public class CustomComparator implements Comparator<Ticker> {
+        @Override
+        public int compare(Ticker t1, Ticker t2) {
+            return t1.getCreated_at().compareTo(t2.getCreated_at());
+        }
+    }
+
+    // EndPoint para os gráficos
+    @GetMapping("/market/{id}")
+    public List<Ticker> getTickersByMarketId(@PathVariable(value = "id") int marketId) {
+        List<Ticker> tickersByMarket = new ArrayList<>();
+        
+        List<Ticker> tickers = tickerservice.getTickers();
+
+        for (Ticker t : tickers) {
+            if (t.getMarket().getId() == marketId ) {
+                tickersByMarket.add( t );
+            }
+        }
+        return tickersByMarket;
+    }   
+
+    /* // retorna uma lista dos preços atuais de cada mercado
+    @GetMapping("/market2")
+    public List<Float> getPrice() {
+        // List<Market>  markets = marketservice.getMarkets();
+        // List<Float> prices = new ArrayList<>();
+
+        // for (Market market : markets) {
+        //     Ticker last_ticker = market.getTickers().get(0);
+        //     prices.add( last_ticker.getPrev_value() );
+        // }
+
+        // return prices;
+
         List<Float> prices = new ArrayList<>();
 
         List<Market>  markets = marketservice.getMarkets();
@@ -167,15 +243,7 @@ public class FinanceController {
         }
 
         return prices;
-
     }   */
-
-    public class CustomComparator implements Comparator<Ticker> {
-        @Override
-        public int compare(Ticker o1, Ticker o2) {
-            return o1.getCreated_at().compareTo(o2.getCreated_at());
-        }
-    }
 
 
     ////////////////////////////////////////////  ORDER  ////////////////////////////////////////////
@@ -230,20 +298,5 @@ public class FinanceController {
     public String deleteTicker(@PathVariable int id) {
         return tickerservice.deleteTicker(id);
     }
-
-    // EndPoint para os gráficos
-    @GetMapping("/currency/{id1}/market/{id2}")
-    public List<Ticker> getTickersByMarketId(@PathVariable(value = "id1") int currencyId, @PathVariable(value = "id2") int marketId) {
-        /* Market market = marketservice.getMarketById(marketId);        
-        return market.getTickers(); */
-        List<Ticker> tickersByMarket = new ArrayList<>();
-        List<Ticker> tickers = tickerservice.getTickers();
-        for (Ticker t : tickers) {
-            if (t.getMarketId() == marketId) {
-                tickersByMarket.add( t );
-            }
-        }
-        return tickersByMarket;
-    }   
 
 }
