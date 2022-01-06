@@ -17,7 +17,7 @@ public class MessageQueue {
     
     private MessageQueue() {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("rabbitmq");
+        factory.setHost(System.getenv("FINANCE_RABBITMQ_HOST"));
 
         try {
 

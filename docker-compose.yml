@@ -25,7 +25,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ies
       SPRING_DATASOURCE_USERNAME: ies
       SPRING_DATASOURCE_PASSWORD: password
-      SPRING_RABBITMQ_HOST: rabbitmq
+      FINANCE_RABBITMQ_HOST: rabbitmq
     restart: always
 
   rabbitmq:
@@ -46,6 +46,8 @@ services:
   data_gen:
     build: ./projDataGenerator/
     restart: on-failure
+    environment:
+      FINANCE_RABBITMQ_HOST: rabbitmq
     depends_on:
       rabbitmq:
         condition: service_healthy

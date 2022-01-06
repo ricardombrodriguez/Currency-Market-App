@@ -1,3 +1,6 @@
+from os import environ
+
+CONFIG = \
 {
   "bittrex_ws": {
     "url": "https://socket-v3.bittrex.com/signalr",
@@ -12,7 +15,7 @@
   },
 
   "rabbitmq": {
-    "host": "rabbitmq",
+      "host": environ.get("FINANCE_RABBITMQ_HOST"),
     "port": 5672
   }
 
