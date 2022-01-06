@@ -25,10 +25,10 @@ class RabbitMQ(MQInterface):
     channel = self._connection.channel()
 
     if queue not in self._queues:
-      channel.queue_declare(queue)
+      channel.queue_declare(queue, durable=True)
       self._queues.append(queue)
 
-    channel.basic_publish('', queue, body)
+    channel.basic_publish('', queue, body, pika.spec.BasicProperties(delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE))
     channel.close()
 
 
