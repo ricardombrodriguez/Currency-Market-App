@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageImpl;
 
 import yes.finance.model.*;
 import yes.finance.model.Currency;
@@ -33,6 +34,31 @@ public class FinanceController {
     @Autowired
     private TickerService tickerservice;
 
+
+    @GetMapping("/")
+    public void setPrice2Markets() {
+        List<Market> markets = marketservice.getMarkets();
+
+        // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
+        for (Market market : markets) {
+
+            List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
+            // System.out.println(tickers);
+
+            if (tickers.isEmpty()) {
+                // System.out.println("VAZIO");
+                market.setPrice( 0f );
+
+            } else {
+                // System.out.println("COM CONTEÚDO");
+                // Collections.sort(tickers, new CustomComparator());
+                Ticker last_ticker = tickers.get(0); // ou -1
+                market.setPrice( last_ticker.getPrev_value() );
+            }
+            
+        }
+        System.out.println("SET PRICE DONE");
+    }
 
     ////////////////////////////////////////////  USER  ////////////////////////////////////////////
 
@@ -71,17 +97,33 @@ public class FinanceController {
 
     
     @GetMapping("/currency/{id}")
-    public List<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId) {
+    public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId) {
 
         List<Market> markets_by_currency = new ArrayList<>();
         List<Market>  markets = marketservice.getMarkets();
 
         for (Market market : markets) {
-            if (market.getOrigin_currency().getId() == currencyId) 
+            if (market.getOrigin_currency().getId() == currencyId){
+                
+                // temporário
+                List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
+
+                if (tickers.isEmpty()) {
+                    market.setPrice( 0f );
+
+                } else {
+                    Ticker last_ticker = tickers.get(0); // ou -1
+                    market.setPrice( last_ticker.getPrev_value() );
+                } 
+                // /////////////////////////////////////////////////////////////////////
+
                 markets_by_currency.add( market );
+            }  
         }
 
-        return markets_by_currency;
+        Page<Market> page_markets_by_currency = new PageImpl<>(markets_by_currency);
+
+        return page_markets_by_currency;
     }    
 
 
@@ -137,75 +179,37 @@ public class FinanceController {
     @GetMapping("/market")
     public Page<Market> getAllMarkets(Pageable pageable) {
 
+        // temporário
         List<Market> markets = marketservice.getMarkets();
 
         // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
         for (Market market : markets) {
 
-            List<Ticker> tickers = tickerservice.getTickersbyMarketID(market.getId());
-            
+            List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
+            // System.out.println(tickers);
+
             if (tickers.isEmpty()) {
-                System.out.println("VAZIO");
+                // System.out.println("VAZIO");
                 market.setPrice( 0f );
 
             } else {
-                System.out.println("COM CONTEÚDO");
-                Collections.sort(tickers, new CustomComparator());
+                // System.out.println("COM CONTEÚDO");
                 Ticker last_ticker = tickers.get(0); // ou -1
                 market.setPrice( last_ticker.getPrev_value() );
             }
             
         }
+
+        // ///////////////////////////////////////////////////////////////7
 
         return marketservice.getMarkets(pageable);
     }
 
-    /* @GetMapping("/market")
-    public List<Market> getAllMarkets() {
-
-        List<Market>  markets = marketservice.getMarkets();
-
-        // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
-        for (Market market : markets) {
-
-            List<Ticker> tickers = tickerservice.getTickers();
-
-            for (Ticker t : tickers) {
-                if (t.getMarket().getId().equals( market.getId() ) ) {
-                    tickers.add(t);
-                }
-            }
-            
-            if (tickers.isEmpty()) {
-                market.setPrice( 0f );
-
-            } else {
-                // Collections.sort(tickers, new CustomComparator());
-                // System.out.println();4
-                // System.out.println();
-                // System.out.println();
-                // System.out.println();
-                // System.out.println(tickers);
-                
-                Ticker last_ticker = tickers.get(0); // ou -1
-                market.setPrice( last_ticker.getPrev_value() );
-            }
-            
-        }
-
-        return marketservice.getMarkets();
-    } */
-
-    public class CustomComparator implements Comparator<Ticker> {
-        @Override
-        public int compare(Ticker t1, Ticker t2) {
-            return t1.getCreated_at().compareTo(t2.getCreated_at());
-        }
-    }
 
     // EndPoint para os gráficos
     @GetMapping("/market/{id}")
     public List<Ticker> getTickersByMarketId(@PathVariable(value = "id") int marketId) {
+        
         List<Ticker> tickersByMarket = new ArrayList<>();
         
         List<Ticker> tickers = tickerservice.getTickers();

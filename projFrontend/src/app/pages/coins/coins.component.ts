@@ -17,7 +17,6 @@ export class CoinsComponent implements OnInit {
 
   constructor(public service: CoinServiceService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
 }
