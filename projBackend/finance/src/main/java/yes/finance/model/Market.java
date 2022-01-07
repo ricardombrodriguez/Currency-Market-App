@@ -23,6 +23,12 @@ public class Market {
 
     @Column(name = "price", nullable=true)
     private Float price;
+
+    @Column(name = "change_hour", nullable=true)
+    private Float change_hour;
+
+    @Column(name = "change_minute", nullable=true)
+    private Float change_minute;
     
     @ManyToOne  
     @JoinColumn(name = "origin_currency_id", nullable = false)
@@ -35,6 +41,8 @@ public class Market {
 
     public Market() {
         this.price = 0f;
+        this.change_hour = 0f;
+        this.change_minute = 0f;
     }
     
     public Market(String symbol, Currency origin_currency, Currency destiny_currency) {
@@ -42,6 +50,8 @@ public class Market {
         this.origin_currency = origin_currency;
         this.destiny_currency = destiny_currency;
         this.price = 0f;
+        this.change_hour = 0f;
+        this.change_minute = 0f;
     }
 
     public Integer getId() {
@@ -72,6 +82,23 @@ public class Market {
         this.destiny_currency = destiny_currency;
     }
 
+    public Float getMinuteChange() {
+        return this.change_minute;
+    }
+
+    public void setMinuteChange(Float minuteChange) {
+        this.change_minute = minuteChange;
+    }
+
+
+    public Float getHourChange() {
+        return this.change_hour;
+    }
+
+    public void setHourChange(Float hourChange) {
+        this.change_hour = hourChange;
+    }
+
     public Float getPrice() {
         return this.price;
     }
@@ -79,7 +106,6 @@ public class Market {
     public void setPrice(Float price) {
         this.price = price;
     }
-
 
     @Override
     public String toString() {
