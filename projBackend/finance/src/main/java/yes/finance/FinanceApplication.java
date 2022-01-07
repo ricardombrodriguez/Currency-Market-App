@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import yes.finance.rabbit_mq.DatabasePersistance;
+import yes.finance.rabbit_mq.WebSocketDistribution;
 
 @SpringBootApplication
 public class FinanceApplication {
@@ -12,6 +13,7 @@ public class FinanceApplication {
 		SpringApplication.run(FinanceApplication.class, args);
 		
 		new DatabasePersistance();
+		new WebSocketDistribution();
 	}
 
 }

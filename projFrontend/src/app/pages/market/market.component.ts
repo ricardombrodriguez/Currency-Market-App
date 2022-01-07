@@ -1,4 +1,7 @@
+import { MarketServiceService } from './../../services/market-service.service';
 import { Component, OnInit } from '@angular/core';
+import { Chart } from 'chart.js';
+
 
 @Component({
   selector: 'app-market',
@@ -7,12 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MarketComponent implements OnInit {
 
-  data = [ 15339, 21345, 18483, 24003, 23489, 24092, 12034 ]
-  labels = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ]
+  data: number[] = []
+  labels: string[] = []
 
-  constructor() { }
+  constructor(private marketService: MarketServiceService) { }
 
   ngOnInit(): void {
+    this.marketService.startTickerUpdates('BTC-EUR', message => { 
+      this.data.push(parseInt(JSON.parse(message.body).lastTradeRate)); 
+      this.labels.push(Date.now().toLocaleString());
+
+      Chart.getChart('marketChart')!.update()
+    })
   }
 
 }

@@ -11,8 +11,9 @@ export class GraphComponent implements OnInit {
 
   @Input() data: number[] = []
   @Input() labels: string[] = []
+  @Input() id: string = ''
 
-  lineChartData: ChartDataset[] = [];
+  lineChartData: ChartDataset[] = []; 
   
   lineChartOptions = {
     responsive: true,
