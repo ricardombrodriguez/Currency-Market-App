@@ -17,7 +17,15 @@ export class GraphComponent implements OnInit {
   
   lineChartOptions = {
     responsive: true,
-    legend: { display: false }
+    legend: { display: false },
+    scales: {
+      xAxes: {
+        ticks: {
+          autoSkip: true,
+          maxTicksLimit: 10
+        }
+      }
+    }
   };
 
   constructor() { }

@@ -18,7 +18,7 @@ export class MarketComponent implements OnInit {
   ngOnInit(): void {
     this.marketService.startTickerUpdates('BTC-EUR', message => { 
       this.data.push(parseInt(JSON.parse(message.body).lastTradeRate)); 
-      this.labels.push(Date.now().toLocaleString());
+      this.labels.push((new Date()).toLocaleString());
 
       Chart.getChart('marketChart')!.update()
     })

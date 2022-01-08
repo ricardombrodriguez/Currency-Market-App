@@ -1,21 +1,25 @@
 package yes.finance.rabbit_mq;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Component;
 
-import yes.finance.SpringContext;
+@Component
+public class WebSocketDistribution implements ApplicationListener<MessageEvent> {
 
-public class WebSocketDistribution implements Notificable {
-
-  public WebSocketDistribution() {
-    MessageQueue.getInstance().subscribe(this);
-  }
+  @Autowired
+  private SimpMessageSendingOperations sendingOperations;
 
   @Override
-  public void notification(String input, MQChannels channel) {
+  public void onApplicationEvent(MessageEvent event) {
+    String input = event.getMessage();
+    MQChannels channel = event.getChannel();
+
     if (channel == MQChannels.Tickers) {
       JSONObject data = new JSONObject(input);
-      SpringContext.getBean(SimpMessageSendingOperations.class).convertAndSend("/market/" + data.getString("symbol"), input);
+      sendingOperations.convertAndSend("/market/" + data.getString("symbol"), input);
     }
   }
   

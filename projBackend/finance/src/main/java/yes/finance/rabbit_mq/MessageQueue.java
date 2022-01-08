@@ -9,6 +9,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Delivery;
+import com.rabbitmq.client.ShutdownSignalException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,16 +21,18 @@ public class MessageQueue {
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
+    private Connection connection;
     private Channel channel;
+
+    ConnectionFactory factory = new ConnectionFactory();
     
     @PostConstruct
     public void init() {
-        ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(System.getenv("FINANCE_RABBITMQ_HOST"));
 
         try {
-            Connection connection = factory.newConnection();
-            channel = connection.createChannel();
+            this.connect();
+            connection.addShutdownListener(this::connect);
             
             channel.queueDeclare("Tickers", true, false, false, null);
             channel.queueDeclare("Currencies", true, false, false, null);
@@ -40,6 +43,20 @@ public class MessageQueue {
             channel.basicConsume("Markets", false, this::marketReceiver, consumerTag -> {});
         } catch(Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public boolean connect(ShutdownSignalException sig) {
+        return connect();
+    }
+
+    public boolean connect() {
+        try {
+            connection = factory.newConnection();
+            channel = connection.createChannel();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
@@ -57,6 +74,9 @@ public class MessageQueue {
 
     public void notify(Delivery delivery, MQChannels channel) {
         try {
+            if (!this.channel.isOpen())
+                this.channel = this.connection.createChannel();
+
             try {
                 String data = new String(delivery.getBody(), "UTF-8");
                 
