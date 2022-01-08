@@ -2,21 +2,28 @@ package yes.finance.rabbit_mq;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+
+import javax.annotation.PostConstruct;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Delivery;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MessageQueue {
 
-    static private MessageQueue instance;
-    
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
     private Channel channel;
     
-    private MessageQueue() {
+    @PostConstruct
+    public void init() {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(System.getenv("FINANCE_RABBITMQ_HOST"));
 
@@ -36,8 +43,6 @@ public class MessageQueue {
         }
     }
 
-    private ArrayList<Notificable> subscribers = new ArrayList<Notificable>();
-
     public void tickersReceiver(String tag, Delivery delivery) {
         notify(delivery, MQChannels.Tickers);
     }
@@ -54,8 +59,8 @@ public class MessageQueue {
         try {
             try {
                 String data = new String(delivery.getBody(), "UTF-8");
-                for (Notificable subscriber : subscribers)
-                    subscriber.notification(data, channel);
+                
+                applicationEventPublisher.publishEvent(new MessageEvent(this, channel, data));
                 this.channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             } catch (UnsupportedEncodingException e) {
                 this.channel.basicNack(delivery.getEnvelope().getDeliveryTag(), false, true);
@@ -63,21 +68,6 @@ public class MessageQueue {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void subscribe(Notificable notificable) {
-        subscribers.add(notificable);
-    }
-
-    static public MessageQueue getInstance() {
-        try {
-            if (instance == null) instance = new MessageQueue();
-        } 
-        catch (Exception e) {
-            System.out.println("erro no singleton");
-            System.err.println(e.getStackTrace());
-        }
-        return instance;
     }
 
 }
