@@ -12,7 +12,7 @@ export class CoinComponent implements OnInit {
     { name: '#', data: 'id' },  
     { name: 'Currency', data: 'symbol' },
     { name: 'Price', data: 'price' },
-    { name: '24h', data: 'name' },
+    { name: '24h', data: 'hourChange' },
     { name: '', render: (a,b,row) => `<a href="/markets/${row.id}">Details<a>`, orderable: false },
   ]
 

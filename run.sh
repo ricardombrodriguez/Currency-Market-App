@@ -24,7 +24,7 @@ export SPRING_DATASOURCE_PASSWORD=password
 export FINANCE_RABBITMQ_HOST=127.0.0.1
 
 docker run --name finance_db --health-cmd='mysqladmin ping' -e MYSQL_DATABASE=ies -e MYSQL_USER=ies -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=password -p 5000:3306 mysql:8.0.27 &
-docker run --name finance_mq --health-cmd='rabbitmq-diagnostics -q status' -p 5672:5672 rabbitmq:alpine &
+docker run --name finance_mq --health-cmd='rabbitmq-diagnostics -q status' -p 5672:5672 rabbitmq:3.9-alpine &
 
 sleep 1
 

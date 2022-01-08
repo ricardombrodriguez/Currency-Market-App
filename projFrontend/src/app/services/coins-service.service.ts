@@ -14,6 +14,7 @@ export class CoinsServiceService {
   constructor(private http: HttpClient) { }
 
   getPage(parameters: Object): Observable<Page<Market>> {
-    return this.http.get<Page<Market>>(environment.API_URL + '/currency/1', parameters)
+    var pathArray = window.location.pathname.split('/');
+    return this.http.get<Page<Market>>(environment.API_URL + '/currency/'+ pathArray[pathArray.length - 1], parameters)
   }
 }

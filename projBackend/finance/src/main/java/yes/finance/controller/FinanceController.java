@@ -1,11 +1,13 @@
 package yes.finance.controller;
 
+import java.security.Timestamp;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.tomcat.util.digester.SystemPropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageImpl;
 
@@ -35,31 +37,92 @@ public class FinanceController {
     private TickerService tickerservice;
 
 
-    @GetMapping("/")
-    public void setPrice2Markets() {
+    /* @GetMapping("/")
+    public void setAtributes() {
+        
         List<Market> markets = marketservice.getMarkets();
 
         // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
         for (Market market : markets) {
 
             List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
-            // System.out.println(tickers);
+            
+            if (!tickers.isEmpty()) {
 
-            if (tickers.isEmpty()) {
-                // System.out.println("VAZIO");
-                market.setPrice( 0f );
-
-            } else {
-                // System.out.println("COM CONTEÚDO");
-                // Collections.sort(tickers, new CustomComparator());
-                Ticker last_ticker = tickers.get(0); // ou -1
+                Ticker last_ticker = tickers.get(0);
+                System.out.println("last ticker");
+                System.out.println(last_ticker);
                 market.setPrice( last_ticker.getPrev_value() );
+
+                java.sql.Timestamp last_minute = last_ticker.getCreated_at();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(last_minute);
+                cal.add(Calendar.MINUTE, -1);
+                last_minute.setTime(cal.getTime().getTime());
+                System.out.println(last_minute);
+
+                java.sql.Timestamp last_hour = last_ticker.getCreated_at();
+                Calendar cal2 = Calendar.getInstance();
+                cal2.setTime(last_minute);
+                cal2.add(Calendar.HOUR, -1);
+                last_hour.setTime(cal2.getTime().getTime());
+                System.out.println(last_hour);
+
+                Float value_last_minute = 0f;
+                Float value_last_hour = 0f;
+
+                System.out.println("tickers");
+
+                System.out.println(tickers);
+
+                for (Ticker t : tickers) {
+
+                    if (t.getCreated_at().after(last_minute)) {
+                        System.out.println("last_min mudou");
+                        System.out.println(t.getCreated_at());
+                        value_last_minute = t.getPrev_value();
+                        break;
+                    } else {
+                        System.out.println(t.getCreated_at());
+                    }
+                }
+
+                for (Ticker t : tickers) {
+
+                    if (t.getCreated_at().after(last_minute)) {
+                        System.out.println("last hour mudou");
+                        System.out.println(t.getCreated_at());
+                        value_last_hour = t.getPrev_value();
+                        break;
+                    } else {
+                        System.out.println(t.getCreated_at());
+                        
+                    }
+                }
+
+                Float value_now = last_ticker.getPrev_value();
+
+                System.out.println("valores ultimo minuto e hora:");
+                System.out.println(value_last_minute);
+                System.out.println(value_last_hour);
+
+                Float last_minute_change = ( (value_last_minute - value_now) / value_last_minute) * 100;
+                Float last_hour_change = ( (value_last_hour - value_now) / value_last_hour) * 100;
+
+                System.out.println("mudança em %");
+                System.out.println(last_minute_change);
+                System.out.println(last_hour_change);
+                System.out.println();
+
+                market.setMinuteChange(last_minute_change);
+                market.setHourChange(last_hour_change);
+
             }
             
         }
         System.out.println("SET PRICE DONE");
     }
-
+ */
     ////////////////////////////////////////////  USER  ////////////////////////////////////////////
 
     @GetMapping("/user")
@@ -104,9 +167,83 @@ public class FinanceController {
 
         for (Market market : markets) {
             if (market.getOrigin_currency().getId() == currencyId){
+
+                List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
+            
+                if (!tickers.isEmpty()) {
+
+                    Ticker last_ticker = tickers.get(0);
+                    System.out.println("last ticker");
+                    System.out.println(last_ticker);
+                    market.setPrice( last_ticker.getPrev_value() );
+
+                    java.sql.Timestamp last_minute = last_ticker.getCreated_at();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(last_minute);
+                    cal.add(Calendar.MINUTE, -1);
+                    last_minute.setTime(cal.getTime().getTime());
+                    System.out.println(last_minute);
+
+                    java.sql.Timestamp last_hour = last_ticker.getCreated_at();
+                    Calendar cal2 = Calendar.getInstance();
+                    cal2.setTime(last_minute);
+                    cal2.add(Calendar.HOUR, -1);
+                    last_hour.setTime(cal2.getTime().getTime());
+                    System.out.println(last_hour);
+
+                    Float value_last_minute = 0f;
+                    Float value_last_hour = 0f;
+
+                    System.out.println("tickers");
+
+                    System.out.println(tickers);
+
+                    for (Ticker t : tickers) {
+
+                        if (t.getCreated_at().after(last_minute)) {
+                            System.out.println("last_min mudou");
+                            System.out.println(t.getCreated_at());
+                            value_last_minute = t.getPrev_value();
+                            break;
+                        } else {
+                            System.out.println(t.getCreated_at());
+                        }
+                    }
+
+                    for (Ticker t : tickers) {
+
+                        if (t.getCreated_at().after(last_minute)) {
+                            System.out.println("last hour mudou");
+                            System.out.println(t.getCreated_at());
+                            value_last_hour = t.getPrev_value();
+                            break;
+                        } else {
+                            System.out.println(t.getCreated_at());
+                            
+                        }
+                    }
+
+                    Float value_now = last_ticker.getPrev_value();
+
+                    System.out.println("valores ultimo minuto e hora:");
+                    System.out.println(value_last_minute);
+                    System.out.println(value_last_hour);
+
+                    Float last_minute_change = ( (value_last_minute - value_now) / value_last_minute) * 100;
+                    Float last_hour_change = ( (value_last_hour - value_now) / value_last_hour) * 100;
+
+                    System.out.println("mudança em %");
+                    System.out.println(last_minute_change);
+                    System.out.println(last_hour_change);
+                    System.out.println();
+
+                    market.setMinuteChange(last_minute_change);
+                    market.setHourChange(last_hour_change);
+
+                }
                 
                 // temporário
-                List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
+                /* List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
 
                 if (tickers.isEmpty()) {
                     market.setPrice( 0f );
@@ -114,7 +251,7 @@ public class FinanceController {
                 } else {
                     Ticker last_ticker = tickers.get(0); // ou -1
                     market.setPrice( last_ticker.getPrev_value() );
-                } 
+                }  */
                 // /////////////////////////////////////////////////////////////////////
 
                 markets_by_currency.add( market );
@@ -181,13 +318,108 @@ public class FinanceController {
 
         // temporário
         List<Market> markets = marketservice.getMarkets();
+        System.out.println("all markets:");
+        System.out.println(markets.size());
 
         // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
         for (Market market : markets) {
 
             List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
-            // System.out.println(tickers);
+            
+            if (!tickers.isEmpty()) {
+                // System.out.println("Not empty");
+                // Collections.sort(tickers, new CustomComparator());
+                Ticker last_ticker = tickers.get(0);
+                System.out.println("last ticker");
+                System.out.println(last_ticker);
+                market.setPrice( last_ticker.getPrev_value() );
 
+                java.sql.Timestamp last_minute = last_ticker.getCreated_at();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(last_minute);
+                cal.add(Calendar.MINUTE, -1);
+                last_minute.setTime(cal.getTime().getTime());
+                System.out.println(last_minute);
+
+                java.sql.Timestamp last_hour = last_ticker.getCreated_at();
+                Calendar cal2 = Calendar.getInstance();
+                cal2.setTime(last_minute);
+                cal2.add(Calendar.HOUR, -1);
+                last_hour.setTime(cal2.getTime().getTime());
+                System.out.println(last_hour);
+
+                Float value_last_minute = 0f;
+                Float value_last_hour = 0f;
+
+                System.out.println("tickers");
+
+                System.out.println(tickers);
+
+                for (Ticker t : tickers) {
+
+                    if (t.getCreated_at().after(last_minute)) {
+                        System.out.println("last_min mudou");
+                        System.out.println(t.getCreated_at());
+                        value_last_minute = t.getPrev_value();
+                        break;
+                    } else {
+                        System.out.println(t.getCreated_at());
+                    }
+                }
+
+                for (Ticker t : tickers) {
+
+                    if (t.getCreated_at().after(last_minute)) {
+                        System.out.println("last hour mudou");
+                        System.out.println(t.getCreated_at());
+                        value_last_hour = t.getPrev_value();
+                        break;
+                    } else {
+                        System.out.println(t.getCreated_at());
+                        
+                    }
+                }
+
+                Float value_now = last_ticker.getPrev_value();
+
+                System.out.println("valores ultimo minuto e hora:");
+                System.out.println(value_last_minute);
+                System.out.println(value_last_hour);
+
+                Float last_minute_change = ( (value_last_minute - value_now) / value_last_minute) * 100;
+                Float last_hour_change = ( (value_last_hour - value_now) / value_last_hour) * 100;
+
+                System.out.println("mudança em %");
+                System.out.println(last_minute_change);
+                System.out.println(last_hour_change);
+                System.out.println();
+
+                market.setMinuteChange(last_minute_change);
+                market.setHourChange(last_hour_change);
+
+            }
+            
+        }
+       
+        return marketservice.getMarkets(pageable);
+    }
+
+    /* @GetMapping("/market")
+    public List<Market> getAllMarkets() {
+
+        List<Market>  markets = marketservice.getMarkets();
+
+        // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
+        for (Market market : markets) {
+
+            List<Ticker> tickers = tickerservice.getTickers();
+
+            for (Ticker t : tickers) {
+                if (t.getMarket().getId().equals( market.getId() ) ) {
+                    tickers.add(t);
+                }
+            }
+            
             if (tickers.isEmpty()) {
                 // System.out.println("VAZIO");
                 market.setPrice( 0f );
