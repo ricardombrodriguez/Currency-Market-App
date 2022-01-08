@@ -300,6 +300,7 @@ public class FinanceController {
     public Portfolio createPortfolio(@RequestBody String name){
 
         //TODO:  associar o portfolio criado ao user 
+        System.out.println(">> Criar Portfolio");
 
         return portfolioservice.savePortfolio( new Portfolio(name) );
     }  

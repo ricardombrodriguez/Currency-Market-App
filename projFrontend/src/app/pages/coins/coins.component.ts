@@ -14,8 +14,9 @@ export class CoinsComponent implements OnInit {
     { name: 'Name', data: 'name' },
     { name: '', render: (a,b,row) => `<a href="/coins/${row.id}">Details<a>`, orderable: false },
   ]
+  static nome: any;
 
-  constructor(public service: CoinServiceService) { }
+  constructor(public service: CoinServiceService) {}
 
   ngOnInit(): void {}
 
