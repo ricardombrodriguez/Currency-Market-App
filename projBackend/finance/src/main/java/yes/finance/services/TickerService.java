@@ -1,5 +1,6 @@
 package yes.finance.services;
 
+import yes.finance.model.Market;
 import yes.finance.model.Ticker;
 import yes.finance.repository.TickerRepository;
 
@@ -33,7 +34,11 @@ public class TickerService {
     }
 
     public Ticker getTickerById(int id) {
-        return repository.findById((int)id).orElse(null);
+        return repository.findById((int) id).orElse(null);
+    }
+
+    public List<Ticker> getTickerByMarket(Market market) {
+        return repository.findFirst100ByMarketOrderByCreatedAtDesc(market);
     }
 
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO TickerRepository.java
