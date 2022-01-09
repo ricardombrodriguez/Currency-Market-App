@@ -28,7 +28,15 @@ public class OrderService {
     }
 
     public Order getOrderById(int id) {
-        return repository.findById((int)id).orElse(null);
+        return repository.findById((int) id).orElse(null);
+    }
+
+    public Page<Order> getSellOrdersByMarket(int marketId, Pageable pageable) {
+        return repository.findSellOrdersByMarket(marketId, pageable);
+    }
+
+    public Page<Order> getBuyOrdersByMarket(int marketId, Pageable pageable) {
+        return repository.findBuyOrdersByMarket(marketId, pageable);
     }
 
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO OrderRepository.java

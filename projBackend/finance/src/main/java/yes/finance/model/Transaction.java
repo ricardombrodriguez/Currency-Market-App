@@ -30,10 +30,6 @@ public class Transaction{
         return this.origin_order.getId();
     }
 
-    // public Order getOrigin_order() {
-    //     return this.origin_order;
-    // }
-
     public void setOrigin_order(Order origin_order) {
         this.origin_order = origin_order;
     }
@@ -41,10 +37,6 @@ public class Transaction{
     public Integer getDestiny_orderId() {
         return this.destiny_order.getId();
     }
-
-    // public Order getDestiny_order() {
-    //     return this.destiny_order;
-    // }
 
     public void setDestiny_order(Order destiny_order) {
         this.destiny_order = destiny_order;

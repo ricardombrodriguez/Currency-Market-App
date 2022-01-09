@@ -23,19 +23,19 @@ public class Market {
     
     @ManyToOne  
     @JoinColumn(name = "origin_currency_id", nullable = false)
-    private Currency origin_currency;
+    private Currency originCurrency;
 
     @ManyToOne
     @JoinColumn(name = "destiny_currency_id", nullable = false)
-    private Currency destiny_currency;
+    private Currency destinyCurrency;
 
     public Market() {
     }
     
     public Market(String symbol, Currency origin_currency, Currency destiny_currency) {
         this.symbol = symbol;
-        this.origin_currency = origin_currency;
-        this.destiny_currency = destiny_currency;
+        this.originCurrency = origin_currency;
+        this.destinyCurrency = destiny_currency;
     }
 
     public Integer getId() {
@@ -50,28 +50,28 @@ public class Market {
         this.symbol = symbol;
     }
 
-    public Currency getOrigin_currency() {
-        return this.origin_currency;
+    public Currency getOriginCurrency() {
+        return this.originCurrency;
     }
 
     public void setOriginCurrency(Currency origin_currency) {
-        this.origin_currency = origin_currency;
+        this.originCurrency = origin_currency;
     }
     
-    public Currency getDestiny_currency() {
-        return this.destiny_currency;
+    public Currency getDestinyCurrency() {
+        return this.destinyCurrency;
     }
 
-    public void setDestiny_currency(Currency destiny_currency) {
-        this.destiny_currency = destiny_currency;
+    public void setDestinyCurrency(Currency destiny_currency) {
+        this.destinyCurrency = destiny_currency;
     }
 
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
-            ", origin_currency='" + getOrigin_currency() + "'" +
-            ", destiny_currency='" + getDestiny_currency() + "'" +
+            ", origin_currency='" + getOriginCurrency() + "'" +
+            ", destiny_currency='" + getDestinyCurrency() + "'" +
             "}";
     }
    

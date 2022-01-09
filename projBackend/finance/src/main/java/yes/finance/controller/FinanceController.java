@@ -68,21 +68,6 @@ public class FinanceController {
         return currencyservice.deleteCurrency(id);
     }
 
-    
-    /* @GetMapping("/currency/{id}")
-    public List<Market> getCurrenciesById(@PathVariable(value = "id") int currencyId) {
-
-        List<Market> markets_by_currency = new ArrayList<>();
-        List<Market>  markets = marketservice.getMarkets();
-
-        for (Market market : markets) {
-            if (market.getOrigin_currency().getId() == currencyId) 
-                markets_by_currency.add( market );
-        }
-
-        return markets_by_currency;
-    }     */
-
 
     ////////////////////////////////////////////  EXTENSION  ////////////////////////////////////////////
 
@@ -119,17 +104,6 @@ public class FinanceController {
         return portfolioservice.deletePortfolio(id);
     }
 
-    /* 
-    @PostMapping("/portfolios")
-    public Portfolio createPortfolio(@RequestBody Portfolio portfolio){
-        Portfolio p = new Portfolio();
-        String name = "nome"; // ir buscar o input do user 
-        p.setName(name);
-        p.setPublic_key(); // o que é suposto ser a public_key? um numero random grande?
-        return p;
-    } 
-    */
-
     ////////////////////////////////////////////  MARKET  ////////////////////////////////////////////
 
     @PostMapping("/market")
@@ -142,38 +116,28 @@ public class FinanceController {
         return marketservice.getMarkets(pageable);
     }
 
-    
-/*     /* @GetMapping("/markets2")
-    public List<Float> getPrice() {
-        /* List<Market>  markets = marketservice.getMarkets();
-        List<Float> prices = new ArrayList<>();
+    @GetMapping("/market/{id}")
+    public Map<String, Object> getMarket(@PathVariable int id) {
+        Market market = marketservice.getMarketById(id);
+        List<Ticker> tickers = tickerservice.getTickerByMarket(market);
 
-        for (Market market : markets) {
-            Ticker last_ticker = market.getTickers().get(0);
-            prices.add( last_ticker.getPrev_value() );
-        }
+        Map<String, Object> marketSerialized = new HashMap<>();
+        marketSerialized.put("id", market.getId());
+        marketSerialized.put("originCurrency", market.getOriginCurrency());
+        marketSerialized.put("destinyCurrency", market.getDestinyCurrency());
+        marketSerialized.put("tickers", tickers);
 
-        return prices;
-        List<Float> prices = new ArrayList<>();
+        return marketSerialized;
+    }
 
-        List<Market>  markets = marketservice.getMarkets();
+    @GetMapping("/market/{id}/orders/sell")
+    public Page<Order> getMarketSellOrders(@PathVariable int id, Pageable pageable) {
+        return orderservice.getSellOrdersByMarket(id, pageable);
+    }
 
-        for (Market market : markets) {
-            List<Ticker> tickers = tickerservice.getTickersByMarketId();
-            Collections.sort(tickers, new CustomComparator());
-            Ticker last_ticker = tickers.get(0);
-            prices.add( last_ticker.getPrev_value() );
-        }
-
-        return prices;
-
-    }   */
-
-    public class CustomComparator implements Comparator<Ticker> {
-        @Override
-        public int compare(Ticker o1, Ticker o2) {
-            return o1.getCreated_at().compareTo(o2.getCreated_at());
-        }
+    @GetMapping("/market/{id}/orders/buy")
+    public Page<Order> getMarketBuyOrders(@PathVariable int id, Pageable pageable) {
+        return orderservice.getBuyOrdersByMarket(id, pageable);
     }
 
 
@@ -228,21 +192,6 @@ public class FinanceController {
     @DeleteMapping("/ticker/{id}")
     public String deleteTicker(@PathVariable int id) {
         return tickerservice.deleteTicker(id);
-    }
-
-    // EndPoint para os gráficos
-    @GetMapping("/currency/{id1}/market/{id2}")
-    public List<Ticker> getTickersByMarketId(@PathVariable(value = "id1") int currencyId, @PathVariable(value = "id2") int marketId) {
-        /* Market market = marketservice.getMarketById(marketId);        
-        return market.getTickers(); */
-        List<Ticker> tickersByMarket = new ArrayList<>();
-        List<Ticker> tickers = tickerservice.getTickers();
-        for (Ticker t : tickers) {
-            if (t.getMarketId() == marketId) {
-                tickersByMarket.add( t );
-            }
-        }
-        return tickersByMarket;
-    }   
+    } 
 
 }
