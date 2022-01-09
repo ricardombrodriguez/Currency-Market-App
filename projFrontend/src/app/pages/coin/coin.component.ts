@@ -29,22 +29,19 @@ export class CoinComponent implements OnInit {
     { title: '', render: (a, b, row) => `<a href="/markets/${row.id}">Details</a>`, orderable: false },
   ]
 
-  constructor(public service: CoinsServiceService, private router: Router) {
-
-
-  };
+  constructor(public service: CoinsServiceService, private router: Router) {  };
 
   getData = (parameters: object) => this.service.getPage(parameters)
 
   ngOnInit(): void {
-    this.id = +this.router.url[this.router.url.length - 1];
+
+    const url_array = this.router.url.split("/");
+    this.id = +url_array[url_array.length - 1];
     this.observable = this.service.getCurrency(this.id);
     this.observable.subscribe( (value) => {
       this.name = value.name;
       this.symbol = value.symbol;
       this.logo = value.logoUrl;
-      console.log("cenas ", this.id, this.name, this.symbol, this.logo);
-  
     });
   };
 
