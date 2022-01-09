@@ -15,7 +15,7 @@ export class MarketsComponent implements OnInit {
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
     { title: 'Market', render: (a, b, row) => `<a href="/coins/${row.originCurrency.id}">${row.originCurrency.name}</a>-<a href="/coins/${row.destinyCurrency.id}">${row.destinyCurrency.name}</a>` },
-    { title: 'Price', render: (a, b, row) => `${row.price}$` },
+    { title: 'Price', render: (a, b, row) => `${row.price} ${row.destinyCurrency.symbol}` },
     { title: '% 1m', render: (a, b, row) => `${row.minuteChange}%` },
     { title: '% 1h', render: (a, b, row) => `${row.hourChange}%` }, 
     { render: (a, b, row) => `<a href="/markets/${row.id}">Details</a>`, orderable: false },

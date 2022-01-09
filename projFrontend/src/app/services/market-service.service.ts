@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from '../../environments/environment';
+import { Ticker } from '../interfaces/ticker';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +23,19 @@ export class MarketServiceService {
     return []
   }
 
+
   startTickerUpdates(market: string, callback: (data: any) => void): void {
     this.websocketService.startUpdates('/market/' + market, callback)
   }
 
+
   getMarket(id: number): Observable<Market> {
     return this.http.get<Market>(environment.API_URL + '/market/' + id)
   }
+
+  getMarketInfo(id: number): Observable<Market> {
+    return this.http.get<Market>(environment.API_URL + '/market/info/' + id)
+  }
+
 
 }

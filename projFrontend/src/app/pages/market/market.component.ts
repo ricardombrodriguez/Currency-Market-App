@@ -3,9 +3,10 @@ import { Page } from './../../components/data-table/page';
 import { Observable } from 'rxjs';
 import { OrderServiceService } from './../../services/order-service.service';
 import { MarketServiceService } from './../../services/market-service.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
+import { Coin } from 'src/app/interfaces/coin';
 
 
 @Component({
@@ -18,9 +19,14 @@ export class MarketComponent implements OnInit {
   data: number[] = []
   labels: string[] = []
 
-  marketId: number = this.route.snapshot.params['id']
-  marketSymbol: string = ""
-  active: boolean = false
+  @Input() marketId: number = this.route.snapshot.params['id']
+  @Input() marketSymbol: string = ""
+  @Input() active: boolean = false
+  @Input() originCurrency: Coin | null = null
+  @Input() destinyCurrency: Coin | null = null
+  @Input() price: number = 0
+  @Input() hourChange: number = 0
+  @Input() minuteChange: number = 0
 
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
@@ -34,12 +40,16 @@ export class MarketComponent implements OnInit {
   constructor(private marketService: MarketServiceService, private orderService: OrderServiceService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.marketService.getMarket(this.marketId).subscribe(data => {
-      this.marketSymbol = data.originCurrency.symbol + '-' + data.destinyCurrency.symbol
-      this.active = data.originCurrency.online && data.destinyCurrency.online
 
-      this.data = data.tickers.map(t => t.prev_value)
-      this.labels = data.tickers.map(t => ((new Date(t.createdAt)).toLocaleString()))
+    this.marketService.getMarketInfo(this.marketId).subscribe( market => {
+
+      this.marketSymbol = market.symbol
+      this.originCurrency = market.originCurrency
+      this.destinyCurrency = market.destinyCurrency
+      this.price = market.price
+      this.hourChange = market.hourChange
+      this.minuteChange = market.minuteChange
+      this.active = this.originCurrency.online && this.destinyCurrency.online
 
       if (this.active) {
         this.marketService.startTickerUpdates(this.marketSymbol, message => {
@@ -54,7 +64,8 @@ export class MarketComponent implements OnInit {
           Chart.getChart('marketChart')!.update()
         })
       }
+      
     })
+    
   }
-
 }

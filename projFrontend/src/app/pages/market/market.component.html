@@ -1,6 +1,17 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Market <span [innerHTML]="marketSymbol"></span></h1>
+  <h1 class="h2"> {{ marketSymbol }} </h1>
+  <!-- <div *ngIf="active">Online</div>
+  <div *ngIf="active === false">Offline</div> -->
 </div>
+
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h4>Market price: {{ price }} {{ destinyCurrency?.symbol }}</h4>
+  <h4 *ngIf="hourChange > 0">Hour change: <span style="color: green;" > +{{ hourChange }}% </span></h4>
+  <h4 *ngIf="hourChange < 0">Hour change: <span style="color: red;" > {{ hourChange }}% </span></h4>
+  <h4 *ngIf="minuteChange > 0">Minute change: <span style="color: green;" > +{{ minuteChange }}% </span></h4>
+  <h4 *ngIf="minuteChange < 0">Minute change: <span style="color: red;" > {{ minuteChange }}% </span></h4>
+</div>  
 
 <app-graph [id]="'marketChart'" [data]="data" [labels]="labels" *ngIf="active"></app-graph>
 
