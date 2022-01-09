@@ -6,8 +6,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-
 import java.util.ArrayList;
+import java.time.Instant;
 
 import yes.finance.model.Currency;
 import yes.finance.model.Market;
@@ -74,6 +74,8 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
                 String quoteCurrencySymbol = data.getString("quoteCurrencySymbol");
                 String baseCurrencySymbol = data.getString("baseCurrencySymbol");
+                Instant createdAt = Instant.parse(data.getString("createdAt"));
+                //Timestamp createdAt = Timestamp.from(Instant.parse(data.getString("createdAt")));
 
                 if (!currencies.contains(baseCurrencySymbol)) {
                     if (!markets.containsKey(baseCurrencySymbol))
@@ -93,7 +95,7 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 Currency baseCurrency = currencyRepository.findBySymbol(baseCurrencySymbol);
                 Currency quoteCurrency = currencyRepository.findBySymbol(quoteCurrencySymbol);
 
-                Market m = new Market(msymbol,baseCurrency,quoteCurrency);
+                Market m = new Market(msymbol,baseCurrency,quoteCurrency, createdAt);
                 marketRepository.save(m);
                 break;
 

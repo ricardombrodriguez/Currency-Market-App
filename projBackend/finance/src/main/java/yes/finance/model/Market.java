@@ -1,5 +1,6 @@
 package yes.finance.model;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,10 @@ public class Market {
 
     @Column(name = "change_minute", nullable=true)
     private Float change_minute;
+
+    @Column(name = "createdAt", nullable=false)
+    private Instant createdAt;
+    //private Timestamp createdAt;
     
     @ManyToOne  
     @JoinColumn(name = "origin_currency_id", nullable = false)
@@ -49,13 +54,14 @@ public class Market {
         this.change_minute = 0f;
     }
     
-    public Market(String symbol, Currency origin_currency, Currency destiny_currency) {
+    public Market(String symbol, Currency origin_currency, Currency destiny_currency, Instant createdAt) {
         this.symbol = symbol;
         this.origin_currency = origin_currency;
         this.destiny_currency = destiny_currency;
         this.price = 0f;
         this.change_hour = 0f;
         this.change_minute = 0f;
+        this.createdAt = createdAt;
     }
 
     public Integer getId() {
@@ -111,6 +117,14 @@ public class Market {
         this.price = price;
     }
 
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -119,6 +133,7 @@ public class Market {
             ", price='" + getPrice() + "'" +
             ", origin_currency='" + getOrigin_currency() + "'" +
             ", destiny_currency='" + getDestiny_currency() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
             "}";
     }
     
