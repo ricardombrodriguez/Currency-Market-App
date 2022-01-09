@@ -86,7 +86,7 @@ public class FinanceController {
         List<Market>  markets = marketservice.getMarkets();
 
         for (Market market : markets) {
-            if (market.getOrigin_currency().getId() == currencyId){
+            if (market.getOriginCurrency().getId() == currencyId){
 
                 List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
             
@@ -97,14 +97,14 @@ public class FinanceController {
                     System.out.println(last_ticker);
                     market.setPrice( last_ticker.getPrev_value() );
 
-                    java.sql.Timestamp last_minute = last_ticker.getCreated_at();
+                    java.sql.Timestamp last_minute = last_ticker.getCreatedAt();
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(last_minute);
                     cal.add(Calendar.MINUTE, -1);
                     last_minute.setTime(cal.getTime().getTime());
                     System.out.println(last_minute);
 
-                    java.sql.Timestamp last_hour = last_ticker.getCreated_at();
+                    java.sql.Timestamp last_hour = last_ticker.getCreatedAt();
                     Calendar cal2 = Calendar.getInstance();
                     cal2.setTime(last_minute);
                     cal2.add(Calendar.HOUR, -1);
@@ -120,25 +120,25 @@ public class FinanceController {
 
                     for (Ticker t : tickers) {
 
-                        if (t.getCreated_at().after(last_minute)) {
+                        if (t.getCreatedAt().after(last_minute)) {
                             System.out.println("last_min mudou");
-                            System.out.println(t.getCreated_at());
+                            System.out.println(t.getCreatedAt());
                             value_last_minute = t.getPrev_value();
                             break;
                         } else {
-                            System.out.println(t.getCreated_at());
+                            System.out.println(t.getCreatedAt());
                         }
                     }
 
                     for (Ticker t : tickers) {
 
-                        if (t.getCreated_at().after(last_minute)) {
+                        if (t.getCreatedAt().after(last_minute)) {
                             System.out.println("last hour mudou");
-                            System.out.println(t.getCreated_at());
+                            System.out.println(t.getCreatedAt());
                             value_last_hour = t.getPrev_value();
                             break;
                         } else {
-                            System.out.println(t.getCreated_at());
+                            System.out.println(t.getCreatedAt());
                             
                         }
                     }
@@ -161,16 +161,6 @@ public class FinanceController {
                     market.setHourChange(last_hour_change);
 
                 }
-                
-                // temporário
-                /* List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
-                if (tickers.isEmpty()) {
-                    market.setPrice( 0f );
-                } else {
-                    Ticker last_ticker = tickers.get(0); // ou -1
-                    market.setPrice( last_ticker.getPrev_value() );
-                }  */
-                // /////////////////////////////////////////////////////////////////////
 
                 markets_by_currency.add( market );
             }  
@@ -217,8 +207,6 @@ public class FinanceController {
     @PostMapping("/portfolio")
     public Portfolio createPortfolio(@RequestBody String name){
 
-        //TODO:  associar o portfolio criado ao user 
-
         return portfolioservice.savePortfolio( new Portfolio(name) );
     }  
    
@@ -251,13 +239,13 @@ public class FinanceController {
                 System.out.println(last_ticker);
                 market.setPrice( last_ticker.getPrev_value() );
 
-                java.sql.Timestamp last_minute = last_ticker.getCreated_at();
+                java.sql.Timestamp last_minute = last_ticker.getCreatedAt();
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(last_minute);
                 cal.add(Calendar.MINUTE, -1);
                 last_minute.setTime(cal.getTime().getTime());
 
-                java.sql.Timestamp last_hour = last_ticker.getCreated_at();
+                java.sql.Timestamp last_hour = last_ticker.getCreatedAt();
                 Calendar cal2 = Calendar.getInstance();
                 cal2.setTime(last_minute);
                 cal2.add(Calendar.HOUR, -1);
@@ -268,7 +256,7 @@ public class FinanceController {
 
                 for (Ticker t : tickers) {
 
-                    if (t.getCreated_at().after(last_minute)) {
+                    if (t.getCreatedAt().after(last_minute)) {
                         value_last_minute = t.getPrev_value();
                         break;
                     } else {
@@ -277,7 +265,7 @@ public class FinanceController {
 
                 for (Ticker t : tickers) {
 
-                    if (t.getCreated_at().after(last_minute)) {
+                    if (t.getCreatedAt().after(last_minute)) {
                         value_last_hour = t.getPrev_value();
                         break;
                     } else {
@@ -348,7 +336,7 @@ public class FinanceController {
     public class CustomComparator implements Comparator<Ticker> {
         @Override
         public int compare(Ticker t1, Ticker t2) {
-            return t1.getCreated_at().compareTo(t2.getCreated_at());
+            return t1.getCreatedAt().compareTo(t2.getCreatedAt());
         }
     }
 
@@ -367,7 +355,7 @@ public class FinanceController {
         return tickersByMarket;
     }   
 
-    /* // retorna uma lista dos preços atuais de cada mercado
+/*     // retorna uma lista dos preços atuais de cada mercado
     @GetMapping("/market2")
     public List<Float> getPrice() {
         // List<Market>  markets = marketservice.getMarkets();
@@ -382,17 +370,24 @@ public class FinanceController {
 
         List<Float> prices = new ArrayList<>();
 
-        List<Market>  markets = marketservice.getMarkets();
+        Map<String, Object> marketSerialized = new HashMap<>();
+        marketSerialized.put("id", market.getId());
+        marketSerialized.put("originCurrency", market.getOriginCurrency());
+        marketSerialized.put("destinyCurrency", market.getDestinyCurrency());
+        marketSerialized.put("tickers", tickers);
 
-        for (Market market : markets) {
-            List<Ticker> tickers = tickerservice.getTickersByMarketId();
-            Collections.sort(tickers, new CustomComparator());
-            Ticker last_ticker = tickers.get(0);
-            prices.add( last_ticker.getPrev_value() );
-        }
+        return marketSerialized;
+    } */
 
-        return prices;
-    }   */
+    @GetMapping("/market/{id}/orders/sell")
+    public Page<Order> getMarketSellOrders(@PathVariable int id, Pageable pageable) {
+        return orderservice.getSellOrdersByMarket(id, pageable);
+    }
+
+    @GetMapping("/market/{id}/orders/buy")
+    public Page<Order> getMarketBuyOrders(@PathVariable int id, Pageable pageable) {
+        return orderservice.getBuyOrdersByMarket(id, pageable);
+    }
 
 
     ////////////////////////////////////////////  ORDER  ////////////////////////////////////////////

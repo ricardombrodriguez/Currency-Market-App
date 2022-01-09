@@ -13,7 +13,7 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class CoinComponent implements OnInit {
 
-  public id: string = "";
+  public id: number = 0;
   public observable: Observable<Coin> | null = null;
   @Input() public name: string = "";
   @Input() public symbol: string = "";
@@ -21,12 +21,12 @@ export class CoinComponent implements OnInit {
 
 
   columns: DataTables.ColumnSettings[] = [
-    { name: '#', data: 'id' },
-    { name: 'Market', render: (a, b, row) => `<a href="/coins/${row.origin_currency.id}">${row.origin_currency.name}</a>-<a href="/coins/${row.destiny_currency.id}">${row.destiny_currency.name}</a>` },
-    { name: 'Price', render: (a, b, row) => `${row.price}$` },
-    { name: '% 1m', render: (a, b, row) => `${row.minuteChange}%` },
-    { name: '% 1h', render: (a, b, row) => `${row.hourChange}%` }, 
-    { name: '', render: (a, b, row) => `<a href="/markets/${row.id}">Details</a>`, orderable: false },
+    { title: '#', data: 'id' },
+    { title: 'Market', render: (a, b, row) => `<a href="/coins/${row.originCurrency.id}">${row.originCurrency.name}</a>-<a href="/coins/${row.destinyCurrency.id}">${row.destinyCurrency.name}</a>` },
+    { title: 'Price', render: (a, b, row) => `${row.price}$` },
+    { title: '% 1m', render: (a, b, row) => `${row.minuteChange}%` },
+    { title: '% 1h', render: (a, b, row) => `${row.hourChange}%` }, 
+    { title: '', render: (a, b, row) => `<a href="/markets/${row.id}">Details</a>`, orderable: false },
   ]
 
   constructor(public service: CoinsServiceService, private router: Router) {
@@ -34,14 +34,16 @@ export class CoinComponent implements OnInit {
 
   };
 
+  getData = (parameters: object) => this.service.getPage(parameters)
+
   ngOnInit(): void {
-    this.id = this.router.url[this.router.url.length - 1];
-    this.observable = this.service.getCurrency(+this.id);
+    this.id = +this.router.url[this.router.url.length - 1];
+    this.observable = this.service.getCurrency(this.id);
     this.observable.subscribe( (value) => {
       this.name = value.name;
       this.symbol = value.symbol;
       this.logo = value.logoUrl;
-      console.log("cenas ", this.name, this.symbol, this.logo);
+      console.log("cenas ", this.id, this.name, this.symbol, this.logo);
   
     });
   };
