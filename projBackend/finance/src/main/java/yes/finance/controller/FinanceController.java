@@ -37,92 +37,6 @@ public class FinanceController {
     private TickerService tickerservice;
 
 
-    /* @GetMapping("/")
-    public void setAtributes() {
-        
-        List<Market> markets = marketservice.getMarkets();
-
-        // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
-        for (Market market : markets) {
-
-            List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
-            
-            if (!tickers.isEmpty()) {
-
-                Ticker last_ticker = tickers.get(0);
-                System.out.println("last ticker");
-                System.out.println(last_ticker);
-                market.setPrice( last_ticker.getPrev_value() );
-
-                java.sql.Timestamp last_minute = last_ticker.getCreated_at();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(last_minute);
-                cal.add(Calendar.MINUTE, -1);
-                last_minute.setTime(cal.getTime().getTime());
-                System.out.println(last_minute);
-
-                java.sql.Timestamp last_hour = last_ticker.getCreated_at();
-                Calendar cal2 = Calendar.getInstance();
-                cal2.setTime(last_minute);
-                cal2.add(Calendar.HOUR, -1);
-                last_hour.setTime(cal2.getTime().getTime());
-                System.out.println(last_hour);
-
-                Float value_last_minute = 0f;
-                Float value_last_hour = 0f;
-
-                System.out.println("tickers");
-
-                System.out.println(tickers);
-
-                for (Ticker t : tickers) {
-
-                    if (t.getCreated_at().after(last_minute)) {
-                        System.out.println("last_min mudou");
-                        System.out.println(t.getCreated_at());
-                        value_last_minute = t.getPrev_value();
-                        break;
-                    } else {
-                        System.out.println(t.getCreated_at());
-                    }
-                }
-
-                for (Ticker t : tickers) {
-
-                    if (t.getCreated_at().after(last_minute)) {
-                        System.out.println("last hour mudou");
-                        System.out.println(t.getCreated_at());
-                        value_last_hour = t.getPrev_value();
-                        break;
-                    } else {
-                        System.out.println(t.getCreated_at());
-                        
-                    }
-                }
-
-                Float value_now = last_ticker.getPrev_value();
-
-                System.out.println("valores ultimo minuto e hora:");
-                System.out.println(value_last_minute);
-                System.out.println(value_last_hour);
-
-                Float last_minute_change = ( (value_last_minute - value_now) / value_last_minute) * 100;
-                Float last_hour_change = ( (value_last_hour - value_now) / value_last_hour) * 100;
-
-                System.out.println("mudança em %");
-                System.out.println(last_minute_change);
-                System.out.println(last_hour_change);
-                System.out.println();
-
-                market.setMinuteChange(last_minute_change);
-                market.setHourChange(last_hour_change);
-
-            }
-            
-        }
-        System.out.println("SET PRICE DONE");
-    }
- */
     ////////////////////////////////////////////  USER  ////////////////////////////////////////////
 
     @GetMapping("/user")
@@ -142,6 +56,12 @@ public class FinanceController {
 
 
     ////////////////////////////////////////////  CURRENCY  ////////////////////////////////////////////
+
+    // obter info sobre a moeda (nome, symbol e isso)
+    @GetMapping("/currency/info/{id}")
+    public Currency getCurrencyInfo(@PathVariable int id) {
+        return currencyservice.getCurrencyById(id);
+    }
 
     @GetMapping("/currency")
     public Page<Currency> getAllCurrencies(Pageable pageable) {
@@ -244,10 +164,8 @@ public class FinanceController {
                 
                 // temporário
                 /* List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
-
                 if (tickers.isEmpty()) {
                     market.setPrice( 0f );
-
                 } else {
                     Ticker last_ticker = tickers.get(0); // ou -1
                     market.setPrice( last_ticker.getPrev_value() );
@@ -316,7 +234,6 @@ public class FinanceController {
     @GetMapping("/market")
     public Page<Market> getAllMarkets(Pageable pageable) {
 
-        // temporário
         List<Market> markets = marketservice.getMarkets();
         System.out.println("all markets:");
         System.out.println(markets.size());
@@ -324,12 +241,12 @@ public class FinanceController {
         // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
         for (Market market : markets) {
 
-            List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
+            List<Ticker> tickers = tickerservice.getTickersbyMarketID(market.getId());
             
             if (!tickers.isEmpty()) {
                 // System.out.println("Not empty");
-                // Collections.sort(tickers, new CustomComparator());
-                Ticker last_ticker = tickers.get(0);
+                Collections.sort(tickers, new CustomComparator());
+                Ticker last_ticker = tickers.get(tickers.size() - 1);
                 System.out.println("last ticker");
                 System.out.println(last_ticker);
                 market.setPrice( last_ticker.getPrev_value() );
@@ -339,44 +256,32 @@ public class FinanceController {
                 cal.setTime(last_minute);
                 cal.add(Calendar.MINUTE, -1);
                 last_minute.setTime(cal.getTime().getTime());
-                System.out.println(last_minute);
 
                 java.sql.Timestamp last_hour = last_ticker.getCreated_at();
                 Calendar cal2 = Calendar.getInstance();
                 cal2.setTime(last_minute);
                 cal2.add(Calendar.HOUR, -1);
                 last_hour.setTime(cal2.getTime().getTime());
-                System.out.println(last_hour);
 
                 Float value_last_minute = 0f;
                 Float value_last_hour = 0f;
 
-                System.out.println("tickers");
-
-                System.out.println(tickers);
-
                 for (Ticker t : tickers) {
 
                     if (t.getCreated_at().after(last_minute)) {
-                        System.out.println("last_min mudou");
-                        System.out.println(t.getCreated_at());
                         value_last_minute = t.getPrev_value();
                         break;
                     } else {
-                        System.out.println(t.getCreated_at());
                     }
                 }
 
                 for (Ticker t : tickers) {
 
                     if (t.getCreated_at().after(last_minute)) {
-                        System.out.println("last hour mudou");
-                        System.out.println(t.getCreated_at());
                         value_last_hour = t.getPrev_value();
                         break;
                     } else {
-                        System.out.println(t.getCreated_at());
-                        
+                            
                     }
                 }
 
@@ -389,18 +294,18 @@ public class FinanceController {
                 Float last_minute_change = ( (value_last_minute - value_now) / value_last_minute) * 100;
                 Float last_hour_change = ( (value_last_hour - value_now) / value_last_hour) * 100;
 
-                System.out.println("mudança em %");
-                System.out.println(last_minute_change);
-                System.out.println(last_hour_change);
-                System.out.println();
-
                 market.setMinuteChange(last_minute_change);
                 market.setHourChange(last_hour_change);
+
+                System.out.println("mudança em %");
+                System.out.println(market.getMinuteChange());
+                System.out.println(market.getHourChange());
+                System.out.println();
 
             }
             
         }
-       
+
         return marketservice.getMarkets(pageable);
     }
 
@@ -421,27 +326,35 @@ public class FinanceController {
             }
             
             if (tickers.isEmpty()) {
-                // System.out.println("VAZIO");
                 market.setPrice( 0f );
 
             } else {
-                // System.out.println("COM CONTEÚDO");
+                // Collections.sort(tickers, new CustomComparator());
+                // System.out.println();4
+                // System.out.println();
+                // System.out.println();
+                // System.out.println();
+                // System.out.println(tickers);
+                
                 Ticker last_ticker = tickers.get(0); // ou -1
                 market.setPrice( last_ticker.getPrev_value() );
             }
             
         }
 
-        // ///////////////////////////////////////////////////////////////7
+        return marketservice.getMarkets();
+    } */
 
-        return marketservice.getMarkets(pageable);
+    public class CustomComparator implements Comparator<Ticker> {
+        @Override
+        public int compare(Ticker t1, Ticker t2) {
+            return t1.getCreated_at().compareTo(t2.getCreated_at());
+        }
     }
-
 
     // EndPoint para os gráficos
     @GetMapping("/market/{id}")
     public List<Ticker> getTickersByMarketId(@PathVariable(value = "id") int marketId) {
-        
         List<Ticker> tickersByMarket = new ArrayList<>();
         
         List<Ticker> tickers = tickerservice.getTickers();
