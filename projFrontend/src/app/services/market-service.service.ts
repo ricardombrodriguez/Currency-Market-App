@@ -26,4 +26,8 @@ export class MarketServiceService {
     this.websocketService.startUpdates('/market/' + market, callback)
   }
 
+  getMarket(id: number): Observable<Market> {
+    return this.http.get<Market>(environment.API_URL + '/market/' + id)
+  }
+
 }

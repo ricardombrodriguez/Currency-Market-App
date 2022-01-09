@@ -123,8 +123,8 @@ public class FinanceController {
 
         Map<String, Object> marketSerialized = new HashMap<>();
         marketSerialized.put("id", market.getId());
-        marketSerialized.put("origin_currency", market.getOrigin_currency());
-        marketSerialized.put("destiny_currency", market.getDestiny_currency());
+        marketSerialized.put("originCurrency", market.getOriginCurrency());
+        marketSerialized.put("destinyCurrency", market.getDestinyCurrency());
         marketSerialized.put("tickers", tickers);
 
         return marketSerialized;

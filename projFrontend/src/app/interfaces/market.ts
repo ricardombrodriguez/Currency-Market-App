@@ -1,3 +1,4 @@
+import { Ticker } from './ticker';
 import { Coin } from './coin';
 export interface Market {
   id: number
@@ -6,4 +7,6 @@ export interface Market {
 
   originCurrency: Coin
   destinyCurrency: Coin
+
+  tickers: Ticker[]
 }

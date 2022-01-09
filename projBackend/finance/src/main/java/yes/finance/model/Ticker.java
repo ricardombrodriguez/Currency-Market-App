@@ -23,7 +23,7 @@ public class Ticker {
     private Float prev_value;
     private Float max_buyer_value;
     private Float min_seller_value;
-    private Timestamp createdAt; 
+    private Timestamp createdAt;
 
     @ManyToOne
     @JoinColumn(name = "market_id", nullable = false)

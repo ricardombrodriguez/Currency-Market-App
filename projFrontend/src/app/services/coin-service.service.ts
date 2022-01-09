@@ -14,6 +14,6 @@ export class CoinServiceService {
   constructor(private http: HttpClient) { }
 
   getPage(parameters: Object): Observable<Page<Coin>> {
-    return this.http.get<Page<Coin>>(environment.API_URL + '/currency', parameters)
+    return this.http.get<Page<Coin>>(environment.API_URL + '/currency', <Object>{ params: parameters })
   }
 }
