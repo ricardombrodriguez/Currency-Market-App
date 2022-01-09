@@ -19,9 +19,7 @@ export class MarketsComponent implements OnInit {
     { render: (a, b, row) => `<a href="/markets/${row.id}">Details</a>`, orderable: false },
   ]
 
-  getData = (parameters: object) => {
-    return this.marketService.getPage(parameters)
-  }
+  getData = (parameters: object) => this.marketService.getPage(parameters)
   
   constructor(public marketService: MarketServiceService) { }
 
