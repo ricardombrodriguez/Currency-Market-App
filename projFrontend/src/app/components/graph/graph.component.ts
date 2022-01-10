@@ -11,12 +11,21 @@ export class GraphComponent implements OnInit {
 
   @Input() data: number[] = []
   @Input() labels: string[] = []
+  @Input() id: string = ''
 
-  lineChartData: ChartDataset[] = [];
+  lineChartData: ChartDataset[] = []; 
   
   lineChartOptions = {
     responsive: true,
-    legend: { display: false }
+    legend: { display: false },
+    scales: {
+      xAxes: {
+        ticks: {
+          autoSkip: true,
+          maxTicksLimit: 10
+        }
+      }
+    }
   };
 
   constructor() { }

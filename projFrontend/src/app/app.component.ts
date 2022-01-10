@@ -24,9 +24,9 @@ export class AppComponent {
       }
     });
   }
-
-  ngCreatePortfolio() {
-    this.service.addPortfolio( (<HTMLInputElement>document.getElementById('name')).value );
-  }
   
+
+  createPortfolio() {
+    this.service.addPortfolio((<HTMLInputElement>document.getElementById('name')).value).subscribe(response => {});
+  }
 }

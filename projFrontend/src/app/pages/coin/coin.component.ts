@@ -1,5 +1,10 @@
 import { CoinsServiceService } from './../../services/coins-service.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Coin } from 'src/app/interfaces/coin';
+import { map, Observable } from 'rxjs';
+import { param } from 'jquery';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-coin',
@@ -8,16 +13,39 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoinComponent implements OnInit {
 
+  public id: number = 0;
+  public observable: Observable<Coin> | null = null;
+  @Input() public name: string = "";
+  @Input() public symbol: string = "";
+  @Input() public logo: string = "";
+
+
   columns: DataTables.ColumnSettings[] = [
-    { name: '#', data: 'id' },  
-    { name: 'Currency', data: 'symbol' },
-    { name: 'Price', data: 'price' },
-    { name: '24h', data: 'hourChange' },
-    { name: '', render: (a,b,row) => `<a href="/markets/${row.id}">Details<a>`, orderable: false },
+    { title: '#', data: 'id' },
+    { title: 'Market', render: (a, b, row) => `<a href="/coins/${row.originCurrency.id}">${row.originCurrency.name}</a>-<a href="/coins/${row.destinyCurrency.id}">${row.destinyCurrency.name}</a>` },
+    { title: 'Price', render: (a, b, row) => `${row.price}$` },
+    { title: '% 1m', render: (a, b, row) => `${row.minuteChange}%` },
+    { title: '% 1h', render: (a, b, row) => `${row.hourChange}%` }, 
+    { title: '', render: (a, b, row) => `<a href="/markets/${row.id}">Details</a>`, orderable: false },
   ]
 
-  constructor(public service: CoinsServiceService) {}
+  constructor(public service: CoinsServiceService, private router: Router) {
 
-  ngOnInit(): void {}
+
+  };
+
+  getData = (parameters: object) => this.service.getPage(parameters)
+
+  ngOnInit(): void {
+    this.id = +this.router.url[this.router.url.length - 1];
+    this.observable = this.service.getCurrency(this.id);
+    this.observable.subscribe( (value) => {
+      this.name = value.name;
+      this.symbol = value.symbol;
+      this.logo = value.logoUrl;
+      console.log("cenas ", this.id, this.name, this.symbol, this.logo);
+  
+    });
+  };
 
 }

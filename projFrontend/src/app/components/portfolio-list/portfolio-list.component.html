@@ -1,3 +1,4 @@
+
 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
   <span>Portfolios</span>
   <a class="link-secondary" href="#" aria-label="Add a new report" data-bs-toggle="modal"
@@ -6,23 +7,13 @@
   </a>
 </h6>
 
+
 <ul class="nav flex-column mb-2">
-  <li class="nav-item">
+  <li class="nav-item" *ngFor="let portfolio of portfolios; let i = index" [attr.data-index]="i" id="portfolio">
     <a class="nav-link" routerLink="/portfolio/1" routerLinkActive="active">
       <i class="icon fas fa-wallet"></i>
-      My Savings
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" routerLink="/portfolio/2" routerLinkActive="active">
-      <i class="icon fas fa-wallet"></i>
-      Long Term Investments
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" routerLink="/portfolio/3" routerLinkActive="active">
-      <i class="icon fas fa-wallet"></i>
-      Trading
+      {{ portfolio.name }}
+      <i class="fas fa-trash-alt" id="delete"></i>
     </a>
   </li>
 </ul>

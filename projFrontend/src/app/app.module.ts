@@ -13,7 +13,6 @@ import { MarketComponent } from './pages/market/market.component';
 import { PortfolioComponent } from './pages/portfolio/portfolio.component';
 
 import { PortfolioListComponent } from './components/portfolio-list/portfolio-list.component';
-
 import { NgChartsModule } from 'ng2-charts';
 import { DataTablesModule } from 'angular-datatables';
 import { DataTableComponent } from './components/data-table/data-table.component';
@@ -31,7 +30,8 @@ import { GraphComponent } from './components/graph/graph.component';
     PortfolioComponent,
     PortfolioListComponent,
     DataTableComponent,
-    GraphComponent
+    GraphComponent,
+    
   ],
   imports: [
     BrowserModule,

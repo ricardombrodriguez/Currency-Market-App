@@ -23,7 +23,7 @@ public class Ticker {
     private Float prev_value;
     private Float max_buyer_value;
     private Float min_seller_value;
-    private Timestamp created_at; 
+    private Timestamp createdAt;
 
     @ManyToOne
     @JoinColumn(name = "market_id", nullable = false)
@@ -36,7 +36,7 @@ public class Ticker {
         this.prev_value = prev_value;
         this.max_buyer_value = max_buyer_value;
         this.min_seller_value = min_seller_value;
-        this.created_at = new Timestamp(System.currentTimeMillis()); 
+        this.createdAt = new Timestamp(System.currentTimeMillis()); 
     }
 
     public Integer getId() {
@@ -72,12 +72,12 @@ public class Ticker {
     }
 
     @Column(name = "created_at", nullable = false)
-    public Timestamp getCreated_at() {
-        return created_at;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Timestamp created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Timestamp created_at) {
+        this.createdAt = created_at;
     }
 
     @Column(name = "market", nullable = false)
@@ -102,7 +102,7 @@ public class Ticker {
             " id='" + getId() + "'" +
             ", max_buyer_value='" + getMax_buyer_value() + "'" +
             ", min_seller_value='" + getMin_seller_value() + "'" +
-            ", created_at='" + getCreated_at() + "'" +
+            ", created_at='" + getCreatedAt() + "'" +
             ", prev_value='" + getPrev_value() + "'" +
             ", market='" + getMarketId() + "'" +
             "}";

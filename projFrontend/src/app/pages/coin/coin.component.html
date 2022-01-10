@@ -1,7 +1,9 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1>Bitcoin | BTC</h1>
+  <h1> {{ name }} | {{ symbol }} </h1>
+  <img src="{{ logo }}" alt="{{ symbol }} Logo" height="100px" width="100px">
+
 </div>
 
 <h2>Markets</h2>
 
-<app-data-table [columns]="columns" [service]="service"></app-data-table>
+<app-data-table [columns]="columns" [getData]="getData"></app-data-table>

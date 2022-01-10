@@ -10,9 +10,13 @@ public class Portfolio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
+    @Column(name = "name", nullable = false)
     private String name;
+    
+    @Column(name = "public_key", nullable = false)
     private String public_key;
 
     @ManyToMany
@@ -38,11 +42,10 @@ public class Portfolio {
     }
 
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -51,7 +54,6 @@ public class Portfolio {
         this.name = name;
     }
 
-    @Column(name = "public_key", nullable = false)
     public String getPublic_key() {
         return public_key;
     }
