@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PortfolioServiceService } from './../../services/portfolio-service.service';
 
+import {Portfolio} from './../../interfaces/portfolio';
+
 @Component({
   selector: 'app-portfolio',
   templateUrl: './portfolio.component.html',
@@ -10,10 +12,10 @@ export class PortfolioComponent implements OnInit {
 
   constructor(public portfolioService: PortfolioServiceService) { }
 
-  ngOnInit(): void {}
+  public data!: Portfolio;
 
-  getData = (parameters: object) => {
-    return this.portfolioService.getPage(parameters)
-  }
+  ngOnInit(): void { }
+
+
 
 }

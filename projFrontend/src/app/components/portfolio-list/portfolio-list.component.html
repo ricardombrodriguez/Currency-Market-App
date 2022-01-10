@@ -9,7 +9,7 @@
 
 
 <ul class="nav flex-column mb-2">
-  <li class="nav-item" *ngFor="let portfolio of portfolios; let i = index" [attr.data-index]="i" id="portfolio">
+  <li class="nav-item" *ngFor="let portfolio of portfolios; let i = index" [attr.data-index]="i" id="portfolio" (onclick)="getData">
     <a class="nav-link" routerLink="/portfolio/{{i + 1}}" routerLinkActive="active">
       <i class="icon fas fa-wallet"></i> {{ portfolio.name }}
     </a>

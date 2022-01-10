@@ -27,4 +27,8 @@ export class PortfolioListComponent implements OnInit {
     
   }
 
+  getData = (parameters: object) => {
+    return this.portfolioService.getPage(parameters)
+  }
+
 }
