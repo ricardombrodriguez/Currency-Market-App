@@ -5,14 +5,25 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <!-- Functionalities are missing implementation
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-    <div class="navbar-nav">
-      <div class="nav-item text-nowrap">
-        <a class="nav-link px-3" href="#">Sign out</a>
-      </div>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+
+  <div class="navbar-nav" *ngIf="!loggedId">
+    <div class="nav-item text-nowrap">
+      <a class="nav-link px-3" data-bs-toggle="modal" data-bs-target="#signUp">Sign up</a>
     </div>
-  -->
+  </div>
+
+  <div class="navbar-nav" *ngIf="!loggedId">
+    <div class="nav-item text-nowrap" data-bs-toggle="modal" data-bs-target="#logIn">
+      <a class="nav-link px-3">Log in</a>
+    </div>
+  </div>
+
+  <div class="navbar-nav" *ngIf="loggedId">
+    <div class="nav-item text-nowrap">
+      <a class="nav-link px-3" href="#" (click)="logOut()">Log out</a>
+    </div>
+  </div>
 </header>
 
 <div class="container-fluid">
@@ -71,6 +82,71 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="logIn" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Log In</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label for="lemail" class="form-label">Email</label>
+          <input id="lemail" type="email" class="form-control" placeholder="Email" [(ngModel)]="logInData.email">
+        </div>
+
+        <div>
+          <label for="lpassword" class="form-label">Password</label>
+          <input id="lpassword" type="password" class="form-control" placeholder="Password" [(ngModel)]="logInData.password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="logIn()">Log In</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signUp" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Sign Up</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label for="rusername" class="form-label">Username</label>
+          <input id="rusername" type="text" class="form-control" placeholder="Username" [(ngModel)]="signUpData.username">
+        </div>
+
+        <div>
+          <label for="rfull_name" class="form-label">Full Name</label>
+          <input id="rfull_name" type="text" class="form-control" placeholder="Full Name" [(ngModel)]="signUpData.fullname">
+        </div>
+
+        <div>
+          <label for="remail" class="form-label">Email</label>
+          <input id="remail" type="email" class="form-control" placeholder="Email"[(ngModel)]="signUpData.email">
+        </div>
+
+        <div>
+          <label for="rpassword" class="form-label">Password</label>
+          <input id="rpassword" type="password" class="form-control" placeholder="Password" [(ngModel)]="signUpData.password">
+        </div>
+
+        <div>
+          <label for="rpassword_repeat" class="form-label">Repeat Password</label>
+          <input id="rpassword_repeat" type="password" class="form-control" placeholder="Password" [(ngModel)]="signUpData.passwordRepeat">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="signUp()">Sign Up</button>
       </div>
     </div>
   </div>
