@@ -18,6 +18,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { DataTablesModule } from 'angular-datatables';
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { GraphComponent } from './components/graph/graph.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { GraphComponent } from './components/graph/graph.component';
     AppRoutingModule,
     NgChartsModule,
     HttpClientModule,
-    DataTablesModule
+    DataTablesModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
