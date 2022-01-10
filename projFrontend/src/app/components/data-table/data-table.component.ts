@@ -1,7 +1,5 @@
-import { PageableService } from './pageable-service';
 import { Page } from './page';
-import { Observable, of } from 'rxjs';
-import { ColumnInterface } from './column-interface';
+import { Observable } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -13,7 +11,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class DataTableComponent implements OnInit {
 
   @Input() columns: DataTables.ColumnSettings[] = []
-  @Input() service: PageableService | null = null
+  @Input() getData: ((parameters: Object) => Observable<Page<any>>) | null = null
   
   dtOptions: DataTables.Settings = {}
 
@@ -22,17 +20,27 @@ export class DataTableComponent implements OnInit {
   ngOnInit(): void {
     this.dtOptions = {
       responsive: true,
+      ordering: true,
 
       columns: this.columns,
       
       serverSide: true,
-      ajax: (parameters: Object, callback: any) => {
-        if (this.service != null) {
-          this.service.getPage(parameters).subscribe(result => {
+      ajax: (parameters: any, callback: any) => {
+        console.log(this.columns)
+        console.log(parameters)
+        parameters = {
+          page: parameters.start/parameters.length,
+          size: parameters.length,
+          sort: parameters.columns[parameters.order[0].column].data,
+          order: parameters.order[0].dir
+        }
+
+        if (this.getData != null) {
+          this.getData(parameters).subscribe(result => {
             callback({
               data: result.content,
-              recordsTotal: result.numberOfElements,
-              recordsFiltered: result.numberOfElements
+              recordsTotal: result.totalElements,
+              recordsFiltered: result.totalElements
             })
           })
         }

@@ -1,82 +1,29 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Market BTC-EUR</h1>
+  <h1 class="h2"> {{ marketSymbol }} </h1>
+  <!-- <div *ngIf="active">Online</div>
+  <div *ngIf="active === false">Offline</div> -->
 </div>
 
-<app-graph [data]="data" [labels]="labels"></app-graph>
 
-<div class="row m-5" *ngIf="false">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h4>Market price: {{ price }} {{ destinyCurrency?.symbol }}</h4>
+  <h4 *ngIf="hourChange > 0">Hour change: <span style="color: green;" > +{{ hourChange }}% </span></h4>
+  <h4 *ngIf="hourChange < 0">Hour change: <span style="color: red;" > {{ hourChange }}% </span></h4>
+  <h4 *ngIf="minuteChange > 0">Minute change: <span style="color: green;" > +{{ minuteChange }}% </span></h4>
+  <h4 *ngIf="minuteChange < 0">Minute change: <span style="color: red;" > {{ minuteChange }}% </span></h4>
+</div>  
+
+<app-graph [id]="'marketChart'" [data]="data" [labels]="labels" *ngIf="active"></app-graph>
+
+<div class="row m-5">
   <div class="col-4">
     <h2>Sell orders</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-sm">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1,001</td>
-            <td>5BTC</td>
-            <td>50000€</td>
-          </tr>
-          <tr>
-            <td>1,001</td>
-            <td>5BTC</td>
-            <td>50000€</td>
-          </tr>
-          <tr>
-            <td>1,001</td>
-            <td>5BTC</td>
-            <td>50000€</td>
-          </tr>
-          <tr>
-            <td>1,001</td>
-            <td>5BTC</td>
-            <td>50000€</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-data-table [columns]="columns" [getData]="getSellOrdersData"></app-data-table>
   </div>
 
   <div class="col-4">
     <h2>Buy orders</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-sm">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1,001</td>
-            <td>5BTC</td>
-            <td>50000€</td>
-          </tr>
-          <tr>
-            <td>1,001</td>
-            <td>5BTC</td>
-            <td>50000€</td>
-          </tr>
-          <tr>
-            <td>1,001</td>
-            <td>5BTC</td>
-            <td>50000€</td>
-          </tr>
-          <tr>
-            <td>1,001</td>
-            <td>5BTC</td>
-            <td>50000€</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-data-table [columns]="columns" [getData]="getBuyOrdersData"></app-data-table>
   </div>
 
   <div class="col-4">

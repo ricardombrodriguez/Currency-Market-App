@@ -1,5 +1,4 @@
 import { Timestamp } from 'rxjs';
-import { Market } from './market';
 
 export interface Ticker {
 
@@ -7,7 +6,6 @@ export interface Ticker {
   prev_value: number
   max_buyer_value: number
   min_seller_value: number
-  created_at: Timestamp<any>
+  createdAt: string
 
-  market: Market
 }

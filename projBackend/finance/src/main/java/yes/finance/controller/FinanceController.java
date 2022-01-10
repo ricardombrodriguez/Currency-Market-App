@@ -1,10 +1,6 @@
 package yes.finance.controller;
 
-import java.security.Timestamp;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.tomcat.util.digester.SystemPropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
@@ -81,103 +77,8 @@ public class FinanceController {
     
     @GetMapping("/currency/{id}")
     public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId) {
-
-        List<Market> markets_by_currency = new ArrayList<>();
-        List<Market>  markets = marketservice.getMarkets();
-
-        for (Market market : markets) {
-            if (market.getOrigin_currency().getId() == currencyId){
-
-                List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
-            
-                if (!tickers.isEmpty()) {
-
-                    Ticker last_ticker = tickers.get(0);
-                    System.out.println("last ticker");
-                    System.out.println(last_ticker);
-                    market.setPrice( last_ticker.getPrev_value() );
-
-                    java.sql.Timestamp last_minute = last_ticker.getCreated_at();
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(last_minute);
-                    cal.add(Calendar.MINUTE, -1);
-                    last_minute.setTime(cal.getTime().getTime());
-                    System.out.println(last_minute);
-
-                    java.sql.Timestamp last_hour = last_ticker.getCreated_at();
-                    Calendar cal2 = Calendar.getInstance();
-                    cal2.setTime(last_minute);
-                    cal2.add(Calendar.HOUR, -1);
-                    last_hour.setTime(cal2.getTime().getTime());
-                    System.out.println(last_hour);
-
-                    Float value_last_minute = 0f;
-                    Float value_last_hour = 0f;
-
-                    System.out.println("tickers");
-
-                    System.out.println(tickers);
-
-                    for (Ticker t : tickers) {
-
-                        if (t.getCreated_at().after(last_minute)) {
-                            System.out.println("last_min mudou");
-                            System.out.println(t.getCreated_at());
-                            value_last_minute = t.getPrev_value();
-                            break;
-                        } else {
-                            System.out.println(t.getCreated_at());
-                        }
-                    }
-
-                    for (Ticker t : tickers) {
-
-                        if (t.getCreated_at().after(last_minute)) {
-                            System.out.println("last hour mudou");
-                            System.out.println(t.getCreated_at());
-                            value_last_hour = t.getPrev_value();
-                            break;
-                        } else {
-                            System.out.println(t.getCreated_at());
-                            
-                        }
-                    }
-
-                    Float value_now = last_ticker.getPrev_value();
-
-                    System.out.println("valores ultimo minuto e hora:");
-                    System.out.println(value_last_minute);
-                    System.out.println(value_last_hour);
-
-                    Float last_minute_change = ( (value_last_minute - value_now) / value_last_minute) * 100;
-                    Float last_hour_change = ( (value_last_hour - value_now) / value_last_hour) * 100;
-
-                    System.out.println("mudança em %");
-                    System.out.println(last_minute_change);
-                    System.out.println(last_hour_change);
-                    System.out.println();
-
-                    market.setMinuteChange(last_minute_change);
-                    market.setHourChange(last_hour_change);
-
-                }
-                
-                // temporário
-                /* List<Ticker> tickers = tickerservice.getTickersbyMarketID( market.getId() );
-                if (tickers.isEmpty()) {
-                    market.setPrice( 0f );
-                } else {
-                    Ticker last_ticker = tickers.get(0); // ou -1
-                    market.setPrice( last_ticker.getPrev_value() );
-                }  */
-                // /////////////////////////////////////////////////////////////////////
-
-                markets_by_currency.add( market );
-            }  
-        }
-
+        List<Market> markets_by_currency = marketservice.getMarketsByCurrency(currencyId);
         Page<Market> page_markets_by_currency = new PageImpl<>(markets_by_currency);
-
         return page_markets_by_currency;
     }    
 
@@ -217,14 +118,18 @@ public class FinanceController {
     @PostMapping("/portfolio")
     public Portfolio createPortfolio(@RequestBody String name){
 
-        //TODO:  associar o portfolio criado ao user 
-
         return portfolioservice.savePortfolio( new Portfolio(name) );
     }  
    
    
 
     ////////////////////////////////////////////  MARKET  ////////////////////////////////////////////
+
+    // EndPoint para os gráficos
+    @GetMapping("/market/info/{id}")
+    public Market getMarket(@PathVariable(value = "id") int marketId) {
+        return marketservice.getMarketById(marketId);
+    }   
 
     @PostMapping("/market")
     public Market createMarkets(@RequestBody Market market){
@@ -233,141 +138,16 @@ public class FinanceController {
 
     @GetMapping("/market")
     public Page<Market> getAllMarkets(Pageable pageable) {
-
-        List<Market> markets = marketservice.getMarkets();
-        System.out.println("all markets:");
-        System.out.println(markets.size());
-
-        // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
-        for (Market market : markets) {
-
-            List<Ticker> tickers = tickerservice.getTickersbyMarketID(market.getId());
-            
-            if (!tickers.isEmpty()) {
-                // System.out.println("Not empty");
-                Collections.sort(tickers, new CustomComparator());
-                Ticker last_ticker = tickers.get(tickers.size() - 1);
-                System.out.println("last ticker");
-                System.out.println(last_ticker);
-                market.setPrice( last_ticker.getPrev_value() );
-
-                java.sql.Timestamp last_minute = last_ticker.getCreated_at();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(last_minute);
-                cal.add(Calendar.MINUTE, -1);
-                last_minute.setTime(cal.getTime().getTime());
-
-                java.sql.Timestamp last_hour = last_ticker.getCreated_at();
-                Calendar cal2 = Calendar.getInstance();
-                cal2.setTime(last_minute);
-                cal2.add(Calendar.HOUR, -1);
-                last_hour.setTime(cal2.getTime().getTime());
-
-                Float value_last_minute = 0f;
-                Float value_last_hour = 0f;
-
-                for (Ticker t : tickers) {
-
-                    if (t.getCreated_at().after(last_minute)) {
-                        value_last_minute = t.getPrev_value();
-                        break;
-                    } else {
-                    }
-                }
-
-                for (Ticker t : tickers) {
-
-                    if (t.getCreated_at().after(last_minute)) {
-                        value_last_hour = t.getPrev_value();
-                        break;
-                    } else {
-                            
-                    }
-                }
-
-                Float value_now = last_ticker.getPrev_value();
-
-                System.out.println("valores ultimo minuto e hora:");
-                System.out.println(value_last_minute);
-                System.out.println(value_last_hour);
-
-                Float last_minute_change = ( (value_last_minute - value_now) / value_last_minute) * 100;
-                Float last_hour_change = ( (value_last_hour - value_now) / value_last_hour) * 100;
-
-                market.setMinuteChange(last_minute_change);
-                market.setHourChange(last_hour_change);
-
-                System.out.println("mudança em %");
-                System.out.println(market.getMinuteChange());
-                System.out.println(market.getHourChange());
-                System.out.println();
-
-            }
-            
-        }
-
         return marketservice.getMarkets(pageable);
-    }
-
-    /* @GetMapping("/market")
-    public List<Market> getAllMarkets() {
-
-        List<Market>  markets = marketservice.getMarkets();
-
-        // atualizar o seu preço e a mudança em % do mercado para o ultimo ticker (ou para os tickers de há 24 horas atrás)
-        for (Market market : markets) {
-
-            List<Ticker> tickers = tickerservice.getTickers();
-
-            for (Ticker t : tickers) {
-                if (t.getMarket().getId().equals( market.getId() ) ) {
-                    tickers.add(t);
-                }
-            }
-            
-            if (tickers.isEmpty()) {
-                market.setPrice( 0f );
-
-            } else {
-                // Collections.sort(tickers, new CustomComparator());
-                // System.out.println();4
-                // System.out.println();
-                // System.out.println();
-                // System.out.println();
-                // System.out.println(tickers);
-                
-                Ticker last_ticker = tickers.get(0); // ou -1
-                market.setPrice( last_ticker.getPrev_value() );
-            }
-            
-        }
-
-        return marketservice.getMarkets();
-    } */
-
-    public class CustomComparator implements Comparator<Ticker> {
-        @Override
-        public int compare(Ticker t1, Ticker t2) {
-            return t1.getCreated_at().compareTo(t2.getCreated_at());
-        }
     }
 
     // EndPoint para os gráficos
     @GetMapping("/market/{id}")
     public List<Ticker> getTickersByMarketId(@PathVariable(value = "id") int marketId) {
-        List<Ticker> tickersByMarket = new ArrayList<>();
-        
-        List<Ticker> tickers = tickerservice.getTickers();
-
-        for (Ticker t : tickers) {
-            if (t.getMarket().getId() == marketId ) {
-                tickersByMarket.add( t );
-            }
-        }
-        return tickersByMarket;
+        return tickerservice.getTickersbyMarketID(marketId);
     }   
 
-    /* // retorna uma lista dos preços atuais de cada mercado
+/*     // retorna uma lista dos preços atuais de cada mercado
     @GetMapping("/market2")
     public List<Float> getPrice() {
         // List<Market>  markets = marketservice.getMarkets();
@@ -382,17 +162,24 @@ public class FinanceController {
 
         List<Float> prices = new ArrayList<>();
 
-        List<Market>  markets = marketservice.getMarkets();
+        Map<String, Object> marketSerialized = new HashMap<>();
+        marketSerialized.put("id", market.getId());
+        marketSerialized.put("originCurrency", market.getOriginCurrency());
+        marketSerialized.put("destinyCurrency", market.getDestinyCurrency());
+        marketSerialized.put("tickers", tickers);
 
-        for (Market market : markets) {
-            List<Ticker> tickers = tickerservice.getTickersByMarketId();
-            Collections.sort(tickers, new CustomComparator());
-            Ticker last_ticker = tickers.get(0);
-            prices.add( last_ticker.getPrev_value() );
-        }
+        return marketSerialized;
+    } */
 
-        return prices;
-    }   */
+    @GetMapping("/market/{id}/orders/sell")
+    public Page<Order> getMarketSellOrders(@PathVariable int id, Pageable pageable) {
+        return orderservice.getSellOrdersByMarket(id, pageable);
+    }
+
+    @GetMapping("/market/{id}/orders/buy")
+    public Page<Order> getMarketBuyOrders(@PathVariable int id, Pageable pageable) {
+        return orderservice.getBuyOrdersByMarket(id, pageable);
+    }
 
 
     ////////////////////////////////////////////  ORDER  ////////////////////////////////////////////
