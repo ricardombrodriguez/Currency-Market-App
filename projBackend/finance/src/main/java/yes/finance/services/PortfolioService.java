@@ -23,8 +23,8 @@ public class PortfolioService {
         return repository.saveAll(Portfolios);
     }
 
-    public Page<Portfolio> getPortfolios(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<Portfolio> getPortfolios() {
+        return repository.findAll();
     }
 
     public Portfolio getPortfolioById(int id) {

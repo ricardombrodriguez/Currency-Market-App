@@ -1,6 +1,9 @@
 import { AuthenticationService } from './services/authentication.service';
 import { Component } from '@angular/core';
 
+import { AppService } from './app.service';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -31,13 +34,18 @@ export class AppComponent {
   }
   logOut = () => this.authService.logOut()
 
-  public constructor(public authService: AuthenticationService) {
+  public constructor(public authService: AuthenticationService, public service: AppService) {
     authService.userIdObs.subscribe(data => {
       this.loggedId = data !== null
     })
   }
   
   ngOnInit() {
+  }
+  
+
+  createPortfolio() {
+    this.service.addPortfolio((<HTMLInputElement>document.getElementById('name')).value).subscribe(response => {});
   }
   
 }

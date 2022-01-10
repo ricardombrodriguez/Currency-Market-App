@@ -32,7 +32,7 @@ public class MarketService {
     }
 
     public Market getMarketById(int id) {
-        return repository.findById((int)id).orElse(null);
+        return repository.findById((int) id).orElse(null);
     }
 
     public List<Market> getMarketsByCurrency(int currency_id) {
@@ -41,11 +41,11 @@ public class MarketService {
 
     public String deleteMarket(int id) {
         repository.deleteById(id);
-        return "Market (id="+ id +") removed!";
+        return "Market (id=" + id + ") removed!";
     }
 
     public Market updateMarket(Market market) {
-        Market existingMarket = repository.findById((int)market.getId()).orElse(null);
+        Market existingMarket = repository.findById((int) market.getId()).orElse(null);
 
         // FAZER SETS
 

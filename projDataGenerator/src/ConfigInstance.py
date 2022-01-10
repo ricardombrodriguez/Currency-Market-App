@@ -24,4 +24,3 @@ class ConfigInstance:
   def get_instance(cls) -> ConfigManager:
     if cls.INSTANCE is None: cls.INSTANCE = ConfigManager()
     return cls.INSTANCE
-

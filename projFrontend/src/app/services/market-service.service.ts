@@ -16,7 +16,7 @@ export class MarketServiceService {
   constructor(private http: HttpClient, private websocketService: WebsocketService) { }
 
   getPage(parameters: Object): Observable<Page<Market>> {
-    return this.http.get<Page<Market>>(environment.API_URL + '/market', parameters)
+    return this.http.get<Page<Market>>(environment.API_URL + '/market', <Object>{ params: parameters })
   }
 
   getPageByCoin(id: number) : Market[] {
