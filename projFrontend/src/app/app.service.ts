@@ -13,13 +13,6 @@ export class AppService {
   constructor(private http: HttpClient) { }
 
   addPortfolio(name: string): Observable<any>{
-
-    // console.log('post rest service called with name ' + name);
-    // return this.http.post<any>(environment.API_URL + '/portfolio', name);
-
-
-    console.log(">> "+ name)
-    
     return this.http.post(environment.API_URL + '/portfolio', name) 
   }
 

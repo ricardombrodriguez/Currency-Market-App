@@ -15,4 +15,10 @@ export class PortfolioServiceService {
     return this.http.get<Portfolio[]>(environment.API_URL + '/portfolio')
   }
 
+  getPage(parameters: Object): Observable<Portfolio> {
+    var pathArray = window.location.pathname.split('/');
+    console.log("cá estamos")
+    return this.http.get<Portfolio>(environment.API_URL + '/portfolio/'+ pathArray[pathArray.length - 1], parameters);
+  }
+
 }

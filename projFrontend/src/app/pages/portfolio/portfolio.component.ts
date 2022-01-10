@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PortfolioServiceService } from './../../services/portfolio-service.service';
 
 @Component({
   selector: 'app-portfolio',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PortfolioComponent implements OnInit {
 
-  constructor() { }
+  constructor(public portfolioService: PortfolioServiceService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  getData = (parameters: object) => {
+    return this.portfolioService.getPage(parameters)
   }
 
 }

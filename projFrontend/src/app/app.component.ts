@@ -29,4 +29,5 @@ export class AppComponent {
   createPortfolio() {
     this.service.addPortfolio((<HTMLInputElement>document.getElementById('name')).value).subscribe(response => {});
   }
+  
 }

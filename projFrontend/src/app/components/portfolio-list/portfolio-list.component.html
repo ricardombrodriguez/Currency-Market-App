@@ -10,10 +10,8 @@
 
 <ul class="nav flex-column mb-2">
   <li class="nav-item" *ngFor="let portfolio of portfolios; let i = index" [attr.data-index]="i" id="portfolio">
-    <a class="nav-link" routerLink="/portfolio/1" routerLinkActive="active">
-      <i class="icon fas fa-wallet"></i>
-      {{ portfolio.name }}
-      <i class="fas fa-trash-alt" id="delete"></i>
+    <a class="nav-link" routerLink="/portfolio/{{i + 1}}" routerLinkActive="active">
+      <i class="icon fas fa-wallet"></i> {{ portfolio.name }}
     </a>
   </li>
 </ul>

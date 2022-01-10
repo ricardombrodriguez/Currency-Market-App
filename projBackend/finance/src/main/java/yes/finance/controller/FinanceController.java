@@ -211,6 +211,12 @@ public class FinanceController {
 
         return portfolioservice.savePortfolio( new Portfolio(name) );
     }
+
+    
+    @GetMapping("/portfolio/{id}")
+    public Portfolio getPortfolio(@PathVariable int id) {
+        return portfolioservice.getPortfolioById(id);
+    }
    
    
 
