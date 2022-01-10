@@ -32,6 +32,15 @@ public class UserService {
         return repository.findById((int)id);
     }
 
+    public boolean isEmailInUse(String email) {
+        System.out.println(repository.findByEmail(email));
+        return repository.findByEmail(email) != null;
+    }
+
+    public User getUserLogin(String email, String password) {
+        return repository.findByEmailAndPassword(email, password);
+    }
+
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO UserRepository.java
 
     public String deleteUser(int id) {
