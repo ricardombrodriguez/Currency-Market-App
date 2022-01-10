@@ -20,7 +20,7 @@ export class AuthenticationService {
   }
 
   signUp = (username: string, fullname: string, email: string, password: string) => 
-    this.http.post<AuthResponse>(environment.API_URL + '/signup', {params: { username, fullname, email, password }}).subscribe(this.authResponseReaction)
+    this.http.post<AuthResponse>(environment.API_URL + '/signup', { username, fullname, email, password }).subscribe(this.authResponseReaction)
 
   logIn = (email: string, password: string) =>
     this.http.get<AuthResponse>(environment.API_URL + '/login', {params: { email, password }}).subscribe(this.authResponseReaction)
