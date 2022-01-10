@@ -87,7 +87,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="logIn" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="logIn" tabindex="-1" aria-hidden="true" *ngIf="!loggedId">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -112,7 +112,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="signUp" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="signUp" tabindex="-1" aria-hidden="true" *ngIf="!loggedId">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

@@ -1,7 +1,7 @@
 import { AuthResponse } from './../interfaces/auth-response';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -9,10 +9,10 @@ import { Injectable } from '@angular/core';
 })
 export class AuthenticationService {
 
-  authStatus: Observable<boolean> = new Observable()
-
   userId = new Subject<string | null>()
   userIdObs = this.userId.asObservable()
+
+  isLoggedIn = () => localStorage.removeItem('user_id') !== null
 
   setUserId = (id: string | null = null) => {
     id === null? localStorage.removeItem('user_id') : localStorage.setItem('user_id', id)

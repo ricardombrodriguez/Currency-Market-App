@@ -33,7 +33,6 @@ public class UserService {
     }
 
     public boolean isEmailInUse(String email) {
-        System.out.println(repository.findByEmail(email));
         return repository.findByEmail(email) != null;
     }
 

@@ -38,7 +38,6 @@ public class AuthenticationController {
 
   @PostMapping("/signup")
   public Map<String, Object> signup(@RequestBody User user) {
-    System.out.println(user);
     Map<String, Object> response = new HashMap<>();
 
     if (userService.isEmailInUse(user.getEmail())) response.put("success", false);

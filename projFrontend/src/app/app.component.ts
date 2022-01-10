@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  loggedId: boolean = false
+  loggedId: boolean = false  
 
   logInData: { email: string, password: string } = {
     email: '',
@@ -23,17 +23,33 @@ export class AppComponent {
     passwordRepeat: ''
   }
 
+  resetData = () => {
+    this.logInData.email = ''
+    this.logInData.password = ''
+
+    this.signUpData.username = ''
+    this.signUpData.fullname = ''
+    this.signUpData.email = ''
+    this.signUpData.password = ''
+    this.signUpData.passwordRepeat = ''
+  }
+
   logIn = () => this.authService.logIn(this.logInData.email, this.logInData.password)
   signUp = () => {
-    console.log(this.signUpData)
     if (this.signUpData.password === this.signUpData.passwordRepeat) 
       this.authService.signUp(this.signUpData.username, this.signUpData.fullname, this.signUpData.email, this.signUpData.password)
   }
   logOut = () => this.authService.logOut()
 
   public constructor(public authService: AuthenticationService) {
+    this.loggedId = authService.isLoggedIn()
+
     authService.userIdObs.subscribe(data => {
       this.loggedId = data !== null
+      if (this.loggedId) {
+        $('.modal-backdrop').remove()
+        this.resetData()
+      }
     })
   }
   
