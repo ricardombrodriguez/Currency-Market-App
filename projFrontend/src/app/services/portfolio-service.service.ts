@@ -1,5 +1,5 @@
 import { Portfolio } from './../interfaces/portfolio';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -10,10 +10,10 @@ import { environment } from '../../environments/environment';
 export class PortfolioServiceService {
   private portfolio!: Portfolio;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getPortfolios(id: number): Observable<Portfolio[]> {
-    return this.http.get<Portfolio[]>(environment.API_URL + '/portfolio', {params: {id}});
+    return this.http.get<Portfolio[]>(environment.API_URL + '/portfolio', { params: { id } });
   }
 
   getPortfolio(id: number): Observable<Portfolio> {
@@ -30,7 +30,10 @@ export class PortfolioServiceService {
   }
 
   addPortfolio(name: string, userId: number): Observable<any> {
-    return this.http.post(environment.API_URL + '/portfolio', { name, id: userId });
+    let params = new HttpParams();
+    params = params.append('name', name);
+    params = params.append('id', userId);
+    return this.http.post(environment.API_URL + '/portfolio', {}, { params });
   }
   
 }
