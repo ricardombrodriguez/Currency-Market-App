@@ -33,10 +33,6 @@ public class TickerService {
         return repository.findAll();
     }
 
-    public List<Ticker> getTickersbyMarketID(int market_id) {
-        return repository.findBymarket(market_id);
-    }
-
     public Ticker getTickerById(int id) {
         return repository.findById((int) id).orElse(null);
     }

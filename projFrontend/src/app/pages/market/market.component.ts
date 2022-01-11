@@ -41,15 +41,17 @@ export class MarketComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.marketService.getMarketInfo(this.marketId).subscribe( market => {
-
-      this.marketSymbol = market.symbol
+    this.marketService.getMarket(this.marketId).subscribe( market => {
+      this.marketSymbol = market.originCurrency.symbol + '-' + market.destinyCurrency.symbol
       this.originCurrency = market.originCurrency
       this.destinyCurrency = market.destinyCurrency
       this.price = market.price
       this.hourChange = market.hourChange
       this.minuteChange = market.minuteChange
-      this.active = this.originCurrency.online && this.destinyCurrency.online
+      this.active = market.originCurrency.online && market.destinyCurrency.online
+
+      this.data = market.tickers.map(t => t.prev_value)
+      this.labels = market.tickers.map(t => ((new Date(t.createdAt)).toLocaleString()))
 
       if (this.active) {
         this.marketService.startTickerUpdates(this.marketSymbol, message => {
