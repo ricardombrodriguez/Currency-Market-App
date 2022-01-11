@@ -8,6 +8,7 @@ import { CoinComponent } from './pages/coin/coin.component';
 import { MarketsComponent } from './pages/markets/markets.component';
 import { MarketComponent } from './pages/market/market.component';
 import { TickerComponent } from './pages/ticker/ticker.component';
+import { ExtensionComponent } from './pages/extension/extension.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -30,6 +31,11 @@ const routes: Routes = [
   { path: 'portfolio', children: [
     { path: '', component: PortfolioComponent },
     { path: ':id', component: PortfolioComponent }
+  ] },
+
+  { path: 'extensions', children: [
+    { path: '', component: ExtensionComponent },
+    { path: ':id', component:  ExtensionComponent }
   ] }
 
 ];
