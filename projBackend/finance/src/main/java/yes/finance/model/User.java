@@ -22,7 +22,7 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "UserPortfolio", joinColumns = @JoinColumn(name = "user.id"), inverseJoinColumns = @JoinColumn(name = "portfolio.id"))
-    private List<Portfolio> portfolios = new ArrayList<>();
+    private Set<Portfolio> portfolios = new ArrayList<>();
 
     public User() {
     }
@@ -82,7 +82,7 @@ public class User {
         this.extensions = extensions;
     }
 
-    public List<Portfolio> getPortfolios() {
+    public Set<Portfolio> getPortfolios() {
         return this.portfolios;
     }
 
@@ -90,7 +90,7 @@ public class User {
         this.portfolios.add(portfolio);
     }
 
-    public void setPortfolios(List<Portfolio> portfolios) {
+    public void setPortfolios(Set<Portfolio> portfolios) {
         this.portfolios = portfolios;
     }
 

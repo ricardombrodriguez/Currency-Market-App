@@ -120,6 +120,8 @@ public class FinanceController {
     @PostMapping("/portfolio")
     public Portfolio createPortfolio(@RequestParam String name, @RequestParam int id) {
 
+        entityManager = emf.createEntityManager();
+        
         System.out.println(">> A criar Portfolio '" + name + "'...");
         Portfolio p = new Portfolio(name);
         User u = service.getUserById(id);
@@ -127,6 +129,10 @@ public class FinanceController {
         userService.saveUser(u);
         System.out.println(p);
         System.out.println(u);
+
+        entityManager.persist(u);
+        entityManager.persist(p);
+
         return portfolioservice.savePortfolio(p);
     }
 

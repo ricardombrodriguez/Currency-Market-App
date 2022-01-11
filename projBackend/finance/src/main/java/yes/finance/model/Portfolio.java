@@ -24,7 +24,7 @@ public class Portfolio {
     private List<Extension> extensions = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "portfolios")
-    private List<User> users = new ArrayList<>();
+    private Set<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio")
     private List<Order> orders = new ArrayList<>();
@@ -66,11 +66,11 @@ public class Portfolio {
         this.extensions = extensions;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return this.users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
