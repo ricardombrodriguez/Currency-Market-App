@@ -32,4 +32,5 @@ export class PortfolioServiceService {
   addPortfolio(name: string, userId: number): Observable<any> {
     return this.http.post(environment.API_URL + '/portfolio', { name, id: userId });
   }
+  
 }
