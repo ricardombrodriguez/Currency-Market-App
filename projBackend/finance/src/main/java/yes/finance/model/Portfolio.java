@@ -23,7 +23,7 @@ public class Portfolio {
     @JoinTable(name = "PortfolioExtension", joinColumns = @JoinColumn(name = "Portfolio.id"), inverseJoinColumns = @JoinColumn(name = "Extension.id"))
     private List<Extension> extensions = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "portfolios")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "portfolios")
     private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio")

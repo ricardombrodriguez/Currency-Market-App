@@ -32,6 +32,8 @@ public class FinanceController {
     private PortfolioService portfolioservice;
     @Autowired
     private TickerService tickerservice;
+    @Autowired
+    private UserService userService;
 
     //////////////////////////////////////////// USER
     //////////////////////////////////////////// ////////////////////////////////////////////
@@ -116,15 +118,15 @@ public class FinanceController {
 
     // recebe um post do angular com os parametros name e user (maybe)
     @PostMapping("/portfolio")
-    public Portfolio createPortfolio(@RequestParam String name, @RequestParam String id) {
+    public Portfolio createPortfolio(@RequestParam String name, @RequestParam int id) {
 
         System.out.println(">> A criar Portfolio '" + name + "'...");
         Portfolio p = new Portfolio(name);
-
-        Integer userId = Integer.parseInt(id);
-        User u = service.getUserById(userId);
-        p.addUser(u);
-
+        User u = service.getUserById(id);
+        u.addPortfolio(p);
+        userService.saveUser(u);
+        System.out.println(p);
+        System.out.println(u);
         return portfolioservice.savePortfolio(p);
     }
 
