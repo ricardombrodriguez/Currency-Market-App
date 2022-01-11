@@ -5,32 +5,31 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PortfolioServiceService {
-
   private portfolio!: Portfolio;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getPortfolios(): Observable<Portfolio[]> {
-    return this.http.get<Portfolio[]>(environment.API_URL + '/portfolio')
+  getPortfolios(id: number): Observable<Portfolio[]> {
+    return this.http.get<Portfolio[]>(environment.API_URL + '/portfolio', {params: {id}});
+  }
+
+  getPortfolio(id: number): Observable<Portfolio> {
+    return this.http.get<Portfolio>(environment.API_URL + '/portfolio/' + id);
   }
 
   getPage(parameters: Object): Observable<Portfolio> {
     var pathArray = window.location.pathname.split('/');
-    console.log("cá estamos")
-    return this.http.get<Portfolio>(environment.API_URL + '/portfolio/'+ pathArray[pathArray.length - 1], parameters);
+    console.log('cá estamos');
+    return this.http.get<Portfolio>(
+      environment.API_URL + '/portfolio/' + pathArray[pathArray.length - 1],
+      parameters
+    );
   }
 
-  setPortfolio(portfolio: Portfolio) {
-    console.log("PORTFOLIO SET!")
-    this.portfolio = portfolio;
+  addPortfolio(name: string, userId: number): Observable<any> {
+    return this.http.post(environment.API_URL + '/portfolio', { name, id: userId });
   }
-
-  getPortfolio() : Portfolio {
-    console.log("PORTFOLIO GET!")
-    return this.portfolio;
-  }
-
 }

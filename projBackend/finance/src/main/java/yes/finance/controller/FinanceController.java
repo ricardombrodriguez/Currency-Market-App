@@ -1,6 +1,7 @@
 package yes.finance.controller;
 
 import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
@@ -104,8 +105,8 @@ public class FinanceController {
 
     // receber todos os portfolios de um user ID (tem de ter um parametro id!)
     @GetMapping("/portfolio")
-    public List<Portfolio> getAllPortfolios() {
-        return portfolioservice.getPortfolios();
+    public List<Portfolio> getAllPortfolios(@RequestParam int id) {
+        return portfolioservice.getPortfoliosbyUserID(id);
     }
 
     @DeleteMapping("/portfolio/{id}")
@@ -115,11 +116,16 @@ public class FinanceController {
 
     // recebe um post do angular com os parametros name e user (maybe)
     @PostMapping("/portfolio")
-    public Portfolio createPortfolio(@RequestBody String name) {
+    public Portfolio createPortfolio(@RequestParam String name, @RequestParam String id) {
 
         System.out.println(">> A criar Portfolio '" + name + "'...");
+        Portfolio p = new Portfolio(name);
 
-        return portfolioservice.savePortfolio(new Portfolio(name));
+        Integer userId = Integer.parseInt(id);
+        User u = service.getUserById(userId);
+        p.addUser(u);
+
+        return portfolioservice.savePortfolio(p);
     }
 
     @GetMapping("/portfolio/{id}")
@@ -143,6 +149,11 @@ public class FinanceController {
 
     @GetMapping("/market")
     public Page<Market> getAllMarkets(Pageable pageable) {
+        // Page<Market> allMarkets = marketservice.getMarkets(pageable)
+
+        // for (Market m : allMarkets) {
+
+        // }
         return marketservice.getMarkets(pageable);
     }
 
@@ -151,33 +162,6 @@ public class FinanceController {
     public List<Ticker> getTickersByMarketId(@PathVariable(value = "id") int marketId) {
         return tickerservice.getTickersbyMarketID(marketId);
     }
-
-    /*
-     * // retorna uma lista dos preços atuais de cada mercado
-     * 
-     * @GetMapping("/market2")
-     * public List<Float> getPrice() {
-     * // List<Market> markets = marketservice.getMarkets();
-     * // List<Float> prices = new ArrayList<>();
-     * 
-     * // for (Market market : markets) {
-     * // Ticker last_ticker = market.getTickers().get(0);
-     * // prices.add( last_ticker.getPrev_value() );
-     * // }
-     * 
-     * // return prices;
-     * 
-     * List<Float> prices = new ArrayList<>();
-     * 
-     * Map<String, Object> marketSerialized = new HashMap<>();
-     * marketSerialized.put("id", market.getId());
-     * marketSerialized.put("originCurrency", market.getOriginCurrency());
-     * marketSerialized.put("destinyCurrency", market.getDestinyCurrency());
-     * marketSerialized.put("tickers", tickers);
-     * 
-     * return marketSerialized;
-     * }
-     */
 
     @GetMapping("/market/{id}/orders/sell")
     public Page<Order> getMarketSellOrders(@PathVariable int id, Pageable pageable) {

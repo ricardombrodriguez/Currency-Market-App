@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Portfolio } from 'src/app/interfaces/portfolio';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PortfolioServiceService } from 'src/app/services/portfolio-service.service';
 
 @Component({
@@ -12,14 +13,19 @@ export class PortfolioListComponent implements OnInit {
 
   @Input() public portfolios: Portfolio[] = []
   public observable: Observable<Portfolio[]>;
+  private userID: any
 
-  constructor(public portfolioService: PortfolioServiceService) { 
+  constructor(public portfolioService: PortfolioServiceService, public authService: AuthenticationService) { 
 
-    this.observable = this.portfolioService.getPortfolios()
+    this.userID = this.authService.curentUserId
+    this.observable = this.portfolioService.getPortfolios(this.userID)
+    console.log("user id:")
+    console.log(this.userID)
 
   }
 
   ngOnInit(): void {
+
 
     this.observable.subscribe( (portfolios) => {
       this.portfolios = portfolios;
@@ -29,12 +35,6 @@ export class PortfolioListComponent implements OnInit {
 
   getData = (parameters: object) => {
     return this.portfolioService.getPage(parameters)
-  }
-
-  sendData(portfolio : Portfolio) {
-    console.log("data sent!")
-    console.log(portfolio)
-    this.portfolioService.setPortfolio(portfolio)
   }
 
 }

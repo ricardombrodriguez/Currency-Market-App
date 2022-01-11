@@ -7,11 +7,9 @@
   </a>
 </h6>
 
-<!-- sendData(portfolio) -->
-<!-- outerLink="/portfolio/" -->
 <ul class="nav flex-column mb-2">
-  <li class="nav-item" *ngFor="let portfolio of portfolios" id="portfolio" (onclick)="sendData(portfolio)">
-    <a class="nav-link" routerLink="/portfolio/" routerLinkActive="active">
+  <li class="nav-item" *ngFor="let portfolio of portfolios; let i = index" [attr.data-index]="i" id="portfolio" (onclick)="getData">
+    <a class="nav-link" routerLink="/portfolio/{{portfolio.id}}" routerLinkActive="active">
       <i class="icon fas fa-wallet"></i> {{ portfolio.name }}
     </a>
   </li>

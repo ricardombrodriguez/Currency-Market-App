@@ -15,15 +15,12 @@ public class Portfolio {
 
     @Column(name = "name", nullable = false)
     private String name;
-    
+
     @Column(name = "public_key", nullable = false)
     private String public_key;
 
     @ManyToMany
-    @JoinTable(
-        name = "PortfolioExtension", 
-        joinColumns = @JoinColumn(name = "Portfolio.id"), 
-        inverseJoinColumns = @JoinColumn(name = "Extension.id"))
+    @JoinTable(name = "PortfolioExtension", joinColumns = @JoinColumn(name = "Portfolio.id"), inverseJoinColumns = @JoinColumn(name = "Extension.id"))
     private List<Extension> extensions = new ArrayList<>();
 
     @ManyToMany(mappedBy = "portfolios")
@@ -32,16 +29,15 @@ public class Portfolio {
     @OneToMany(mappedBy = "portfolio")
     private List<Order> orders = new ArrayList<>();
 
-
-    public Portfolio() {}
+    public Portfolio() {
+    }
 
     public Portfolio(String name) {
         this.name = name;
         Random rand = new Random();
-        this.public_key = String.valueOf( rand.nextInt(1000000) );
+        this.public_key = String.valueOf(rand.nextInt(1000000));
     }
 
-    
     public Integer getId() {
         return id;
     }
@@ -78,6 +74,10 @@ public class Portfolio {
         this.users = users;
     }
 
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+
     public List<Order> getOrders() {
         return this.orders;
     }
@@ -86,17 +86,15 @@ public class Portfolio {
         this.orders = orders;
     }
 
-
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", name='" + getName() + "'" +
-            ", public_key='" + getPublic_key() + "'" +
-            ", extensions='" + getExtensions() + "'" +
-            ", users='" + getUsers() + "'" +
-            "}";
+                " id='" + getId() + "'" +
+                ", name='" + getName() + "'" +
+                ", public_key='" + getPublic_key() + "'" +
+                ", extensions='" + getExtensions() + "'" +
+                ", users='" + getUsers() + "'" +
+                "}";
     }
-
 
 }

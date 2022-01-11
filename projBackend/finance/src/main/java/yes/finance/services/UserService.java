@@ -28,26 +28,38 @@ public class UserService {
         return repository.findAll(pageable);
     }
 
+    public List<User> getUsers() {
+        return repository.findAll();
+    }
+
     public User getUserById(int id) {
-        return repository.findById((int)id);
+        return repository.findById((int) id);
+    }
+
+    public boolean isEmailInUse(String email) {
+        return repository.findByEmail(email) != null;
+    }
+
+    public User getUserLogin(String email, String password) {
+        return repository.findByEmailAndPassword(email, password);
     }
 
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO UserRepository.java
 
     public String deleteUser(int id) {
         repository.deleteById(id);
-        return "user (id="+ id +") removed!";
+        return "user (id=" + id + ") removed!";
     }
 
     public User updateUser(User user) {
-        User existingUser = repository.findById((int)user.getId());
+        User existingUser = repository.findById((int) user.getId());
 
         // FAZER SETS
 
         return saveUser(existingUser);
     }
 
-    public List<Portfolio> getPortfoliosByUser(int id){
+    public List<Portfolio> getPortfoliosByUser(int id) {
         return repository.findById(id).getPortfolios();
 
     }
