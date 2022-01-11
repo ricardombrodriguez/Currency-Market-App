@@ -143,33 +143,21 @@ public class FinanceController {
 
     // EndPoint para os gráficos
     @GetMapping("/market/{id}")
-    public List<Ticker> getTickersByMarketId(@PathVariable(value = "id") int marketId) {
-        return tickerservice.getTickersbyMarketID(marketId);
-    }   
-
-/*     // retorna uma lista dos preços atuais de cada mercado
-    @GetMapping("/market2")
-    public List<Float> getPrice() {
-        // List<Market>  markets = marketservice.getMarkets();
-        // List<Float> prices = new ArrayList<>();
-
-        // for (Market market : markets) {
-        //     Ticker last_ticker = market.getTickers().get(0);
-        //     prices.add( last_ticker.getPrev_value() );
-        // }
-
-        // return prices;
-
-        List<Float> prices = new ArrayList<>();
+    public Map<String, Object> getTickersByMarketId(@PathVariable int id) {
+        Market market = marketservice.getMarketById(id);
+        List<Ticker> tickers = tickerservice.getTickerByMarket(market);
 
         Map<String, Object> marketSerialized = new HashMap<>();
         marketSerialized.put("id", market.getId());
         marketSerialized.put("originCurrency", market.getOriginCurrency());
         marketSerialized.put("destinyCurrency", market.getDestinyCurrency());
+        marketSerialized.put("price", market.getPrice());
+        marketSerialized.put("hourChange", market.getHourChange());
+        marketSerialized.put("minuteChange", market.getMinuteChange());
         marketSerialized.put("tickers", tickers);
 
         return marketSerialized;
-    } */
+    }  
 
     @GetMapping("/market/{id}/orders/sell")
     public Page<Order> getMarketSellOrders(@PathVariable int id, Pageable pageable) {

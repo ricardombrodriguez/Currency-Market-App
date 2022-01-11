@@ -8,4 +8,5 @@ export interface Market {
   destinyCurrency: Coin
   minuteChange: number
   hourChange: number
+  tickers: Ticker[]
 }
