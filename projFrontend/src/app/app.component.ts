@@ -72,8 +72,18 @@ export class AppComponent {
   ngOnInit() {}
 
   portfolio = {pname: ""}
+  public error = false;
 
   createPortfolio() {
+    this.error = false;
+    
+    if ( (<HTMLInputElement>document.getElementById("name")).value == "" ) {
+      this.error = true;
+      return
+    } 
+    
     this.service.addPortfolio((<HTMLInputElement>document.getElementById("name")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => {});
+    window.location.reload()
+
   }
 }

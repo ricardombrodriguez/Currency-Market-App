@@ -1,6 +1,11 @@
 package yes.finance.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.*;
 import java.util.Random;
 
@@ -23,8 +28,9 @@ public class Portfolio {
     @JoinTable(name = "PortfolioExtension", joinColumns = @JoinColumn(name = "Portfolio.id"), inverseJoinColumns = @JoinColumn(name = "Extension.id"))
     private List<Extension> extensions = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "portfolios")
-    private Set<User> users = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "portfolios")
+    @JsonIgnore
+    private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio")
     private List<Order> orders = new ArrayList<>();
@@ -66,11 +72,11 @@ public class Portfolio {
         this.extensions = extensions;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return this.users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 

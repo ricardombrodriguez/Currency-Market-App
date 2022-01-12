@@ -13,9 +13,9 @@ export class PortfolioListComponent implements OnInit {
 
   @Input() public portfolios: Portfolio[] = []
   public observable: Observable<Portfolio[]>;
-  private userID: any
+  public userID: any
 
-  constructor(public portfolioService: PortfolioServiceService, public authService: AuthenticationService) { 
+  constructor(public portfolioService: PortfolioServiceService, public authService: AuthenticationService) {
 
     this.userID = this.authService.curentUserId
     this.observable = this.portfolioService.getPortfolios(this.userID)
@@ -27,14 +27,15 @@ export class PortfolioListComponent implements OnInit {
   ngOnInit(): void {
 
 
-    this.observable.subscribe( (portfolios) => {
+    this.observable.subscribe((portfolios) => {
       this.portfolios = portfolios;
     });
-    
+
   }
 
   getData = (parameters: object) => {
     return this.portfolioService.getPage(parameters)
   }
+
 
 }

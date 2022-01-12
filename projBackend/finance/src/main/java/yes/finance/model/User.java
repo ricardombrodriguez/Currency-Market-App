@@ -1,6 +1,12 @@
 package yes.finance.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.*;
 
 @Entity
@@ -20,9 +26,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Extension> extensions = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "UserPortfolio", joinColumns = @JoinColumn(name = "user.id"), inverseJoinColumns = @JoinColumn(name = "portfolio.id"))
-    private Set<Portfolio> portfolios = new ArrayList<>();
+    @JsonIgnore
+    private List<Portfolio> portfolios = new ArrayList<>();
 
     public User() {
     }
@@ -82,7 +89,7 @@ public class User {
         this.extensions = extensions;
     }
 
-    public Set<Portfolio> getPortfolios() {
+    public List<Portfolio> getPortfolios() {
         return this.portfolios;
     }
 
@@ -90,7 +97,7 @@ public class User {
         this.portfolios.add(portfolio);
     }
 
-    public void setPortfolios(Set<Portfolio> portfolios) {
+    public void setPortfolios(List<Portfolio> portfolios) {
         this.portfolios = portfolios;
     }
 
