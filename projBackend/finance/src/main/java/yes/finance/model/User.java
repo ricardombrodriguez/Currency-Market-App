@@ -3,6 +3,9 @@ package yes.finance.model;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.*;
 
@@ -25,7 +28,7 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "UserPortfolio", joinColumns = @JoinColumn(name = "user.id"), inverseJoinColumns = @JoinColumn(name = "portfolio.id"))
-    @JsonBackReference
+    @JsonIgnore
     private List<Portfolio> portfolios = new ArrayList<>();
 
     public User() {

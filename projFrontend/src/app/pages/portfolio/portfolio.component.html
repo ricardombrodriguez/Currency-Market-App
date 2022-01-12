@@ -1,6 +1,11 @@
-<h6 >
-    Portfolio 
-    {{ portfolio.name }} {{ portfolio.id }}
-</h6>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"> {{ portfolio.name }} </h1>
+</div>
 
-  
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <ul class="nav flex-column mb-2">
+        <!-- <li class="nav-item" *ngFor="let wallet of wallets; let i = index" [attr.data-index]="i" id="wallet">
+            <i class="icon fas fa-wallet"></i> {{ wallet.name }}
+        </li> -->
+    </ul>
+</div>

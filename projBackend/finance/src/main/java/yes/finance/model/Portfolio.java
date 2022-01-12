@@ -2,6 +2,8 @@ package yes.finance.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.*;
@@ -27,7 +29,7 @@ public class Portfolio {
     private List<Extension> extensions = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "portfolios")
-    @JsonManagedReference
+    @JsonIgnore
     private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio")
