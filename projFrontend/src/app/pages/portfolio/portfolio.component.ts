@@ -3,6 +3,8 @@ import { PortfolioServiceService } from './../../services/portfolio-service.serv
 import { Portfolio } from './../../interfaces/portfolio';
 import { Router } from '@angular/router';
 
+import { AuthenticationService } from './../../services/authentication.service';
+
 @Component({
   selector: 'app-portfolio',
   templateUrl: './portfolio.component.html',
@@ -10,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class PortfolioComponent implements OnInit {
 
-  constructor(public portfolioService: PortfolioServiceService, private router: Router) { }
+  constructor(public portfolioService: PortfolioServiceService, private router: Router, public authService: AuthenticationService) { }
 
   public portfolio!: Portfolio;
 
@@ -23,11 +25,13 @@ export class PortfolioComponent implements OnInit {
       this.portfolio = portfolio;
     });
 
-
   }
 
-  deletePortfolio(portfolio: Portfolio) {
-    console.log("delete portfolio");
-    return this.portfolioService.deletePortfolio(portfolio)
+  deletePortfolio(): void {
+    console.log("delete portfolio!")
+    this.portfolioService.deletePortfolio(this.portfolio, parseInt(this.authService.curentUserId!)).subscribe();
+    window.location.reload();
+    this.router.navigateByUrl("/");
   }
+
 }

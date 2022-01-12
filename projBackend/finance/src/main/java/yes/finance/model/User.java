@@ -97,6 +97,11 @@ public class User {
         this.portfolios.add(portfolio);
     }
 
+    public void removePortfolio(Portfolio portfolio) {
+        this.portfolios.remove(portfolio);
+    }
+
+
     public void setPortfolios(List<Portfolio> portfolios) {
         this.portfolios = portfolios;
     }

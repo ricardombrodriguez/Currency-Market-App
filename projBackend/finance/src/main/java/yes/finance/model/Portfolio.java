@@ -84,6 +84,10 @@ public class Portfolio {
         this.users.add(user);
     }
 
+    public void removeUser(User user) {
+        this.users.remove(user);
+    }
+
     public List<Order> getOrders() {
         return this.orders;
     }

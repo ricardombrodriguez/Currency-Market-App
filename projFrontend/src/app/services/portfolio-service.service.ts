@@ -4,14 +4,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-import { PortfolioComponent } from './../pages/portfolio/portfolio.component';
-
 @Injectable({
   providedIn: 'root',
 })
 export class PortfolioServiceService {
   private portfolio!: Portfolio;
-  private portfolioComponent!: PortfolioComponent;
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +22,7 @@ export class PortfolioServiceService {
 
   getPage(parameters: Object): Observable<Portfolio> {
     var pathArray = window.location.pathname.split('/');
+    console.log('cá estamos');
     return this.http.get<Portfolio>(
       environment.API_URL + '/portfolio/' + pathArray[pathArray.length - 1],
       parameters
@@ -38,9 +36,12 @@ export class PortfolioServiceService {
     return this.http.post(environment.API_URL + '/portfolio', {}, { params });
   }
 
-  deletePortfolio(portfolio: Portfolio) {
-    console.log("delete portfolio "+ portfolio.id +" from service ")
-    return this.http.delete(environment.API_URL + '/portfolio/'+ portfolio.id);
+  deletePortfolio(portfolio: Portfolio, user_id: number) {
+    console.log("portfolio id: "+ portfolio.id)
+    return this.http.delete(environment.API_URL + '/portfolio/' + portfolio.id, { params : {user_id} });
   }
-  
+
+  // joinPortfolio(publicKey: string, userId: number): Observable<any> {
+
+  // }
 }

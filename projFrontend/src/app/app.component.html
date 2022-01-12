@@ -52,6 +52,21 @@
         </ul>
 
         <app-portfolio-list></app-portfolio-list>
+
+        <div>
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Join Portfolio</span>
+            <a class="link-secondary" href="#" aria-label="Join portfolio" data-bs-toggle="modal"
+              data-bs-target="#newPortfolio">
+            </a>
+          </h6>
+          <div style="display:flex;">
+            <label>Public Key </label>
+            <input type="text"/>
+          </div>
+        </div>
+
+        
       </div>
     </nav>
 
@@ -60,6 +75,10 @@
     </main>
   </div>
 </div>
+
+
+
+
 
 <div class="modal fade" id="newPortfolio" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
@@ -81,11 +100,60 @@
         <button type="submit" class="btn btn-primary" (click)="createPortfolio()">Create</button>
       </div>
       <div *ngIf="error==true" style="text-align:center; color:red;">
-        <span >Impossível criar Portfolio!</span>
+        <span>Invalid Portfolio's name</span>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="joinPortfolio" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Join Portfolio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div>
+            <label for="portfolioPublicKey" class="form-label">Public Key</label>
+            <input id="publicKey" name="publicKey" type="text" class="form-control" placeholder="Portfolio public key" [(ngModel)]="portfolio.pkey">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" >
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" (click)="joinPortfolio()">Create</button>
+      </div>
+      <div *ngIf="error==true" style="text-align:center; color:red;">
+        <span >Invalid public key!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="portfolio" tabindex="-1" aria-hidden="true" *ngIf="!loggedId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPortfolio">Create Portfolio</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#joinPortfolio">Join Portfolio</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 <div class="modal fade" id="logIn" tabindex="-1" aria-hidden="true" *ngIf="!loggedId">
   <div class="modal-dialog">

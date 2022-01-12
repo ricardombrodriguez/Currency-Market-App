@@ -81,9 +81,26 @@ export class AppComponent {
       this.error = true;
       return
     } 
+
+    if ( (<HTMLInputElement>document.getElementById("publicKey")).value == "" ) {
+      this.error = true;
+      return
+    } 
     
     this.service.addPortfolio((<HTMLInputElement>document.getElementById("name")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => {});
     window.location.reload()
+
+  }
+
+  joinPortfolio() {
+    this.error = false;
+
+    if ( (<HTMLInputElement>document.getElementById("publicKey")).value == "" ) {
+      this.error = true;
+      return
+    } 
+
+    this.service.joinPortfolio((<HTMLInputElement>document.getElementById("name")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => {});
 
   }
 }

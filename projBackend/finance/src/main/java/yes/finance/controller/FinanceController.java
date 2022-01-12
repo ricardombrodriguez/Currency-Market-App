@@ -112,8 +112,23 @@ public class FinanceController {
     }
 
     @DeleteMapping("/portfolio/{id}")
-    public String deletePortfolios(@PathVariable int id) {
-        return portfolioservice.deletePortfolio(id);
+    public void deletePortfolios(@PathVariable int id, @RequestParam int user_id) {
+
+        // return portfolioservice.deletePortfolio(id);
+
+        // remover o portfolio da lista de portfolios do user
+        Portfolio p = portfolioservice.getPortfolioById(id);
+        User u = service.getUserById(user_id);
+
+        u.removePortfolio(p);
+        p.removeUser(u);
+        if (p.getUsers().size() == 0) {
+            portfolioservice.deletePortfolio(id);
+        } else {
+            portfolioservice.savePortfolio(p);
+        }
+        userService.saveUser(u);
+        System.out.println("deleting portfolio with id " + id);
     }
 
     // recebe um post do angular com os parametros name e user (maybe)
@@ -125,8 +140,9 @@ public class FinanceController {
         User u = service.getUserById(id);
         u.addPortfolio(p);
         userService.saveUser(u);
-        p.addUser(u);
-        return portfolioservice.savePortfolio(p);
+        // p.addUser(u);
+        // return portfolioservice.savePortfolio(p);
+        return p;
 
     }
 
