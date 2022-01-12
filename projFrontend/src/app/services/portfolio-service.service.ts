@@ -35,4 +35,9 @@ export class PortfolioServiceService {
     params = params.append('id', userId);
     return this.http.post(environment.API_URL + '/portfolio', {}, { params });
   }
+
+  deletePortfolio(portfolio: Portfolio) {
+    console.log(portfolio.id)
+    return this.http.delete(environment.API_URL + '/portfolio/' + portfolio.id);
+  }
 }

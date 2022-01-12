@@ -113,6 +113,8 @@ public class FinanceController {
 
     @DeleteMapping("/portfolio/{id}")
     public String deletePortfolios(@PathVariable int id) {
+
+        System.out.println("deleting portfolio with id " + id);
         return portfolioservice.deletePortfolio(id);
     }
 

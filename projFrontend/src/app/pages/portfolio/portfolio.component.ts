@@ -23,6 +23,12 @@ export class PortfolioComponent implements OnInit {
       this.portfolio = portfolio;
     });
 
-
   }
+
+  deletePortfolio(): void {
+    console.log("delete portfolio!")
+    this.portfolioService.deletePortfolio(this.portfolio).subscribe();
+    this.router.navigateByUrl("/")
+  }
+
 }
