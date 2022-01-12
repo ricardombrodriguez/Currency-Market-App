@@ -123,11 +123,12 @@ public class FinanceController {
         System.out.println(">> A criar Portfolio '" + name + "'...");
         Portfolio p = new Portfolio(name);
         User u = service.getUserById(id);
+        System.out.println("ui:");
         u.addPortfolio(p);
         userService.saveUser(u);
-        System.out.println(p);
-        System.out.println(u);
+        p.addUser(u);
         return portfolioservice.savePortfolio(p);
+
     }
 
     @GetMapping("/portfolio/{id}")
