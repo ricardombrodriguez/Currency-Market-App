@@ -37,11 +37,14 @@ export class PortfolioServiceService {
   }
 
   deletePortfolio(portfolio: Portfolio, user_id: number) {
-    console.log("portfolio id: "+ portfolio.id)
-    return this.http.delete(environment.API_URL + '/portfolio/' + portfolio.id, { params : {user_id} });
+    console.log("portfolio id: " + portfolio.id)
+    return this.http.delete(environment.API_URL + '/portfolio/' + portfolio.id, { params: { user_id } });
   }
 
-  // joinPortfolio(publicKey: string, userId: number): Observable<any> {
-
-  // }
+  joinPortfolio(publicKey: string, userId: number): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('publicKey', publicKey);
+    params = params.append('userId', userId);
+    return this.http.post(environment.API_URL + '/portfolio/join', {}, { params });
+  }
 }

@@ -146,6 +146,18 @@ public class FinanceController {
 
     }
 
+    @PostMapping("/portfolio/join")
+    public Portfolio joinPortfolio(@RequestParam String publicKey, @RequestParam int userId) {
+
+        System.out.println(">> A juntar-se ao Portfolio '" + publicKey + "'...");
+        Portfolio p = portfolioservice.getPortfoliobyPublicKey(publicKey);
+        User u = service.getUserById(userId);
+        u.addPortfolio(p);
+        userService.saveUser(u);
+        return p;
+
+    }
+
     @GetMapping("/portfolio/{id}")
     public Portfolio getPortfolio(@PathVariable int id) {
         return portfolioservice.getPortfolioById(id);

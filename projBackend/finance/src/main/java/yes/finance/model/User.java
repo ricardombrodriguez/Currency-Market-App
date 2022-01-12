@@ -1,11 +1,7 @@
 package yes.finance.model;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.*;
 
@@ -100,7 +96,6 @@ public class User {
     public void removePortfolio(Portfolio portfolio) {
         this.portfolios.remove(portfolio);
     }
-
 
     public void setPortfolios(List<Portfolio> portfolios) {
         this.portfolios = portfolios;

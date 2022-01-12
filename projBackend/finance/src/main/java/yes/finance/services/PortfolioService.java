@@ -43,4 +43,8 @@ public class PortfolioService {
 
         return savePortfolio(existingPortfolio);
     }
+
+    public Portfolio getPortfoliobyPublicKey(String publicKey) {
+        return repository.findByPublicKey(publicKey);
+    }
 }

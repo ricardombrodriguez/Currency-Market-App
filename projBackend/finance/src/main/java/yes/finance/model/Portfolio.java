@@ -1,10 +1,7 @@
 package yes.finance.model;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.*;
 import java.util.Random;
@@ -21,8 +18,8 @@ public class Portfolio {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "public_key", nullable = false)
-    private String public_key;
+    @Column(name = "publicKey", nullable = false)
+    private String publicKey;
 
     @ManyToMany
     @JoinTable(name = "PortfolioExtension", joinColumns = @JoinColumn(name = "Portfolio.id"), inverseJoinColumns = @JoinColumn(name = "Extension.id"))
@@ -41,7 +38,7 @@ public class Portfolio {
     public Portfolio(String name) {
         this.name = name;
         Random rand = new Random();
-        this.public_key = String.valueOf(rand.nextInt(1000000));
+        this.publicKey = String.valueOf(rand.nextInt(1000000));
     }
 
     public Integer getId() {
@@ -57,11 +54,11 @@ public class Portfolio {
     }
 
     public String getPublic_key() {
-        return public_key;
+        return publicKey;
     }
 
     public void setPublic_key(String public_key) {
-        this.public_key = public_key;
+        this.publicKey = public_key;
     }
 
     public List<Extension> getExtensions() {

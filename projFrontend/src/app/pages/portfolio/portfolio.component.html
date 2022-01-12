@@ -1,9 +1,10 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2"> {{ portfolio.name }} </h1>
+    <h5> Public key: {{ portfolio.public_key }} </h5>
     <div class="m-2 float-right">
-        <a class="nav-link" routerLink="/" routerLinkActive="active" >
-            <button type="button" class="btn btn-outline-danger" (click)="deletePortfolio()" >
-                    <i class="fas fa-trash-alt"></i> Delete Portfolio
+        <a class="nav-link" routerLink="/" routerLinkActive="active">
+            <button type="button" class="btn btn-outline-danger" (click)="deletePortfolio()">
+                <i class="fas fa-trash-alt"></i> Delete Portfolio
             </button>
         </a>
     </div>

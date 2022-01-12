@@ -23,12 +23,12 @@ export class AppComponent {
     password: string;
     passwordRepeat: string;
   } = {
-    username: '',
-    fullname: '',
-    email: '',
-    password: '',
-    passwordRepeat: '',
-  };
+      username: '',
+      fullname: '',
+      email: '',
+      password: '',
+      passwordRepeat: '',
+    };
 
   resetData = () => {
     this.logInData.email = '';
@@ -69,25 +69,21 @@ export class AppComponent {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  portfolio = {pname: ""}
+  portfolio = { pname: "", pkey: "" }
   public error = false;
+
 
   createPortfolio() {
     this.error = false;
-    
-    if ( (<HTMLInputElement>document.getElementById("name")).value == "" ) {
-      this.error = true;
-      return
-    } 
 
-    if ( (<HTMLInputElement>document.getElementById("publicKey")).value == "" ) {
+    if ((<HTMLInputElement>document.getElementById("name")).value == "") {
       this.error = true;
       return
-    } 
-    
-    this.service.addPortfolio((<HTMLInputElement>document.getElementById("name")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => {});
+    }
+
+    this.service.addPortfolio((<HTMLInputElement>document.getElementById("name")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => { });
     window.location.reload()
 
   }
@@ -95,12 +91,12 @@ export class AppComponent {
   joinPortfolio() {
     this.error = false;
 
-    if ( (<HTMLInputElement>document.getElementById("publicKey")).value == "" ) {
+    if ((<HTMLInputElement>document.getElementById("publicKey")).value == "") {
       this.error = true;
       return
-    } 
+    }
 
-    this.service.joinPortfolio((<HTMLInputElement>document.getElementById("name")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => {});
+    this.service.joinPortfolio((<HTMLInputElement>document.getElementById("publicKey")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => { });
 
   }
 }

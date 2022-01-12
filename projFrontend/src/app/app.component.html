@@ -53,7 +53,7 @@
 
         <app-portfolio-list></app-portfolio-list>
 
-        <div>
+        <!-- <div>
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span>Join Portfolio</span>
             <a class="link-secondary" href="#" aria-label="Join portfolio" data-bs-toggle="modal"
@@ -62,11 +62,11 @@
           </h6>
           <div style="display:flex;">
             <label>Public Key </label>
-            <input type="text"/>
+            <input type="text" />
           </div>
-        </div>
+        </div> -->
 
-        
+
       </div>
     </nav>
 
@@ -78,7 +78,22 @@
 
 
 
-
+<div class="modal fade" id="mainPortfolio" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Choose one</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#newPortfolio"> Create
+          Portfolio</button>
+        <button type=" submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#joinPortfolio">Join
+          Portfolio</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="newPortfolio" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
@@ -95,7 +110,7 @@
           </div>
         </form>
       </div>
-      <div class="modal-footer" >
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary" (click)="createPortfolio()">Create</button>
       </div>
@@ -117,42 +132,21 @@
         <form>
           <div>
             <label for="portfolioPublicKey" class="form-label">Public Key</label>
-            <input id="publicKey" name="publicKey" type="text" class="form-control" placeholder="Portfolio public key" [(ngModel)]="portfolio.pkey">
+            <input id="publicKey" name="publicKey" type="text" class="form-control" placeholder="Portfolio public key"
+              [(ngModel)]="portfolio.pkey">
           </div>
         </form>
       </div>
-      <div class="modal-footer" >
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary" (click)="joinPortfolio()">Create</button>
       </div>
       <div *ngIf="error==true" style="text-align:center; color:red;">
-        <span >Invalid public key!</span>
+        <span>Invalid public key!</span>
       </div>
     </div>
   </div>
 </div>
-
-<div class="modal fade" id="portfolio" tabindex="-1" aria-hidden="true" *ngIf="!loggedId">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPortfolio">Create Portfolio</button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#joinPortfolio">Join Portfolio</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 <div class="modal fade" id="logIn" tabindex="-1" aria-hidden="true" *ngIf="!loggedId">
@@ -170,7 +164,8 @@
 
         <div>
           <label for="lpassword" class="form-label">Password</label>
-          <input id="lpassword" type="password" class="form-control" placeholder="Password" [(ngModel)]="logInData.password">
+          <input id="lpassword" type="password" class="form-control" placeholder="Password"
+            [(ngModel)]="logInData.password">
         </div>
       </div>
       <div class="modal-footer">
@@ -190,27 +185,31 @@
       <div class="modal-body">
         <div>
           <label for="rusername" class="form-label">Username</label>
-          <input id="rusername" type="text" class="form-control" placeholder="Username" [(ngModel)]="signUpData.username">
+          <input id="rusername" type="text" class="form-control" placeholder="Username"
+            [(ngModel)]="signUpData.username">
         </div>
 
         <div>
           <label for="rfull_name" class="form-label">Full Name</label>
-          <input id="rfull_name" type="text" class="form-control" placeholder="Full Name" [(ngModel)]="signUpData.fullname">
+          <input id="rfull_name" type="text" class="form-control" placeholder="Full Name"
+            [(ngModel)]="signUpData.fullname">
         </div>
 
         <div>
           <label for="remail" class="form-label">Email</label>
-          <input id="remail" type="email" class="form-control" placeholder="Email"[(ngModel)]="signUpData.email">
+          <input id="remail" type="email" class="form-control" placeholder="Email" [(ngModel)]="signUpData.email">
         </div>
 
         <div>
           <label for="rpassword" class="form-label">Password</label>
-          <input id="rpassword" type="password" class="form-control" placeholder="Password" [(ngModel)]="signUpData.password">
+          <input id="rpassword" type="password" class="form-control" placeholder="Password"
+            [(ngModel)]="signUpData.password">
         </div>
 
         <div>
           <label for="rpassword_repeat" class="form-label">Repeat Password</label>
-          <input id="rpassword_repeat" type="password" class="form-control" placeholder="Password" [(ngModel)]="signUpData.passwordRepeat">
+          <input id="rpassword_repeat" type="password" class="form-control" placeholder="Password"
+            [(ngModel)]="signUpData.passwordRepeat">
         </div>
       </div>
       <div class="modal-footer">

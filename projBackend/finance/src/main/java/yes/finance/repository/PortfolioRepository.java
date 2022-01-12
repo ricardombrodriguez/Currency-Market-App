@@ -13,4 +13,6 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Integer> {
 
     @Query("SELECT u.portfolios FROM User u WHERE u.id=:id")
     List<Portfolio> findPortfoliobyUserID(@Param("id") int id);
+
+    Portfolio findByPublicKey(String publicKey);
 }
