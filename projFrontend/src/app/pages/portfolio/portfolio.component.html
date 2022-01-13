@@ -11,6 +11,24 @@
 </div>
 
 <div class="col-12">
-    <h2>ratisse</h2>
+    <h2>tabela e gráfico</h2>
     <!-- <app-data-table [columns]="columns" [getData]="getData"></app-data-table> -->
-  </div>
+</div>
+
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div style="display:flex">
+        <h1 class="h2"> Portfolio details </h1>
+        <h5>Public key: </h5>
+        <p>{{ portfolio.public_key }} </p>
+    </div>
+    <div style="display:flex">
+        <h5>Owner: </h5>
+        <p>{{ portfolio.users[0].username }}</p>
+    </div>
+    <div style="display:flex">
+        <ul *ngFor="let user of users;">
+            <li>{{ user.username }}</li>
+        </ul>
+    </div>
+</div>

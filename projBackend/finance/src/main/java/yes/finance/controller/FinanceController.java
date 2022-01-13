@@ -168,6 +168,12 @@ public class FinanceController {
         return portfolioservice.getPortfolioDetailsById(id);
     }
 
+    @PostMapping("porfolio/users")
+    public List<User> getPortfolioUsers(@RequestParam String publicKey) {
+        System.out.println("/users do portfolio");
+        return portfolioservice.getPortfolioByUsers(publicKey);
+    }
+
     //////////////////////////////////////////// MARKET
     //////////////////////////////////////////// ////////////////////////////////////////////
 

@@ -50,7 +50,13 @@ export class PortfolioServiceService {
     return this.http.post(environment.API_URL + '/portfolio/join', {}, { params });
   }
 
-  // getPortfolioDetails(parameters: object, portfolio_id: number) {
-  //   return this.http.get<Page<Coin>>(environment.API_URL + '/portfolio/' + portfolio_id + '/details', parameters)
-  // }
+  getPortfolioUsers(publicKey: string): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('publicKey', publicKey);
+    return this.http.post(environment.API_URL + '/portfolio/users', {}, { params });
+  }
+
 }
+  // getPortfolioDetails(parameters: object, portfolio_id: number) {
+    //   return this.http.get<Page<Coin>>(environment.API_URL + '/portfolio/' + portfolio_id + '/details', parameters)
+    // }
