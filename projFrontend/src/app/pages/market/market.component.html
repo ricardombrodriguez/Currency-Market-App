@@ -18,12 +18,12 @@
 <div class="row m-5">
   <div class="col-4">
     <h2>Sell orders</h2>
-    <app-data-table [columns]="columns" [getData]="getSellOrdersData"></app-data-table>
+    <app-data-table [id]="'sellOrders'" [columns]="columns" [getData]="getSellOrdersData"></app-data-table>
   </div>
 
   <div class="col-4">
     <h2>Buy orders</h2>
-    <app-data-table [columns]="columns" [getData]="getBuyOrdersData"></app-data-table>
+    <app-data-table [id]="'buyOrders'" [columns]="columns" [getData]="getBuyOrdersData"></app-data-table>
   </div>
 
   <div class="col-4" *ngIf="portfolios.length > 0">

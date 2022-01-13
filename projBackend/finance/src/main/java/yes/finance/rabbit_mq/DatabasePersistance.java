@@ -59,8 +59,7 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 String symbol = data.getString("symbol");
                 Market market = marketRepository.findBySymbol(symbol);
 
-                if (market == null)
-                    return;
+                if (market == null) return;
 
                 Float lastTradeRate = Float.parseFloat(data.getString("lastTradeRate"));
                 Float bidRate = Float.parseFloat(data.getString("bidRate"));

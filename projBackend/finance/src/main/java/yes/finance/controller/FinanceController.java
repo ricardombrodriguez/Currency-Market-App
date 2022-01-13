@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.data.domain.PageImpl;
 
 import yes.finance.model.*;
@@ -15,6 +16,9 @@ import yes.finance.services.*;
 @CrossOrigin
 @RestController
 public class FinanceController {
+
+    @Autowired
+    private SimpMessageSendingOperations sendingOperations;
 
     @Autowired
     private UserService service;
@@ -225,7 +229,10 @@ public class FinanceController {
 
     @PostMapping("/order")
     public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity, @RequestParam Float orderValue) {
-        return orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), marketservice.getMarketById(marketId)));
+        Market market = marketservice.getMarketById(marketId);
+        Order order = orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
+        if (order != null) sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
+        return order;
     }
 
     @DeleteMapping("/order/{id}")

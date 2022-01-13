@@ -33,7 +33,7 @@ export class MarketComponent implements OnInit {
 
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
-    { title: 'Amount', data: 'quantity' },
+    { title: 'Amount', data: 'quantity', render: d => Math.abs(d) },
     { title: 'Price', data: 'order_value' },
   ]
 
@@ -85,6 +85,12 @@ export class MarketComponent implements OnInit {
           }
 
           Chart.getChart('marketChart')!.update()
+        })
+
+        this.orderService.startOrderUpdates(this.marketSymbol, message => {
+          let order = <Order>JSON.parse(message.body)
+          let tableId = order.quantity > 0 ? 'buyOrders' : 'sellOrders'
+          $('#' + tableId).DataTable().row.add({id: order.id, quantity: order.quantity, order_value: order.order_value}).draw()
         })
       }
       
