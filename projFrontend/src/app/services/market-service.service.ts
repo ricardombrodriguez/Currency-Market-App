@@ -22,19 +22,13 @@ export class MarketServiceService {
   getPageByCoin(id: number) : Market[] {
     return []
   }
-
-
+  
   startTickerUpdates(market: string, callback: (data: any) => void): void {
     this.websocketService.startUpdates('/market/' + market, callback)
   }
 
-
   getMarket(id: number): Observable<Market> {
     return this.http.get<Market>(environment.API_URL + '/market/' + id)
-  }
-
-  getMarketInfo(id: number): Observable<Market> {
-    return this.http.get<Market>(environment.API_URL + '/market/info/' + id)
   }
 
 

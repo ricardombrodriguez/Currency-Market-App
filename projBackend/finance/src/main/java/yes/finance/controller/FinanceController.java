@@ -200,8 +200,24 @@ public class FinanceController {
 
     // EndPoint para os gráficos
     @GetMapping("/market/{id}")
-    public List<Ticker> getTickersByMarketId(@PathVariable(value = "id") int marketId) {
-        return tickerservice.getTickersbyMarketID(marketId);
+    // public List<Ticker> getTickersByMarketId(@PathVariable(value = "id") int
+    // marketId) {
+    // return tickerservice.getTickersbyMarketID(marketId);
+    // }
+    public Map<String, Object> getTickersByMarketId(@PathVariable int id) {
+        Market market = marketservice.getMarketById(id);
+        List<Ticker> tickers = tickerservice.getTickerByMarket(market);
+
+        Map<String, Object> marketSerialized = new HashMap<>();
+        marketSerialized.put("id", market.getId());
+        marketSerialized.put("originCurrency", market.getOriginCurrency());
+        marketSerialized.put("destinyCurrency", market.getDestinyCurrency());
+        marketSerialized.put("price", market.getPrice());
+        marketSerialized.put("hourChange", market.getHourChange());
+        marketSerialized.put("minuteChange", market.getMinuteChange());
+        marketSerialized.put("tickers", tickers);
+
+        return marketSerialized;
     }
 
     @GetMapping("/market/{id}/orders/sell")
