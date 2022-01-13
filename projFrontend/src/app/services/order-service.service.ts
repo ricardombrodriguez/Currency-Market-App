@@ -20,12 +20,13 @@ export class OrderServiceService {
     return this.http.get<Page<Order>>(environment.API_URL + '/market/' + marketId + '/orders/buy', parameters)
   }
 
-  createOrder(marketId: number, portfolioId: number, quantity: number): void {
-    this.http.post(environment.API_URL + '/orders/', {params: {
-      market: { id: marketId },
-      portfolio: { id: portfolioId },
-      quantity
-    }})
+  createOrder(marketId: number, portfolioId: number, quantity: number, orderValue: number): void {
+    this.http.post(environment.API_URL + '/order', {}, { params: {
+      marketId: marketId,
+      portfolioId: portfolioId,
+      quantity,
+      orderValue
+    }}).subscribe()
   }
 
 }

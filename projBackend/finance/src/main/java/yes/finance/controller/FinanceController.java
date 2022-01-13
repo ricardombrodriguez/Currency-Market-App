@@ -224,8 +224,8 @@ public class FinanceController {
     }
 
     @PostMapping("/order")
-    public Order createOrders(@RequestBody Order order) {
-        return orderservice.saveOrder(order);
+    public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity, @RequestParam Float orderValue) {
+        return orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), marketservice.getMarketById(marketId)));
     }
 
     @DeleteMapping("/order/{id}")
