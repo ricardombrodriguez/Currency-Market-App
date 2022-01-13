@@ -12,11 +12,14 @@ export class AuthenticationService {
   userId = new Subject<string | null>()
   userIdObs = this.userId.asObservable()
 
-  isLoggedIn = () => localStorage.removeItem('user_id') !== null
+  curentUserId = localStorage.getItem('user_id')
+
+  isLoggedIn = () => localStorage.getItem('user_id') !== null
 
   setUserId = (id: string | null = null) => {
     id === null? localStorage.removeItem('user_id') : localStorage.setItem('user_id', id)
     this.userId.next(id)
+    this.curentUserId = id
   }
 
   signUp = (username: string, fullname: string, email: string, password: string) => 

@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface TickerRepository extends JpaRepository<Ticker,Integer> {
+public interface TickerRepository extends JpaRepository<Ticker, Integer> {
     Ticker findByid(int id);
 
     @Query("SELECT t FROM Ticker t LEFT JOIN Market m ON t.market = m WHERE m.id = :id ORDER BY t.createdAt DESC")

@@ -1,6 +1,8 @@
 package yes.finance.model;
 
 import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.*;
 import java.util.Random;
 
@@ -10,39 +12,39 @@ public class Portfolio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
+    @Column(name = "name", nullable = false)
     private String name;
-    private String public_key;
+
+    @Column(name = "publicKey", nullable = false)
+    private String publicKey;
 
     @ManyToMany
-    @JoinTable(
-        name = "PortfolioExtension", 
-        joinColumns = @JoinColumn(name = "Portfolio.id"), 
-        inverseJoinColumns = @JoinColumn(name = "Extension.id"))
+    @JoinTable(name = "PortfolioExtension", joinColumns = @JoinColumn(name = "Portfolio.id"), inverseJoinColumns = @JoinColumn(name = "Extension.id"))
     private List<Extension> extensions = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "portfolios")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "portfolios")
+    @JsonIgnore
     private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio")
     private List<Order> orders = new ArrayList<>();
 
-
-    public Portfolio() {}
+    public Portfolio() {
+    }
 
     public Portfolio(String name) {
         this.name = name;
         Random rand = new Random();
-        this.public_key = String.valueOf( rand.nextInt(1000000) );
+        this.publicKey = String.valueOf(rand.nextInt(1000000));
     }
 
-    
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -51,13 +53,12 @@ public class Portfolio {
         this.name = name;
     }
 
-    @Column(name = "public_key", nullable = false)
     public String getPublic_key() {
-        return public_key;
+        return publicKey;
     }
 
     public void setPublic_key(String public_key) {
-        this.public_key = public_key;
+        this.publicKey = public_key;
     }
 
     public List<Extension> getExtensions() {
@@ -76,6 +77,14 @@ public class Portfolio {
         this.users = users;
     }
 
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+
+    public void removeUser(User user) {
+        this.users.remove(user);
+    }
+
     public List<Order> getOrders() {
         return this.orders;
     }
@@ -84,17 +93,15 @@ public class Portfolio {
         this.orders = orders;
     }
 
-
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", name='" + getName() + "'" +
-            ", public_key='" + getPublic_key() + "'" +
-            ", extensions='" + getExtensions() + "'" +
-            ", users='" + getUsers() + "'" +
-            "}";
+                " id='" + getId() + "'" +
+                ", name='" + getName() + "'" +
+                ", public_key='" + getPublic_key() + "'" +
+                ", extensions='" + getExtensions() + "'" +
+                ", users='" + getUsers() + "'" +
+                "}";
     }
-
 
 }

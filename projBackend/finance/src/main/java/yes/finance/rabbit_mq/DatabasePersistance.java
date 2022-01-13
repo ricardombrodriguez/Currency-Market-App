@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -33,9 +32,6 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
     private HashMap<String, ArrayList<String>> markets = new HashMap<>();
 
-    private static final DecimalFormat df = new DecimalFormat("0.00");
-
-
     public class CustomComparator implements Comparator<Ticker> {
         @Override
         public int compare(Ticker t1, Ticker t2) {
@@ -45,7 +41,7 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
     public static Float roundFloat(Float number) {
         DecimalFormat df = new DecimalFormat("0.00");
-        return Float.parseFloat(df.format(number).replace(",","."));
+        return Float.parseFloat(df.format(number).replace(",", "."));
     }
 
     @Override
@@ -53,7 +49,7 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
         String input = event.getMessage();
         MQChannels channel = event.getChannel();
-        
+
         JSONObject data = new JSONObject(input);
 
         switch (channel) {
@@ -63,11 +59,12 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 String symbol = data.getString("symbol");
                 Market market = marketRepository.findBySymbol(symbol);
 
-                if (market == null) return;
-                
-                Float lastTradeRate =  Float.parseFloat( data.getString("lastTradeRate") );
-                Float bidRate = Float.parseFloat( data.getString("bidRate") );
-                Float askRate =  Float.parseFloat( data.getString("askRate") );
+                if (market == null)
+                    return;
+
+                Float lastTradeRate = Float.parseFloat(data.getString("lastTradeRate"));
+                Float bidRate = Float.parseFloat(data.getString("bidRate"));
+                Float askRate = Float.parseFloat(data.getString("askRate"));
                 Ticker ticker = new Ticker(market, lastTradeRate, bidRate, askRate);
                 tickerRepository.save(ticker);
 
@@ -78,49 +75,48 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 if (!tickers.isEmpty()) {
 
                     Collections.sort(tickers, new CustomComparator());
-                    market.setPrice( ticker.getPrev_value() );
-    
+                    market.setPrice(ticker.getPrev_value());
+
                     java.sql.Timestamp last_minute = ticker.getCreatedAt();
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(last_minute);
                     cal.add(Calendar.MINUTE, -1);
                     last_minute.setTime(cal.getTime().getTime());
-    
+
                     java.sql.Timestamp last_hour = ticker.getCreatedAt();
                     Calendar cal2 = Calendar.getInstance();
                     cal2.setTime(last_minute);
                     cal2.add(Calendar.HOUR, -1);
                     last_hour.setTime(cal2.getTime().getTime());
-    
+
                     Float value_last_minute = 0f;
                     Float value_last_hour = 0f;
-    
+
                     for (Ticker t : tickers) {
-    
+
                         if (t.getCreatedAt().after(last_minute)) {
                             value_last_minute = t.getPrev_value();
                             break;
                         }
                     }
-    
+
                     for (Ticker t : tickers) {
-    
+
                         if (t.getCreatedAt().after(last_minute)) {
                             value_last_hour = t.getPrev_value();
                             break;
                         }
                     }
-    
+
                     Float value_now = ticker.getPrev_value();
                     Float last_minute_change = roundFloat(((value_last_minute - value_now) / value_last_minute) * 100);
                     Float last_hour_change = roundFloat(((value_last_hour - value_now) / value_last_hour) * 100);
-    
+
                     market.setMinuteChange(last_minute_change);
                     market.setHourChange(last_hour_change);
                     marketRepository.save(market);
-                    
-                }
 
+                }
 
                 break;
 
@@ -129,7 +125,7 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 String csymbol = data.getString("symbol");
                 String logoUrl = data.has("logoUrl") ? data.getString("logoUrl") : null;
                 boolean online = data.getString("status").equals("ONLINE");
-                Currency currency = new Currency(name, csymbol, logoUrl, online);                
+                Currency currency = new Currency(name, csymbol, logoUrl, online);
                 currencyRepository.save(currency);
 
                 currencies.add(csymbol);
@@ -139,12 +135,13 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
                 break;
 
-            case Markets:    
+            case Markets:
 
                 String quoteCurrencySymbol = data.getString("quoteCurrencySymbol");
                 String baseCurrencySymbol = data.getString("baseCurrencySymbol");
                 Instant createdAt = Instant.parse(data.getString("createdAt"));
-                //Timestamp createdAt = Timestamp.from(Instant.parse(data.getString("createdAt")));
+                // Timestamp createdAt =
+                // Timestamp.from(Instant.parse(data.getString("createdAt")));
 
                 if (!currencies.contains(baseCurrencySymbol)) {
                     if (!markets.containsKey(baseCurrencySymbol))
@@ -164,7 +161,7 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 Currency baseCurrency = currencyRepository.findBySymbol(baseCurrencySymbol);
                 Currency quoteCurrency = currencyRepository.findBySymbol(quoteCurrencySymbol);
 
-                Market m = new Market(msymbol,baseCurrency,quoteCurrency, createdAt);
+                Market m = new Market(msymbol, baseCurrency, quoteCurrency, createdAt);
                 marketRepository.save(m);
                 break;
 
@@ -174,5 +171,5 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
         }
 
     }
-    
+
 }

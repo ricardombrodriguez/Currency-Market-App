@@ -1,6 +1,7 @@
 package yes.finance.controller;
 
 import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,7 @@ import yes.finance.services.*;
 @CrossOrigin
 @RestController
 public class FinanceController {
-    
+
     @Autowired
     private UserService service;
     @Autowired
@@ -31,9 +32,11 @@ public class FinanceController {
     private PortfolioService portfolioservice;
     @Autowired
     private TickerService tickerservice;
+    @Autowired
+    private UserService userService;
 
-
-    ////////////////////////////////////////////  USER  ////////////////////////////////////////////
+    //////////////////////////////////////////// USER
+    //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/user")
     public Page<User> getAllUsers(Pageable pageable) {
@@ -41,7 +44,7 @@ public class FinanceController {
     }
 
     @PostMapping("/user")
-    public User createUsers(@RequestBody User user){
+    public User createUsers(@RequestBody User user) {
         return service.saveUser(user);
     }
 
@@ -50,8 +53,8 @@ public class FinanceController {
         return service.deleteUser(id);
     }
 
-
-    ////////////////////////////////////////////  CURRENCY  ////////////////////////////////////////////
+    //////////////////////////////////////////// CURRENCY
+    //////////////////////////////////////////// ////////////////////////////////////////////
 
     // obter info sobre a moeda (nome, symbol e isso)
     @GetMapping("/currency/info/{id}")
@@ -65,7 +68,7 @@ public class FinanceController {
     }
 
     @PostMapping("/currency")
-    public Currency createCurrencies(@RequestBody Currency currency){
+    public Currency createCurrencies(@RequestBody Currency currency) {
         return currencyservice.saveCurrency(currency);
     }
 
@@ -74,16 +77,15 @@ public class FinanceController {
         return currencyservice.deleteCurrency(id);
     }
 
-    
     @GetMapping("/currency/{id}")
     public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId) {
         List<Market> markets_by_currency = marketservice.getMarketsByCurrency(currencyId);
         Page<Market> page_markets_by_currency = new PageImpl<>(markets_by_currency);
         return page_markets_by_currency;
-    }    
+    }
 
-
-    ////////////////////////////////////////////  EXTENSION  ////////////////////////////////////////////
+    //////////////////////////////////////////// EXTENSION
+    //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/extension")
     public Page<Extension> getAllExtensions(Pageable pageable) {
@@ -91,7 +93,7 @@ public class FinanceController {
     }
 
     @PostMapping("/extension")
-    public Extension createExtensions(@RequestBody Extension extension){
+    public Extension createExtensions(@RequestBody Extension extension) {
         return extensionservice.saveExtension(extension);
     }
 
@@ -100,44 +102,88 @@ public class FinanceController {
         return extensionservice.deleteExtension(id);
     }
 
-
-    ////////////////////////////////////////////  PORTFOLIO  ////////////////////////////////////////////
+    //////////////////////////////////////////// PORTFOLIO
+    //////////////////////////////////////////// ////////////////////////////////////////////
 
     // receber todos os portfolios de um user ID (tem de ter um parametro id!)
     @GetMapping("/portfolio")
-    public Page<Portfolio> getAllPortfolios(Pageable pageable) {
-        return portfolioservice.getPortfolios(pageable);
+    public List<Portfolio> getAllPortfolios(@RequestParam int id) {
+        return portfolioservice.getPortfoliosbyUserID(id);
     }
 
     @DeleteMapping("/portfolio/{id}")
-    public String deletePortfolios(@PathVariable int id) {
-        return portfolioservice.deletePortfolio(id);
+    public void deletePortfolios(@PathVariable int id, @RequestParam int user_id) {
+
+        // return portfolioservice.deletePortfolio(id);
+
+        // remover o portfolio da lista de portfolios do user
+        Portfolio p = portfolioservice.getPortfolioById(id);
+        User u = service.getUserById(user_id);
+
+        u.removePortfolio(p);
+        p.removeUser(u);
+        if (p.getUsers().size() == 0) {
+            portfolioservice.deletePortfolio(id);
+        } else {
+            portfolioservice.savePortfolio(p);
+        }
+        userService.saveUser(u);
+        System.out.println("deleting portfolio with id " + id);
     }
 
-    // recebe um post do angular com os parametros name e user (maybe) 
+    // recebe um post do angular com os parametros name e user (maybe)
     @PostMapping("/portfolio")
-    public Portfolio createPortfolio(@RequestBody String name){
+    public Portfolio createPortfolio(@RequestParam String name, @RequestParam int id) {
 
-        return portfolioservice.savePortfolio( new Portfolio(name) );
-    }  
-   
-   
+        System.out.println(">> A criar Portfolio '" + name + "'...");
+        Portfolio p = new Portfolio(name);
+        User u = service.getUserById(id);
+        u.addPortfolio(p);
+        userService.saveUser(u);
+        // p.addUser(u);
+        // return portfolioservice.savePortfolio(p);
+        return p;
 
-    ////////////////////////////////////////////  MARKET  ////////////////////////////////////////////
+    }
+
+    @PostMapping("/portfolio/join")
+    public Portfolio joinPortfolio(@RequestParam String publicKey, @RequestParam int userId) {
+
+        System.out.println(">> A juntar-se ao Portfolio '" + publicKey + "'...");
+        Portfolio p = portfolioservice.getPortfoliobyPublicKey(publicKey);
+        User u = service.getUserById(userId);
+        u.addPortfolio(p);
+        userService.saveUser(u);
+        return p;
+
+    }
+
+    @GetMapping("/portfolio/{id}")
+    public Portfolio getPortfolio(@PathVariable int id) {
+        return portfolioservice.getPortfolioById(id);
+    }
+
+    //////////////////////////////////////////// MARKET
+    //////////////////////////////////////////// ////////////////////////////////////////////
 
     // EndPoint para os gráficos
     @GetMapping("/market/info/{id}")
     public Market getMarket(@PathVariable(value = "id") int marketId) {
         return marketservice.getMarketById(marketId);
-    }   
+    }
 
     @PostMapping("/market")
-    public Market createMarkets(@RequestBody Market market){
+    public Market createMarkets(@RequestBody Market market) {
         return marketservice.saveMarket(market);
     }
 
     @GetMapping("/market")
     public Page<Market> getAllMarkets(Pageable pageable) {
+        // Page<Market> allMarkets = marketservice.getMarkets(pageable)
+
+        // for (Market m : allMarkets) {
+
+        // }
         return marketservice.getMarkets(pageable);
     }
 
@@ -157,7 +203,7 @@ public class FinanceController {
         marketSerialized.put("tickers", tickers);
 
         return marketSerialized;
-    }  
+    }
 
     @GetMapping("/market/{id}/orders/sell")
     public Page<Order> getMarketSellOrders(@PathVariable int id, Pageable pageable) {
@@ -169,8 +215,8 @@ public class FinanceController {
         return orderservice.getBuyOrdersByMarket(id, pageable);
     }
 
-
-    ////////////////////////////////////////////  ORDER  ////////////////////////////////////////////
+    //////////////////////////////////////////// ORDER
+    //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/order")
     public Page<Order> getAllOrders(Pageable pageable) {
@@ -187,8 +233,8 @@ public class FinanceController {
         return orderservice.deleteOrder(id);
     }
 
-
-    ////////////////////////////////////////////  TRANSACTION  ////////////////////////////////////////////
+    //////////////////////////////////////////// TRANSACTION
+    //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/transaction")
     public Page<Transaction> getAllTransactions(Pageable pageable) {
@@ -205,8 +251,8 @@ public class FinanceController {
         return transactionservice.deleteTransaction(id);
     }
 
-
-    ////////////////////////////////////////////  TICKER  ////////////////////////////////////////////
+    //////////////////////////////////////////// TICKER
+    //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/ticker")
     public Page<Ticker> getAllTickers(Pageable pageable) {

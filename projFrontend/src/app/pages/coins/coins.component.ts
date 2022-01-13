@@ -17,6 +17,7 @@ export class CoinsComponent implements OnInit {
     { title: 'Name', data: 'name' },
     { render: (a, b, row) => `<a href="/coins/${row.id}">Details<a>`, orderable: false },
   ]
+  static nome: any;
 
   getData = (parameters: object) => {
     return this.coinService.getPage(parameters)

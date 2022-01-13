@@ -5,8 +5,6 @@ import yes.finance.repository.PortfolioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -23,26 +21,30 @@ public class PortfolioService {
         return repository.saveAll(Portfolios);
     }
 
-    public Page<Portfolio> getPortfolios(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<Portfolio> getPortfoliosbyUserID(int id) {
+        return repository.findPortfoliobyUserID(id);
     }
 
     public Portfolio getPortfolioById(int id) {
-        return repository.findById((int)id).orElse(null);
+        return repository.findById((int) id).orElse(null);
     }
 
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO PortfolioRepository.java
 
     public String deletePortfolio(int id) {
         repository.deleteById(id);
-        return "Portfolio (id="+ id +") removed!";
+        return "Portfolio (id=" + id + ") removed!";
     }
 
     public Portfolio updatePortfolio(Portfolio Portfolio) {
-        Portfolio existingPortfolio = repository.findById((int)Portfolio.getId()).orElse(null);
+        Portfolio existingPortfolio = repository.findById((int) Portfolio.getId()).orElse(null);
 
         // FAZER SETS
 
         return savePortfolio(existingPortfolio);
+    }
+
+    public Portfolio getPortfoliobyPublicKey(String publicKey) {
+        return repository.findByPublicKey(publicKey);
     }
 }
