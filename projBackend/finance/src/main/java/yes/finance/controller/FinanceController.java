@@ -163,6 +163,11 @@ public class FinanceController {
         return portfolioservice.getPortfolioById(id);
     }
 
+    @GetMapping("/portfolio/{id}/details")
+    public List<Object> getPortfolioDetails(@PathVariable int id) {
+        return portfolioservice.getPortfolioDetailsById(id);
+    }
+
     //////////////////////////////////////////// MARKET
     //////////////////////////////////////////// ////////////////////////////////////////////
 

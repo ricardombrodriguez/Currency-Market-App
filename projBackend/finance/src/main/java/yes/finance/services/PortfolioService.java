@@ -47,4 +47,8 @@ public class PortfolioService {
     public Portfolio getPortfoliobyPublicKey(String publicKey) {
         return repository.findByPublicKey(publicKey);
     }
+
+    public List<Object> getPortfolioDetailsById(int id) {
+        return repository.getPortfolioDetailsById(id);
+    }
 }
