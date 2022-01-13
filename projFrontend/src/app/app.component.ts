@@ -54,11 +54,14 @@ export class AppComponent {
   };
   logOut = () => this.authService.logOut();
 
+  public userID: any
+  
   public constructor(
     public authService: AuthenticationService,
     public service: PortfolioServiceService
   ) {
     this.loggedId = authService.isLoggedIn();
+    this.userID = this.authService.curentUserId
 
     authService.userIdObs.subscribe((data) => {
       this.loggedId = data !== null;
@@ -97,6 +100,6 @@ export class AppComponent {
     }
 
     this.service.joinPortfolio((<HTMLInputElement>document.getElementById("publicKey")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => { });
-
+    window.location.reload()
   }
 }
