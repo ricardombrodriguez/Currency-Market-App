@@ -28,5 +28,7 @@ export class ExtensionService {
     return this.http.post<Extension>(environment.API_URL + '/extension', {}, { params: { userId, path } })
   }
 
-  deleteExtension(userId: number, extensionId: number) {}
+  deleteExtension(extensionId: number) {
+    return this.http.delete(environment.API_URL + '/extension/' + extensionId)
+  }
 }

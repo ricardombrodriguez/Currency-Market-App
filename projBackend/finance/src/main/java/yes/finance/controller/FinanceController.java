@@ -92,7 +92,7 @@ public class FinanceController {
     //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/extension")
-    public Page<Extension> getAllExtensions(@RequestParam(required = false, defaultValue = "") Integer userId, Pageable pageable) {
+    public Page<Extension> getAllExtensions(@RequestParam(defaultValue = "") Integer userId, Pageable pageable) {
         if (userId != null) return extensionservice.getExtensionsByUser(userService.getUserById(userId), pageable);
         else return extensionservice.getExtensions(pageable);
     }
@@ -205,6 +205,8 @@ public class FinanceController {
         return marketservice.getMarkets(pageable);
     }
   
+    // EndPoint para os gráficos
+    @GetMapping("/market/{id}")
     public Map<String, Object> getTickersByMarketId(@PathVariable int id) {
         Market market = marketservice.getMarketById(id);
         List<Ticker> tickers = tickerservice.getTickerByMarket(market);

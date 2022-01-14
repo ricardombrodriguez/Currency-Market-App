@@ -10,14 +10,7 @@ export class YourextensionsComponent implements OnInit {
 
   constructor(private extensionService: ExtensionService) { }
 
-  ngOnInit(): void {  
-    this.extensionService.createExtension(1, '').subscribe(
-      data =>console.log(data)
-    )
-    this.extensionService.getAllExtensions().subscribe(
-      data =>console.log(data)
-    )
-    
+  ngOnInit(): void {
   }
 
 }
