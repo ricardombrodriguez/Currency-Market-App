@@ -18,7 +18,7 @@ export class MarketsComponent implements OnInit {
     { title: 'Price', render: (a, b, row) => `${row.price} ${row.destinyCurrency.symbol}` },
     { title: '% 1m', render: (a, b, row) => `${row.minuteChange}%` },
     { title: '% 1h', render: (a, b, row) => `${row.hourChange}%` }, 
-    { render: (a, b, row) => `<a href="/markets/${row.id}">Details</a>`, orderable: false },
+    { render: (a, b, row) => `<a href="/markets/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>`, orderable: false },
   ]
 
   getData = (parameters: object) => this.marketService.getPage(parameters)

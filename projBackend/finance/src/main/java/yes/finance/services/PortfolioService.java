@@ -1,6 +1,7 @@
 package yes.finance.services;
 
 import yes.finance.model.Portfolio;
+import yes.finance.model.User;
 import yes.finance.repository.PortfolioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,4 +48,13 @@ public class PortfolioService {
     public Portfolio getPortfoliobyPublicKey(String publicKey) {
         return repository.findByPublicKey(publicKey);
     }
+
+    public List<Object> getPortfolioDetailsById(int id) {
+        return repository.getPortfolioDetailsById(id);
+    }
+
+    public List<User> getPortfolioByUsers(String publicKey) {
+        return repository.getPortfolioByUsers(publicKey);
+    }
+
 }

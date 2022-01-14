@@ -1,8 +1,10 @@
 import { Portfolio } from './../interfaces/portfolio';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { provideRoutes } from '@angular/router';
+import { identifierName } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -47,4 +49,14 @@ export class PortfolioServiceService {
     params = params.append('userId', userId);
     return this.http.post(environment.API_URL + '/portfolio/join', {}, { params });
   }
+
+  getPortfolioUsers(publicKey: string): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('publicKey', publicKey);
+    return this.http.post(environment.API_URL + '/portfolio/users', {}, { params });
+  }
+
 }
+  // getPortfolioDetails(parameters: object, portfolio_id: number) {
+    //   return this.http.get<Page<Coin>>(environment.API_URL + '/portfolio/' + portfolio_id + '/details', parameters)
+    // }

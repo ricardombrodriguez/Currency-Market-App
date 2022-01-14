@@ -167,6 +167,17 @@ public class FinanceController {
         return portfolioservice.getPortfolioById(id);
     }
 
+    @GetMapping("/portfolio/{id}/details")
+    public List<Object> getPortfolioDetails(@PathVariable int id) {
+        return portfolioservice.getPortfolioDetailsById(id);
+    }
+
+    @PostMapping("porfolio/users")
+    public List<User> getPortfolioUsers(@RequestParam String publicKey) {
+        System.out.println("/users do portfolio");
+        return portfolioservice.getPortfolioByUsers(publicKey);
+    }
+
     //////////////////////////////////////////// MARKET
     //////////////////////////////////////////// ////////////////////////////////////////////
 
@@ -190,9 +201,7 @@ public class FinanceController {
         // }
         return marketservice.getMarkets(pageable);
     }
-
-    // EndPoint para os gráficos
-    @GetMapping("/market/{id}")
+  
     public Map<String, Object> getTickersByMarketId(@PathVariable int id) {
         Market market = marketservice.getMarketById(id);
         List<Ticker> tickers = tickerservice.getTickerByMarket(market);

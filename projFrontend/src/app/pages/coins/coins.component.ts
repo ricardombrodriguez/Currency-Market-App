@@ -15,7 +15,7 @@ export class CoinsComponent implements OnInit {
     { title: '#', data: 'id' }, 
     { title: 'Symbol', data: 'symbol' },
     { title: 'Name', data: 'name' },
-    { render: (a, b, row) => `<a href="/coins/${row.id}">Details<a>`, orderable: false },
+    { render: (a, b, row) => `<a href="/coins/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button><a>`, orderable: false },
   ]
   static nome: any;
 

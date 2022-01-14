@@ -4,6 +4,7 @@ import { Portfolio } from './../../interfaces/portfolio';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from './../../services/authentication.service';
+import { User } from 'src/app/interfaces/user';
 
 @Component({
   selector: 'app-portfolio',
@@ -15,6 +16,7 @@ export class PortfolioComponent implements OnInit {
   constructor(public portfolioService: PortfolioServiceService, private router: Router, public authService: AuthenticationService) { }
 
   public portfolio!: Portfolio;
+  public users!: User[];
 
 
   ngOnInit(): void {
@@ -25,13 +27,27 @@ export class PortfolioComponent implements OnInit {
       this.portfolio = portfolio;
     });
 
+    this.portfolioService.getPortfolioUsers(this.portfolio.public_key).subscribe((users) => {
+      console.log("port service....")
+      this.users = users;
+    })
+
   }
 
   deletePortfolio(): void {
-    console.log("delete portfolio!")
     this.portfolioService.deletePortfolio(this.portfolio, parseInt(this.authService.curentUserId!)).subscribe();
     window.location.reload();
     this.router.navigateByUrl("/");
   }
+
+  //getData = (parameters: Object) => this.portfolioService.getPortfolioDetails(parameters, this.portfolio.id)
+
+  columns: DataTables.ColumnSettings[] = [
+    { title: '#', data: 'id' },
+    { title: 'Currency', render: (a, b, row) => `<img src="${row.logoUrl}"> ${row.name}`, orderable: false },
+    { title: 'Quantity', data: 'quantity' },
+    { title: 'Volume', data: 'volume' },
+    { render: (a, b, row) => `<a href="/markets/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>`, orderable: false },
+  ]
 
 }

@@ -61,7 +61,7 @@ export class MarketComponent implements OnInit {
     if (this.authService.curentUserId != null) {
      this.portfolioService.getPortfolios(parseInt(this.authService.curentUserId)).subscribe(data => this.portfolios = data)
     }
-
+    
     this.marketService.getMarket(this.marketId).subscribe( market => {
       this.marketSymbol = market.originCurrency.symbol + '-' + market.destinyCurrency.symbol
       this.originCurrency = market.originCurrency
