@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Extension")
 public class Extension {
@@ -29,16 +31,17 @@ public class Extension {
     private User user;
 
     @ManyToMany(mappedBy = "extensions")
+    @JsonIgnore
     private List<Portfolio> portfolios = new ArrayList<>();
 
-    public Extension(){}
+    public Extension() {
+    }
 
     public Extension(User user, String path) {
         this.user = user;
         this.path = path;
     }
-    
-    
+
     public Integer getId() {
         return id;
     }
@@ -50,7 +53,7 @@ public class Extension {
     public void setUser(User new_user) {
         this.user = new_user;
     }
-    
+
     @Column(name = "path", nullable = false)
     public String getPath() {
         return this.path;
@@ -68,16 +71,14 @@ public class Extension {
         this.portfolios = portfolios;
     }
 
-
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", path='" + getPath() + "'" +
-            ", user='" + getUser() + "'" +
-            ", portfolios='" + getPortfolios() + "'" +
-            "}";
+                " id='" + getId() + "'" +
+                ", path='" + getPath() + "'" +
+                ", user='" + getUser() + "'" +
+                ", portfolios='" + getPortfolios() + "'" +
+                "}";
     }
-
 
 }

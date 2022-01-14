@@ -16,13 +16,13 @@ export class ExtensionService {
     return this.http.get<Page<Extension>>(environment.API_URL + '/extension')
   }
 
-  getUserExtensions(userId: number): Observable<Page<Extension>> {
-    return this.http.get<Page<Extension>>(environment.API_URL + '/extension', { params: { userId } })
+  getUserExtensions(id: number): Observable<Page<Extension>> {
+    return this.http.get<Page<Extension>>(environment.API_URL + '/extension/' + id, { params: { id } })
   }
 
-  installExtension(portfolioId: number, extensionId: number) {}
+  installExtension(portfolioId: number, extensionId: number) { }
 
-  uninstallExtension(portfolioId: number, extensionId: number) {}
+  uninstallExtension(portfolioId: number, extensionId: number) { }
 
   createExtension(userId: number, path: string) {
     return this.http.post<Extension>(environment.API_URL + '/extension', {}, { params: { userId, path } })

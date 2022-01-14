@@ -3,6 +3,9 @@ package yes.finance.model;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.util.*;
 
 @Entity
@@ -19,10 +22,13 @@ public class User {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonIgnore
     private List<Extension> extensions = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "UserPortfolio", joinColumns = @JoinColumn(name = "user.id"), inverseJoinColumns = @JoinColumn(name = "portfolio.id"))
     @JsonIgnore
     private List<Portfolio> portfolios = new ArrayList<>();

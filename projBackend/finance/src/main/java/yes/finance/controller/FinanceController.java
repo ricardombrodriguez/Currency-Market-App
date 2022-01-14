@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.data.domain.PageImpl;
 
@@ -92,9 +93,14 @@ public class FinanceController {
     //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/extension")
-    public Page<Extension> getAllExtensions(@RequestParam(defaultValue = "") Integer userId, Pageable pageable) {
-        if (userId != null) return extensionservice.getExtensionsByUser(userService.getUserById(userId), pageable);
-        else return extensionservice.getExtensions(pageable);
+    public Page<Extension> getAllExtensions(Pageable pageable) {
+        return extensionservice.getExtensions(pageable);
+    }
+
+    @GetMapping("/extension/{id}")
+    public Page<Extension> getUserExtensions(@PathVariable int id, Pageable pageable) {
+        User user = userService.getUserById(id);
+        return extensionservice.getExtensionsByUser(user, pageable);
     }
 
     @PostMapping("/extension")
@@ -204,7 +210,7 @@ public class FinanceController {
         // }
         return marketservice.getMarkets(pageable);
     }
-  
+
     // EndPoint para os gráficos
     @GetMapping("/market/{id}")
     public Map<String, Object> getTickersByMarketId(@PathVariable int id) {
@@ -242,10 +248,13 @@ public class FinanceController {
     }
 
     @PostMapping("/order")
-    public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity, @RequestParam Float orderValue) {
+    public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity,
+            @RequestParam Float orderValue) {
         Market market = marketservice.getMarketById(marketId);
-        Order order = orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
-        if (order != null) sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
+        Order order = orderservice
+                .saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
+        if (order != null)
+            sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
         return order;
     }
 
