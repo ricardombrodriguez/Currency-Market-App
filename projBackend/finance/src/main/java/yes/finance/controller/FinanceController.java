@@ -92,12 +92,15 @@ public class FinanceController {
     //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/extension")
-    public Page<Extension> getAllExtensions(Pageable pageable) {
-        return extensionservice.getExtensions(pageable);
+    public Page<Extension> getAllExtensions(@RequestParam(required = false, defaultValue = "") Integer userId, Pageable pageable) {
+        if (userId != null) return extensionservice.getExtensionsByUser(userService.getUserById(userId), pageable);
+        else return extensionservice.getExtensions(pageable);
     }
 
     @PostMapping("/extension")
-    public Extension createExtensions(@RequestBody Extension extension) {
+    public Extension createExtensions(@RequestParam int userId, @RequestParam String path) {
+        User user = userService.getUserById(userId);
+        Extension extension = new Extension(user, path);
         return extensionservice.saveExtension(extension);
     }
 

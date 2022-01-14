@@ -33,7 +33,8 @@ public class Extension {
 
     public Extension(){}
 
-    public Extension(String path) {
+    public Extension(User user, String path) {
+        this.user = user;
         this.path = path;
     }
     
