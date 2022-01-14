@@ -43,9 +43,11 @@ public class Order {
 
     public Order(){}
 
-    public Order(Float quantity, Float order_value) {
+    public Order(Float quantity, Float order_value, Portfolio portfolio, Market market) {
         this.quantity = quantity;
         this.order_value = order_value;
+        this.portfolio = portfolio;
+        this.market = market;
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 

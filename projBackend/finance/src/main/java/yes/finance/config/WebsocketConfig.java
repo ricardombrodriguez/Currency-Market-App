@@ -13,6 +13,7 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
     registry.enableSimpleBroker("/market");
+    registry.enableSimpleBroker("/order");
   }
 
   @Override

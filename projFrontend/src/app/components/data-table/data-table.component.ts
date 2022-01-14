@@ -10,6 +10,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 export class DataTableComponent implements OnInit {
 
+  @Input() id: string = ""
   @Input() columns: DataTables.ColumnSettings[] = []
   @Input() getData: ((parameters: Object) => Observable<Page<any>>) | null = null
   
@@ -26,8 +27,6 @@ export class DataTableComponent implements OnInit {
       
       serverSide: true,
       ajax: (parameters: any, callback: any) => {
-        console.log(this.columns)
-        console.log(parameters)
         parameters = {
           page: parameters.start/parameters.length,
           size: parameters.length,

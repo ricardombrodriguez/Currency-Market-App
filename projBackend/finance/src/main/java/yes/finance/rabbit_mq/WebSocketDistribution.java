@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 
+import yes.finance.events.MessageEvent;
+
 @Component
 public class WebSocketDistribution implements ApplicationListener<MessageEvent> {
 

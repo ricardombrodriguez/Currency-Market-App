@@ -12,7 +12,7 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
 
     @Query(value = "SELECT o.id, o.created_at, o.order_value, d.quantity, o.market_id, o.portfolio_id FROM orders o " +
             "LEFT JOIN (" +
-            "SELECT d.id, d.quantity - SUM(tquantity) quantity FROM (" +
+            "SELECT d.id, d.quantity - SUM(IFNULL(tquantity, 0)) quantity FROM (" +
             "SELECT o2.id, o2.quantity, -o4.quantity tquantity FROM orders o2 LEFT JOIN `transaction` t ON t.origin_order_id = o2.id LEFT JOIN orders o4 ON t.destiny_order_id = o4.id "
             +
             "UNION " +
@@ -25,7 +25,7 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
 
     @Query(value = "SELECT o.id, o.created_at, o.order_value, d.quantity, o.market_id, o.portfolio_id FROM orders o " +
             "LEFT JOIN (" +
-            "SELECT d.id, d.quantity - SUM(tquantity) quantity FROM (" +
+            "SELECT d.id, d.quantity - SUM(IFNULL(tquantity, 0)) quantity FROM (" +
             "SELECT o2.id, o2.quantity, -o4.quantity tquantity FROM orders o2 LEFT JOIN `transaction` t ON t.origin_order_id = o2.id LEFT JOIN orders o4 ON t.destiny_order_id = o4.id "
             +
             "UNION " +

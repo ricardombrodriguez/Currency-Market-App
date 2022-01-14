@@ -1,3 +1,4 @@
+import { WebsocketService } from './websocket.service';
 import { environment } from './../../environments/environment';
 import { Observable } from 'rxjs';
 import { Order } from './../interfaces/order';
@@ -10,7 +11,7 @@ import { Injectable } from '@angular/core';
 })
 export class OrderServiceService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private websocketService: WebsocketService) { }
 
   getSellOrdersPage(marketId: number, parameters: object): Observable<Page<Order>> {
     return this.http.get<Page<Order>>(environment.API_URL + '/market/' + marketId + '/orders/sell', parameters)
@@ -20,12 +21,17 @@ export class OrderServiceService {
     return this.http.get<Page<Order>>(environment.API_URL + '/market/' + marketId + '/orders/buy', parameters)
   }
 
-  createOrder(marketId: number, portfolioId: number, quantity: number): void {
-    this.http.post(environment.API_URL + '/orders/', {params: {
-      market: { id: marketId },
-      portfolio: { id: portfolioId },
-      quantity
-    }})
+  createOrder(marketId: number, portfolioId: number, quantity: number, orderValue: number): void {
+    this.http.post(environment.API_URL + '/order', {}, { params: {
+      marketId: marketId,
+      portfolioId: portfolioId,
+      quantity,
+      orderValue
+    }}).subscribe()
+  }
+  
+  startOrderUpdates(market: string, callback: (data: any) => void): void {
+    this.websocketService.startUpdates('/order/' + market, callback)
   }
 
 }
