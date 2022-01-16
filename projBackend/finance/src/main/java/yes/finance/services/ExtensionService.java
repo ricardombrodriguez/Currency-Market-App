@@ -50,4 +50,8 @@ public class ExtensionService {
 
         return saveExtension(existingExtension);
     }
+
+    public Extension getExtensionByPath(String path) {
+        return repository.findByPath(path);
+    }
 }

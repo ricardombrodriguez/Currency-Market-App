@@ -5,6 +5,7 @@ import { finalize, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { provideRoutes } from '@angular/router';
 import { identifierName } from '@angular/compiler';
+import { Extension } from '../interfaces/extension';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +57,15 @@ export class PortfolioServiceService {
     return this.http.post(environment.API_URL + '/portfolio/users', {}, { params });
   }
 
+  addExtension(portfolio: Portfolio, extension: Extension): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('id', portfolio.id);
+    params = params.append('path', extension.path);
+    return this.http.post(environment.API_URL + '/portfolio/extension', {}, { params });
+  }
+
+  deleteExtension(portfolio: Portfolio, extension: Extension): Observable<any> {
+    return this.http.delete(environment.API_URL + '/portfolio/extension', { params: { 'id': portfolio.id, 'path': extension.path } });
+  }
+
 }
-  // getPortfolioDetails(parameters: object, portfolio_id: number) {
-    //   return this.http.get<Page<Coin>>(environment.API_URL + '/portfolio/' + portfolio_id + '/details', parameters)
-    // }

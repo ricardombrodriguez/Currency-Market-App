@@ -36,10 +36,11 @@ export class YourextensionsComponent implements OnInit {
       console.log(this.extensions);
     })
 
-    this.extensionService.deleteExtension(3).subscribe((extension) => {
-      console.log("extension deleted")
-      console.log(extension)
-    })
+
+    // this.extensionService.deleteExtension(3).subscribe((extension) => {
+    //   console.log("extension deleted")
+    //   console.log(extension)
+    // })
 
   }
 

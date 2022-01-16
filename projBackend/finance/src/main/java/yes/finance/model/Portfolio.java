@@ -3,6 +3,7 @@ package yes.finance.model;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.lang.reflect.Executable;
 import java.util.*;
 import java.util.Random;
 
@@ -91,6 +92,14 @@ public class Portfolio {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public void addExtension(Extension extension) {
+        this.extensions.add(extension);
+    }
+
+    public void removeExtension(Extension extension) {
+        this.extensions.remove(extension);
     }
 
     @Override

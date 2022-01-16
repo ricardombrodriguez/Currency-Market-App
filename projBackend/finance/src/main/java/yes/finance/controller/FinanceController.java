@@ -2,6 +2,8 @@ package yes.finance.controller;
 
 import java.util.*;
 
+import javax.sound.sampled.Port;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
@@ -185,6 +187,25 @@ public class FinanceController {
     public List<User> getPortfolioUsers(@RequestParam String publicKey) {
         System.out.println("/users do portfolio");
         return portfolioservice.getPortfolioByUsers(publicKey);
+    }
+
+    @PostMapping("/portfolio/extension")
+    public void addExtension(@RequestParam int id, @RequestParam String path) {
+        Extension extension = extensionservice.getExtensionByPath(path);
+        Portfolio portfolio = portfolioservice.getPortfolioById(id);
+        portfolio.addExtension(extension);
+        portfolioservice.savePortfolio(portfolio);
+        System.out.println("added extension " + extension.getPath() + " to portfolio " + portfolio.getName());
+    }
+
+    @DeleteMapping("/portfolio/extension")
+    public void deletePortfolioExtensions(@RequestParam int id, @RequestParam String path) {
+
+        Extension extension = extensionservice.getExtensionByPath(path);
+        Portfolio portfolio = portfolioservice.getPortfolioById(id);
+        portfolio.removeExtension(extension);
+        portfolioservice.savePortfolio(portfolio);
+
     }
 
     //////////////////////////////////////////// MARKET
