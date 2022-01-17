@@ -54,4 +54,8 @@ public class OrderService {
 
         return saveOrder(existingOrder);
     }
+
+    public void checkClose(Order order) {
+        
+    }
 }

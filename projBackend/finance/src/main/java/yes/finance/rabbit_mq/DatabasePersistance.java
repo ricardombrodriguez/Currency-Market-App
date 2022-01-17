@@ -7,7 +7,12 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 import yes.finance.model.Currency;
 import yes.finance.model.Market;
@@ -49,7 +54,6 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
         String input = event.getMessage();
         MQChannels channel = event.getChannel();
-
         JSONObject data = new JSONObject(input);
 
         switch (channel) {
