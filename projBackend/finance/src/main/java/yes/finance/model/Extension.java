@@ -33,7 +33,8 @@ public class Extension {
 
     public Extension(){}
 
-    public Extension(String path) {
+    public Extension(User user, String path) {
+        this.user = user;
         this.path = path;
     }
     
@@ -41,15 +42,10 @@ public class Extension {
     public Integer getId() {
         return id;
     }
-    
-    @Column(name = "user", nullable = false)
-    public Integer getUserId() {
-        return this.user.getId();
-    }
 
-    // public User getUser() {
-    //     return this.user;
-    // }
+    public User getUser() {
+        return this.user;
+    }
 
     public void setUser(User new_user) {
         this.user = new_user;
@@ -78,7 +74,7 @@ public class Extension {
         return "{" +
             " id='" + getId() + "'" +
             ", path='" + getPath() + "'" +
-            ", user='" + getUserId() + "'" +
+            ", user='" + getUser() + "'" +
             ", portfolios='" + getPortfolios() + "'" +
             "}";
     }

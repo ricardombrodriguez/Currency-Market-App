@@ -1,3 +1,6 @@
+import { DevelopersComponent } from './pages/developers/developers.component';
+import { YourextensionComponent } from './pages/yourextension/yourextension.component';
+import { YourextensionsComponent } from './pages/yourextensions/yourextensions.component';
 import { PortfolioComponent } from './pages/portfolio/portfolio.component';
 import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -30,6 +33,14 @@ const routes: Routes = [
   { path: 'portfolio', children: [
     { path: '', component: PortfolioComponent },
     { path: ':id', component: PortfolioComponent }
+  ] },
+
+  { path: 'developers', children: [
+    { path: '', component: DevelopersComponent },
+    { path: 'yourextensions', children: [
+      { path: '', component: YourextensionsComponent },
+      { path: ':id', component: YourextensionComponent }
+    ] }
   ] }
 
 ];

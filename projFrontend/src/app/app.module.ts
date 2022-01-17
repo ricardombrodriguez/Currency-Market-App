@@ -18,6 +18,9 @@ import { DataTablesModule } from 'angular-datatables';
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { FormsModule } from '@angular/forms';
+import { YourextensionsComponent } from './pages/yourextensions/yourextensions.component';
+import { YourextensionComponent } from './pages/yourextension/yourextension.component';
+import { DevelopersComponent } from './pages/developers/developers.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,9 @@ import { FormsModule } from '@angular/forms';
     PortfolioListComponent,
     DataTableComponent,
     GraphComponent,
+    YourextensionsComponent,
+    YourextensionComponent,
+    DevelopersComponent,
     
   ],
   imports: [

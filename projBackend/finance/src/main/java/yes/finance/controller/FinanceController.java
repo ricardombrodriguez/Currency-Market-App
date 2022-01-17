@@ -92,12 +92,15 @@ public class FinanceController {
     //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/extension")
-    public Page<Extension> getAllExtensions(Pageable pageable) {
-        return extensionservice.getExtensions(pageable);
+    public Page<Extension> getAllExtensions(@RequestParam(defaultValue = "") Integer userId, Pageable pageable) {
+        if (userId != null) return extensionservice.getExtensionsByUser(userService.getUserById(userId), pageable);
+        else return extensionservice.getExtensions(pageable);
     }
 
     @PostMapping("/extension")
-    public Extension createExtensions(@RequestBody Extension extension) {
+    public Extension createExtensions(@RequestParam int userId, @RequestParam String path) {
+        User user = userService.getUserById(userId);
+        Extension extension = new Extension(user, path);
         return extensionservice.saveExtension(extension);
     }
 
@@ -202,6 +205,8 @@ public class FinanceController {
         return marketservice.getMarkets(pageable);
     }
   
+    // EndPoint para os gráficos
+    @GetMapping("/market/{id}")
     public Map<String, Object> getTickersByMarketId(@PathVariable int id) {
         Market market = marketservice.getMarketById(id);
         List<Ticker> tickers = tickerservice.getTickerByMarket(market);
@@ -240,7 +245,10 @@ public class FinanceController {
     public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity, @RequestParam Float orderValue) {
         Market market = marketservice.getMarketById(marketId);
         Order order = orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
-        if (order != null) sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
+        if (order != null) {
+            sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
+            orderservice.checkClose(order);
+        }
         return order;
     }
 

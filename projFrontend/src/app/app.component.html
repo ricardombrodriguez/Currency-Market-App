@@ -29,29 +29,29 @@
 <div class="container-fluid">
   <div class="row">
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
+      <div class="position-sticky pt-3 d-flex flex-column h-100">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" href="#" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <i class="icon fas fa-home"></i>
               Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/coins" routerLinkActive="active">
+            <a class="nav-link" href="#" routerLink="/coins" routerLinkActive="active">
               <i class="icon fab fa-bitcoin"></i>
               Coins
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/markets" routerLinkActive="active">
+            <a class="nav-link" href="#" routerLink="/markets" routerLinkActive="active">
               <i class="icon fas fa-exchange-alt"></i>
               Markets
             </a>
           </li>
         </ul>
 
-        <div *ngIf="userID != null">
+        <div *ngIf="userID != null" class="flex-grow-1">
 
           <hr style="width:90%;text-align:left;margin-left:5%">
 
@@ -69,12 +69,22 @@
               </li>
             </a>
           </ul>
-          
+
+          <app-portfolio-list></app-portfolio-list>
         </div>
 
+        <div>
+          <hr style="width:90%;text-align:left;margin-left:5%">
 
-        <app-portfolio-list></app-portfolio-list>
-
+          <ul class="nav flex-column pb-2">
+            <li class="nav-item">
+              <a class="nav-link" href="#" routerLink="/developers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class="icon fas fa-code"></i>
+                Developers
+              </a>
+            </li>
+          </ul>
+        </div>
         
       </div>
     </nav>
