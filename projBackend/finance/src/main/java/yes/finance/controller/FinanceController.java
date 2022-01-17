@@ -2,13 +2,10 @@ package yes.finance.controller;
 
 import java.util.*;
 
-import javax.sound.sampled.Port;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.data.domain.PageImpl;
 
@@ -95,20 +92,22 @@ public class FinanceController {
     //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/extension")
-    public Page<Extension> getAllExtensions(Pageable pageable) {
-        return extensionservice.getExtensions(pageable);
+    public List<Extension> getAllExtensions() {
+        return extensionservice.getExtensions();
     }
 
     @GetMapping("/extension/{id}")
-    public Page<Extension> getUserExtensions(@PathVariable int id, Pageable pageable) {
+    public List<Extension> getUserExtensions(@PathVariable int id) {
         User user = userService.getUserById(id);
-        return extensionservice.getExtensionsByUser(user, pageable);
+        return extensionservice.getExtensionsByUser(user);
     }
 
     @PostMapping("/extension")
     public Extension createExtensions(@RequestParam int userId, @RequestParam String path) {
         User user = userService.getUserById(userId);
         Extension extension = new Extension(user, path);
+        extension.setName("NOME PORT");
+        extension.setDescription("descriptionnnnnnnnnnnnnn abababababab");
         return extensionservice.saveExtension(extension);
     }
 
@@ -179,14 +178,19 @@ public class FinanceController {
     }
 
     @GetMapping("/portfolio/{id}/details")
-    public List<Object> getPortfolioDetails(@PathVariable int id) {
-        return portfolioservice.getPortfolioDetailsById(id);
+    public Page<Object> getPortfolioDetails(@PathVariable int id, Pageable pageable) {
+        return portfolioservice.getPortfolioDetailsById(id, pageable);
     }
 
     @PostMapping("porfolio/users")
     public List<User> getPortfolioUsers(@RequestParam String publicKey) {
         System.out.println("/users do portfolio");
         return portfolioservice.getPortfolioByUsers(publicKey);
+    }
+
+    @GetMapping("/portfolio/extension/{id}")
+    public List<Extension> getPortfolioExtensions(@PathVariable int id) {
+        return portfolioservice.getPortfolioExtensions(id);
     }
 
     @PostMapping("/portfolio/extension")

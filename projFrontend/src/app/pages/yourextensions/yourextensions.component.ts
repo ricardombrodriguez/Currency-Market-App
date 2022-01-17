@@ -24,6 +24,7 @@ export class YourextensionsComponent implements OnInit {
     this.userId = parseInt(this.authService.curentUserId!)
 
 
+
     this.extensionService.createExtension(this.userId, "EXTENSION_PATH").subscribe((extension) => {
       console.log("extension created")
       console.log(extension)

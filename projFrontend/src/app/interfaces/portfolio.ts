@@ -1,9 +1,9 @@
-import { User } from './user';
-
+import { Extension } from './extension';
+import { Order } from './order';
 export interface Portfolio {
   id: number,
   name: string,
-  public_key: string,
-
-  users: User[]
+  extensions: Extension[],
+  orders: Order[],
+  public_key: string
 }

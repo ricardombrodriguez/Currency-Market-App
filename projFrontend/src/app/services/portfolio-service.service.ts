@@ -6,11 +6,14 @@ import { environment } from '../../environments/environment';
 import { provideRoutes } from '@angular/router';
 import { identifierName } from '@angular/compiler';
 import { Extension } from '../interfaces/extension';
+import { Page } from '../components/data-table/page';
+import { Wallet } from '../interfaces/wallet';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PortfolioServiceService {
+
   private portfolio!: Portfolio;
 
   constructor(private http: HttpClient) { }
@@ -66,6 +69,19 @@ export class PortfolioServiceService {
 
   deleteExtension(portfolio: Portfolio, extension: Extension): Observable<any> {
     return this.http.delete(environment.API_URL + '/portfolio/extension', { params: { 'id': portfolio.id, 'path': extension.path } });
+  }
+
+  getAllExtensions(): Observable<Extension[]> {
+    return this.http.get<Extension[]>(environment.API_URL + '/extension/');
+  }
+
+  getPortfolioExtensions(portfolio: Portfolio) {
+    console.log("portfolio id::::::: " + portfolio.id)
+    return this.http.get<Extension[]>(environment.API_URL + '/extension/portfolio/' + portfolio.id);
+  }
+
+  getPortfolioDetails(parameters: Object, portfolio_id: number): Observable<Page<Wallet>> {
+    return this.http.get<Page<Wallet>>(environment.API_URL + '/portfolio/' + portfolio_id + '/details', <Object>{ params: parameters });
   }
 
 }

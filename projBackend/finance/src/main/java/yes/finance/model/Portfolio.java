@@ -3,7 +3,6 @@ package yes.finance.model;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.lang.reflect.Executable;
 import java.util.*;
 import java.util.Random;
 

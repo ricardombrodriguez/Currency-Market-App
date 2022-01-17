@@ -24,6 +24,13 @@ public class Extension {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @Column(name = "path", nullable = false)
     private String path;
 
     @ManyToOne
@@ -54,7 +61,22 @@ public class Extension {
         this.user = new_user;
     }
 
-    @Column(name = "path", nullable = false)
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getPath() {
         return this.path;
     }

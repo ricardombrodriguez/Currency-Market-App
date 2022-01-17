@@ -15,7 +15,7 @@ CONFIG = \
   },
 
   "rabbitmq": {
-      "host": environ.get("FINANCE_RABBITMQ_HOST"),
+    "host": environ.get("FINANCE_RABBITMQ_HOST"),
     "port": 5672
   }
 
