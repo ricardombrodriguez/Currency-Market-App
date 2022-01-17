@@ -1,5 +1,7 @@
 package yes.finance.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.*;
 
 
@@ -13,6 +15,7 @@ public class Transaction{
     public Transaction(Order origin_order, Order destiny_order) {
         this.origin_order = origin_order;
         this.destiny_order = destiny_order;
+        this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
     @Id
@@ -27,6 +30,9 @@ public class Transaction{
     @ManyToOne
     @JoinColumn(name = "destiny_order_id")
     private Order destiny_order;
+
+    @Column(name = "created_at", nullable = false)
+    private Timestamp createdAt;
 
     public Integer getId() {
         return id;

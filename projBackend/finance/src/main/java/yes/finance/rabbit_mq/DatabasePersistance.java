@@ -51,7 +51,6 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
     @Override
     public void onApplicationEvent(MessageEvent event) {
-
         String input = event.getMessage();
         MQChannels channel = event.getChannel();
         JSONObject data = new JSONObject(input);

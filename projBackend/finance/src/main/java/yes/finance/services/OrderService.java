@@ -63,13 +63,14 @@ public class OrderService {
     public void checkClose(Order order) {
         List<Order> orders = 
             order.getQuantity() > 0 ? 
-            repository.findBuyOrderComplements(order.getPortfolioId(), order.getOrder_value()) : 
-            repository.findSellOrderComplements(order.getPortfolioId(), order.getOrder_value());
+            repository.findBuyOrderComplements(order.getPortfolioId(), order.getMarketId(), order.getOrder_value()) : 
+            repository.findSellOrderComplements(order.getPortfolioId(), order.getMarketId(), order.getOrder_value());
         
-        Float missingQuantity = order.getQuantity();
+        Float missingQuantity = order.getQuantity() > 0 ? order.getQuantity() : -order.getQuantity();
         for (Order o : orders) {
             if (missingQuantity <= 0) break;
-            transactionRepository.save(new Transaction(order, o));
+            transactionRepository.save(order.getQuantity() > 0 ? new Transaction(o, order) : new Transaction(order, o));
+            missingQuantity -= o.getQuantity() > 0 ? o.getQuantity() : -o.getQuantity();
         }
     }
 }
