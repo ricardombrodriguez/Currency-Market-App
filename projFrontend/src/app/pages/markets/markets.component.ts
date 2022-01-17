@@ -1,7 +1,3 @@
-import { Observable } from 'rxjs';
-import { Page } from './../../components/data-table/page';
-import { Market } from './../../interfaces/market';
-import { ColumnInterface } from './../../components/data-table/column-interface';
 import { MarketServiceService } from './../../services/market-service.service';
 import { Component, OnInit } from '@angular/core';
 
