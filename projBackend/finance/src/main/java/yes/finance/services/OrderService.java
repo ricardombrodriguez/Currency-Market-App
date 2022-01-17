@@ -1,7 +1,9 @@
 package yes.finance.services;
 
 import yes.finance.model.Order;
+import yes.finance.model.Transaction;
 import yes.finance.repository.OrderRepository;
+import yes.finance.repository.TransactionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class OrderService {
 
     @Autowired
     private OrderRepository repository;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     public Order saveOrder(Order Order) {
         return repository.save(Order);
@@ -56,6 +61,15 @@ public class OrderService {
     }
 
     public void checkClose(Order order) {
+        List<Order> orders = 
+            order.getQuantity() > 0 ? 
+            repository.findBuyOrderComplements(order.getPortfolioId(), order.getOrder_value()) : 
+            repository.findSellOrderComplements(order.getPortfolioId(), order.getOrder_value());
         
+        Float missingQuantity = order.getQuantity();
+        for (Order o : orders) {
+            if (missingQuantity <= 0) break;
+            transactionRepository.save(new Transaction(order, o));
+        }
     }
 }

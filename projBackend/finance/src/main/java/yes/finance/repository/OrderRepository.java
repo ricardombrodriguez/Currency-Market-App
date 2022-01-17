@@ -2,6 +2,8 @@ package yes.finance.repository;
 
 import yes.finance.model.Order;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,4 +37,10 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
             ") d on d.id = o.id " +
             "WHERE d.quantity > 0 AND o.market_id = ?1", nativeQuery = true)
     Page<Order> findBuyOrdersByMarket(int marketId, Pageable pageable);
+
+    @Query(value = "SELECT * from orders WHERE portfolio_id != ?1 AND order_value < ?2 AND quantity < 0 ORDER BY order_value", nativeQuery = true)
+    public List<Order> findBuyOrderComplements(int portfolioId, Float max);
+
+    @Query(value = "SELECT * from orders WHERE portfolio_id != ?1 AND order_value > ?2 AND quantity > 0 ORDER BY order_value", nativeQuery = true)
+    public List<Order> findSellOrderComplements(int portfolioId, Float min);
 }

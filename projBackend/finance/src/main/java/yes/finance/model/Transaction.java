@@ -7,7 +7,13 @@ import javax.persistence.*;
 @Table(name = "Transaction")
 public class Transaction{
 
-    public Transaction(){}  
+    public Transaction() {
+    }
+
+    public Transaction(Order origin_order, Order destiny_order) {
+        this.origin_order = origin_order;
+        this.destiny_order = destiny_order;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
