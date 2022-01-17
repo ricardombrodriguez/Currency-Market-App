@@ -178,7 +178,7 @@ public class FinanceController {
     }
 
     @GetMapping("/portfolio/{id}/details")
-    public Page<Object> getPortfolioDetails(@PathVariable int id, Pageable pageable) {
+    public Page<PCurrency> getPortfolioDetails(@PathVariable int id, Pageable pageable) {
         return portfolioservice.getPortfolioDetailsById(id, pageable);
     }
 
@@ -215,12 +215,6 @@ public class FinanceController {
     //////////////////////////////////////////// MARKET
     //////////////////////////////////////////// ////////////////////////////////////////////
 
-    // EndPoint para os gráficos
-    @GetMapping("/market/info/{id}")
-    public Market getMarket(@PathVariable(value = "id") int marketId) {
-        return marketservice.getMarketById(marketId);
-    }
-
     @PostMapping("/market")
     public Market createMarkets(@RequestBody Market market) {
         return marketservice.saveMarket(market);
@@ -228,11 +222,6 @@ public class FinanceController {
 
     @GetMapping("/market")
     public Page<Market> getAllMarkets(Pageable pageable) {
-        // Page<Market> allMarkets = marketservice.getMarkets(pageable)
-
-        // for (Market m : allMarkets) {
-
-        // }
         return marketservice.getMarkets(pageable);
     }
 
