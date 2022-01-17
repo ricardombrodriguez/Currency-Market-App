@@ -276,10 +276,18 @@ public class FinanceController {
     public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity,
             @RequestParam Float orderValue) {
         Market market = marketservice.getMarketById(marketId);
+<<<<<<< HEAD
         Order order = orderservice
                 .saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
         if (order != null)
             sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
+=======
+        Order order = orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
+        if (order != null) {
+            sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
+            orderservice.checkClose(order);
+        }
+>>>>>>> 5feaa4bc1e2cda0527eaf17c0bae23c1f9e2f3ed
         return order;
     }
 
