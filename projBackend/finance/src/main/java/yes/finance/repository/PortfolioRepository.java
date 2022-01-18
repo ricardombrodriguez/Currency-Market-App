@@ -1,10 +1,13 @@
 package yes.finance.repository;
 
+import yes.finance.model.Extension;
+import yes.finance.model.PCurrency;
 import yes.finance.model.Portfolio;
 import yes.finance.model.User;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -19,22 +22,23 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Integer> {
     Portfolio findByPublicKey(String publicKey);
 
     // query
-    @Modifying
-    @Query(value = "SELECT c.*, SUM(quantity) quantity, SUM(volume) volume FROM ( " +
-            "SELECT o.portfolio_id, o.market_id, -o.quantity quantity, -o.quantity*o.order_value volume FROM `transaction` t "
-            +
-            "INNER JOIN orders o ON t.origin_order_id = o.id " +
-            "UNION " +
-            "SELECT o.portfolio_id, o.market_id, o.quantity, o.quantity*o.order_value volume FROM `transaction` t " +
-            "INNER JOIN orders o ON t.destiny_order_id = o.id ) d " +
+    @Query(value = "SELECT c.id, c.logo_url, c.name, c.online, c.symbol, SUM(d.quantity) quantity, SUM(d.volume) volume FROM ( " +
+                "SELECT o.portfolio_id, o.market_id, -o.quantity quantity, -o.quantity*o.order_value volume FROM `transaction` t " +
+                "INNER JOIN orders o ON t.origin_order_id = o.id " +
+                "UNION " +
+                "SELECT o.portfolio_id, o.market_id, o.quantity, o.quantity*o.order_value volume FROM `transaction` t " +
+                "INNER JOIN orders o ON t.destiny_order_id = o.id ) d " +
             "INNER JOIN market m ON m.id = d.market_id " +
             "INNER JOIN currency c ON m.destiny_currency_id = c.id " +
             "WHERE d.portfolio_id = :id " +
             "GROUP BY c.id", nativeQuery = true)
-    List<Object> getPortfolioDetailsById(@Param("id") int id);
+    Page<PCurrency> getPortfolioDetailsById(@Param("id") int id, Pageable pageable);
 
     @Query("SELECT p.users FROM Portfolio p WHERE p.publicKey=:publicKey")
     List<User> getPortfolioByUsers(@Param("publicKey") String publicKey);
+
+    @Query("SELECT p.extensions FROM Portfolio p WHERE p.id = :portfolio_id")
+    List<Extension> findByExtensions(@Param("portfolio_id") int portfolio_id);
 
 }
 

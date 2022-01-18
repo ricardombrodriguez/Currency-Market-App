@@ -47,38 +47,46 @@
 </div> 
 -->
 
-<div class="tab-pane fade" id="extensions" role="tabpanel" aria-labelledby="extensions-tab">
-    <div class="mt-4 col-sm-12 col-md-6 col-lg-4">
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
-        </form>
-    </div>
 
-    <div class="list-group mt-4">
-        <div class="d-flex align-items-center list-group-item list-group-item-action">
-            <div class="w-100">
-                <h5 class="mb-0">Random Trades Bot</h5>
-                <small>By <b>Someone</b></small>
-                <p class="mb-1 mt-2">Make trades with literally no criterea.</p>
-            </div>
-
-            <div>
-                <button class="btn btn-danger text-nowrap">Uninstall <i class="fas fa-trash"></i></button>
-            </div>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
+        <div class="col-12">
+            <h2>Tabela</h2>
+            <app-data-table [columns]="columns" [getData]="getData"></app-data-table>
         </div>
 
-        <div class="d-flex align-items-center list-group-item list-group-item-action">
-            <div class="w-100">
-                <h5 class="mb-0">Random Trades Bot</h5>
-                <small>By <b>Someone</b></small>
-                <p class="mb-1 mt-2">Make trades with literally no criterea.</p>
+
+        <div class="tab-pane fade" id="extensions" role="tabpanel" aria-labelledby="extensions-tab">
+            <div class="mt-4 col-sm-12 col-md-6 col-lg-4">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </form>
             </div>
 
-            <div>
-                <button class="btn btn-primary text-nowrap">Install <i class="fas fa-download"></i></button>
+            <div class="list-group mt-4">
+
+                <ul *ngFor="let extension of allExtensions;">
+                    <div class="d-flex align-items-center list-group-item list-group-item-action">
+                        <div class="w-100">
+
+                            <h5 class="mb-0">{{ extension.name }}</h5>
+                            <p class="mb-0">{{ extension.description }}</p>
+                            <small>By <b>{{ extension.user.username}}</b></small>
+                        </div>
+
+                        <div *ngIf="isInstalled(extension)">
+                            <button class="btn btn-danger text-nowrap" (click)="deleteExtension(extension)"><i
+                                    class="fas fa-trash"></i></button>
+                        </div>
+
+                        <div *ngIf="!isInstalled(extension)">
+                            <button class="btn btn-primary text-nowrap" (click)="addExtension(extension)"><i
+                                    class="fas fa-download"></i></button>
+                        </div>
+                    </div>
+                </ul>
+
             </div>
+
         </div>
-    </div>
-
-</div>

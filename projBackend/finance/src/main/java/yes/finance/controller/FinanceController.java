@@ -2,13 +2,10 @@ package yes.finance.controller;
 
 import java.util.*;
 
-import javax.sound.sampled.Port;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.data.domain.PageImpl;
 
@@ -95,20 +92,22 @@ public class FinanceController {
     //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/extension")
-    public Page<Extension> getAllExtensions(Pageable pageable) {
-        return extensionservice.getExtensions(pageable);
+    public List<Extension> getAllExtensions() {
+        return extensionservice.getExtensions();
     }
 
     @GetMapping("/extension/{id}")
-    public Page<Extension> getUserExtensions(@PathVariable int id, Pageable pageable) {
+    public List<Extension> getUserExtensions(@PathVariable int id) {
         User user = userService.getUserById(id);
-        return extensionservice.getExtensionsByUser(user, pageable);
+        return extensionservice.getExtensionsByUser(user);
     }
 
     @PostMapping("/extension")
     public Extension createExtensions(@RequestParam int userId, @RequestParam String path) {
         User user = userService.getUserById(userId);
         Extension extension = new Extension(user, path);
+        extension.setName("NOME PORT");
+        extension.setDescription("descriptionnnnnnnnnnnnnn abababababab");
         return extensionservice.saveExtension(extension);
     }
 
@@ -179,14 +178,19 @@ public class FinanceController {
     }
 
     @GetMapping("/portfolio/{id}/details")
-    public List<Object> getPortfolioDetails(@PathVariable int id) {
-        return portfolioservice.getPortfolioDetailsById(id);
+    public Page<PCurrency> getPortfolioDetails(@PathVariable int id, Pageable pageable) {
+        return portfolioservice.getPortfolioDetailsById(id, pageable);
     }
 
     @PostMapping("porfolio/users")
     public List<User> getPortfolioUsers(@RequestParam String publicKey) {
         System.out.println("/users do portfolio");
         return portfolioservice.getPortfolioByUsers(publicKey);
+    }
+
+    @GetMapping("/portfolio/extension/{id}")
+    public List<Extension> getPortfolioExtensions(@PathVariable int id) {
+        return portfolioservice.getPortfolioExtensions(id);
     }
 
     @PostMapping("/portfolio/extension")
@@ -211,12 +215,6 @@ public class FinanceController {
     //////////////////////////////////////////// MARKET
     //////////////////////////////////////////// ////////////////////////////////////////////
 
-    // EndPoint para os gráficos
-    @GetMapping("/market/info/{id}")
-    public Market getMarket(@PathVariable(value = "id") int marketId) {
-        return marketservice.getMarketById(marketId);
-    }
-
     @PostMapping("/market")
     public Market createMarkets(@RequestBody Market market) {
         return marketservice.saveMarket(market);
@@ -224,11 +222,6 @@ public class FinanceController {
 
     @GetMapping("/market")
     public Page<Market> getAllMarkets(Pageable pageable) {
-        // Page<Market> allMarkets = marketservice.getMarkets(pageable)
-
-        // for (Market m : allMarkets) {
-
-        // }
         return marketservice.getMarkets(pageable);
     }
 
@@ -272,10 +265,11 @@ public class FinanceController {
     public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity,
             @RequestParam Float orderValue) {
         Market market = marketservice.getMarketById(marketId);
-        Order order = orderservice
-                .saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
-        if (order != null)
+        Order order = orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
+        if (order != null) {
             sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
+            orderservice.checkClose(order);
+        }
         return order;
     }
 

@@ -1,10 +1,14 @@
 package yes.finance.services;
 
+import yes.finance.model.Extension;
+import yes.finance.model.PCurrency;
 import yes.finance.model.Portfolio;
 import yes.finance.model.User;
 import yes.finance.repository.PortfolioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,9 +43,6 @@ public class PortfolioService {
 
     public Portfolio updatePortfolio(Portfolio Portfolio) {
         Portfolio existingPortfolio = repository.findById((int) Portfolio.getId()).orElse(null);
-
-        // FAZER SETS
-
         return savePortfolio(existingPortfolio);
     }
 
@@ -49,12 +50,15 @@ public class PortfolioService {
         return repository.findByPublicKey(publicKey);
     }
 
-    public List<Object> getPortfolioDetailsById(int id) {
-        return repository.getPortfolioDetailsById(id);
+    public Page<PCurrency> getPortfolioDetailsById(int id, Pageable pageable) {
+        return repository.getPortfolioDetailsById(id, pageable);
     }
 
     public List<User> getPortfolioByUsers(String publicKey) {
         return repository.getPortfolioByUsers(publicKey);
     }
 
+    public List<Extension> getPortfolioExtensions(int id) {
+        return repository.findByExtensions(id);
+    }
 }

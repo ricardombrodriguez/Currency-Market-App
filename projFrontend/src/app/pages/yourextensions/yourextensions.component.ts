@@ -29,6 +29,7 @@ export class YourextensionsComponent implements OnInit {
     //this.extnsns=this.extensionService.getUserExtensions(this.userId)
     //this.getData =  this.extensionService.getUserExtensions(this.userId)
 
+
     this.extensionService.createExtension(this.userId, "EXTENSION_PATH").subscribe((extension) => {
       console.log("extension created")
       console.log(extension)
