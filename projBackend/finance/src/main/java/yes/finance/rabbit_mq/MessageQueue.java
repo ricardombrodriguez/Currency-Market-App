@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 
 import javax.annotation.PostConstruct;
 
+import com.rabbitmq.client.AlreadyClosedException;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -83,6 +84,9 @@ public class MessageQueue {
                 applicationEventPublisher.publishEvent(new MessageEvent(this, channel, data));
                 this.channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             } catch (UnsupportedEncodingException e) {
+                this.channel.basicNack(delivery.getEnvelope().getDeliveryTag(), false, true);
+            } catch (AlreadyClosedException e) {
+                this.connect();
                 this.channel.basicNack(delivery.getEnvelope().getDeliveryTag(), false, true);
             }
         } catch (IOException e) {
