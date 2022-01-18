@@ -36,12 +36,12 @@ services:
         timeout: 10s
         retries: 5
 
-  # client:
-  #   build: ./projFrontend
-  #   ports:
-  #     - 4200:80
-  #   depends_on:
-  #     - backend
+  client:
+    build: ./projFrontend
+    ports:
+      - 4200:80
+    depends_on:
+      - backend
     
   data_gen:
     build: ./projDataGenerator/

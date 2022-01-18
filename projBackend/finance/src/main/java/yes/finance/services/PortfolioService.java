@@ -43,9 +43,6 @@ public class PortfolioService {
 
     public Portfolio updatePortfolio(Portfolio Portfolio) {
         Portfolio existingPortfolio = repository.findById((int) Portfolio.getId()).orElse(null);
-
-        // FAZER SETS
-
         return savePortfolio(existingPortfolio);
     }
 
