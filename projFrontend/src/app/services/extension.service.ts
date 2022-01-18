@@ -23,7 +23,7 @@ export class ExtensionService {
   getPage(id: number, parameters: Object): Observable<Page<Extension>> {
     return this.http.get<Page<Extension>>(environment.API_URL + '/extension?userId=' + id, <Object>{ params: parameters })
   }
-
+  
   installExtension(portfolioId: number, extensionId: number) { }
 
   uninstallExtension(portfolioId: number, extensionId: number) { }

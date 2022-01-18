@@ -13,6 +13,7 @@ export class YourextensionsComponent implements OnInit {
 
   private userId: number;
   public extensions!: Page<Extension>
+
   //public extnsns!: Observable<Page<Extension>>
 
   columns: DataTables.ColumnSettings[] = [
@@ -26,6 +27,7 @@ export class YourextensionsComponent implements OnInit {
   constructor(private extensionService: ExtensionService, private authService: AuthenticationService) {
 
     this.userId = parseInt(this.authService.curentUserId!)
+    
     //this.extnsns=this.extensionService.getUserExtensions(this.userId)
     //this.getData =  this.extensionService.getUserExtensions(this.userId)
 
@@ -34,7 +36,7 @@ export class YourextensionsComponent implements OnInit {
       console.log("extension created")
       console.log(extension)
     })
- 
+    
     // listar todas as extensões criadas pelo user
     this.extensionService.getUserExtensions(this.userId).subscribe((extensions) => {
       this.extensions = extensions
@@ -47,6 +49,7 @@ export class YourextensionsComponent implements OnInit {
     //   console.log("extension deleted")
     //   console.log(extension)
     // })
+    
   }
 
   ngOnInit(): void {
