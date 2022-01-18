@@ -7,11 +7,11 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h4>Market price: {{ price }} {{ destinyCurrency?.symbol }}</h4>
-  <h4 *ngIf="hourChange > 0">Hour change: <span style="color: green;" > +{{ hourChange }}% </span></h4>
-  <h4 *ngIf="hourChange < 0">Hour change: <span style="color: red;" > {{ hourChange }}% </span></h4>
-  <h4 *ngIf="minuteChange > 0">Minute change: <span style="color: green;" > +{{ minuteChange }}% </span></h4>
-  <h4 *ngIf="minuteChange < 0">Minute change: <span style="color: red;" > {{ minuteChange }}% </span></h4>
-</div>  
+  <h4 *ngIf="hourChange > 0">Hour change: <span style="color: green;"> +{{ hourChange }}% </span></h4>
+  <h4 *ngIf="hourChange < 0">Hour change: <span style="color: red;"> {{ hourChange }}% </span></h4>
+  <h4 *ngIf="minuteChange > 0">Minute change: <span style="color: green;"> +{{ minuteChange }}% </span></h4>
+  <h4 *ngIf="minuteChange < 0">Minute change: <span style="color: red;"> {{ minuteChange }}% </span></h4>
+</div>
 
 <app-graph [id]="'marketChart'" [data]="data" [labels]="labels" *ngIf="active"></app-graph>
 
@@ -64,15 +64,17 @@
                 <div class="col-6 mb-3">
                   <label for="newSellOrderAmount" class="form-label">Amount</label>
                   <div class="input-group mb-3">
-                    <input id="newSellOrderAmount" name="newSellOrderAmount" type="number" class="form-control" [(ngModel)]="orderProps.amount">
-                    <span class="input-group-text">BTC</span>
+                    <input id="newSellOrderAmount" name="newSellOrderAmount" type="number" class="form-control"
+                      [(ngModel)]="orderProps.amount">
+                    <span class="input-group-text">{{ destinyCurrency?.symbol }}</span>
                   </div>
                 </div>
                 <div class="col-6 mb-3">
                   <label for="newSellOrderPrice" class="form-label">Price</label>
                   <div class="input-group mb-3">
-                    <input id="newSellOrderPrice" name="newSellOrderPrice" type="number" class="form-control" [(ngModel)]="orderProps.price">
-                    <span class="input-group-text">€/BTC</span>
+                    <input id="newSellOrderPrice" name="newSellOrderPrice" type="number" class="form-control"
+                      [(ngModel)]="orderProps.price">
+                    <span class="input-group-text">{{ originCurrency?.symbol }}/{{ destinyCurrency?.symbol }}</span>
                   </div>
                 </div>
               </div>
@@ -84,15 +86,17 @@
                 <div class="col-6 mb-3">
                   <label for="newSellOrderAmount" class="form-label">Amount</label>
                   <div class="input-group mb-3">
-                    <input id="newSellOrderAmount" name="newSellOrderAmount" type="number" class="form-control" [(ngModel)]="orderProps.amount">
-                    <span class="input-group-text">BTC</span>
+                    <input id="newSellOrderAmount" name="newSellOrderAmount" type="number" class="form-control"
+                      [(ngModel)]="orderProps.amount">
+                    <span class="input-group-text">{{ destinyCurrency?.symbol }}</span>
                   </div>
                 </div>
                 <div class="col-6 mb-3">
                   <label for="newSellOrderPrice" class="form-label">Price</label>
                   <div class="input-group mb-3">
-                    <input id="newSellOrderPrice" name="newSellOrderPrice" type="number" class="form-control" [(ngModel)]="orderProps.price">
-                    <span class="input-group-text">€/BTC</span>
+                    <input id="newSellOrderPrice" name="newSellOrderPrice" type="number" class="form-control"
+                      [(ngModel)]="orderProps.price">
+                    <span class="input-group-text">{{ originCurrency?.symbol }}/{{ destinyCurrency?.symbol }}</span>
                   </div>
                 </div>
               </div>
