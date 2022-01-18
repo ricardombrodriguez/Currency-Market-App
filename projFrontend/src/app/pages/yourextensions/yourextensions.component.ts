@@ -13,23 +13,28 @@ export class YourextensionsComponent implements OnInit {
 
   private userId: number;
   public extensions!: Page<Extension>
+  //public extnsns!: Observable<Page<Extension>>
 
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
-    { title: 'Path', render: (a, b, row) => `${row.path}` }
+    { title: 'Path', render: (a, b, row) => `${row.path}` },
+   // { render: (a, b, row) => `<button (click)="extensionService.deleteExtension(${row.id})"} type="button" class="btn btn-danger btn-sm">Delete <i class="fas fa-trash"></i></button><a>`, orderable: false }
+    { render: (a, b, row) => `<button type="button" class="btn btn-danger btn-sm">Delete <i class="fas fa-trash"></i></button><a>`, orderable: false }
   ]
+  getData = (parameters: object) => this.extensionService.getPage(this.userId, parameters)
 
   constructor(private extensionService: ExtensionService, private authService: AuthenticationService) {
 
     this.userId = parseInt(this.authService.curentUserId!)
-
+    //this.extnsns=this.extensionService.getUserExtensions(this.userId)
+    //this.getData =  this.extensionService.getUserExtensions(this.userId)
 
 
     this.extensionService.createExtension(this.userId, "EXTENSION_PATH").subscribe((extension) => {
       console.log("extension created")
       console.log(extension)
     })
-
+ 
     // listar todas as extensões criadas pelo user
     this.extensionService.getUserExtensions(this.userId).subscribe((extensions) => {
       this.extensions = extensions
@@ -42,7 +47,6 @@ export class YourextensionsComponent implements OnInit {
     //   console.log("extension deleted")
     //   console.log(extension)
     // })
-
   }
 
   ngOnInit(): void {
