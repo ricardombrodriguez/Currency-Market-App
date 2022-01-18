@@ -14,7 +14,7 @@ killall(){
 }
 
 checkhealth(){
-  [ "$(docker ps -a | grep $1)" ] && [[ $(docker inspect --format "{{.State.Health.Status}}" $1) == "healthy" ]]
+  [ "$(docker ps -a | grep $python)" ] && [[ $(docker inspect --format "{{.State.Health.Status}}" $python) == "healthy" ]]
   return 
 }
 
@@ -28,12 +28,12 @@ docker run --name finance_mq --health-cmd='rabbitmq-diagnostics -q status' -p 56
 
 sleep 1
 
-until checkhealth finance_mq; do sleep 1; done;
+sleep 30;
 
 cd ./projDataGenerator
 python3 main.py &
 
-until checkhealth finance_db; do sleep 1; done;
+sleep 30;
 
 
 cd ../projBackend/finance
