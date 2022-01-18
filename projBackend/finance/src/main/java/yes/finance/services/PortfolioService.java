@@ -1,6 +1,7 @@
 package yes.finance.services;
 
 import yes.finance.model.Extension;
+import yes.finance.model.PCurrency;
 import yes.finance.model.Portfolio;
 import yes.finance.model.User;
 import yes.finance.repository.PortfolioRepository;
@@ -42,9 +43,6 @@ public class PortfolioService {
 
     public Portfolio updatePortfolio(Portfolio Portfolio) {
         Portfolio existingPortfolio = repository.findById((int) Portfolio.getId()).orElse(null);
-
-        // FAZER SETS
-
         return savePortfolio(existingPortfolio);
     }
 
@@ -52,7 +50,7 @@ public class PortfolioService {
         return repository.findByPublicKey(publicKey);
     }
 
-    public Page<Object> getPortfolioDetailsById(int id, Pageable pageable) {
+    public Page<PCurrency> getPortfolioDetailsById(int id, Pageable pageable) {
         return repository.getPortfolioDetailsById(id, pageable);
     }
 
