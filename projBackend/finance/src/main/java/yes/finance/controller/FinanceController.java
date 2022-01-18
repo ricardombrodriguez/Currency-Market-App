@@ -276,7 +276,8 @@ public class FinanceController {
     public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity,
             @RequestParam Float orderValue) {
         Market market = marketservice.getMarketById(marketId);
-        Order order = orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
+        Order order = orderservice
+                .saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
         if (order != null) {
             sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
             orderservice.checkClose(order);
