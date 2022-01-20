@@ -18,9 +18,11 @@ export class YourextensionsComponent implements OnInit {
 
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
-    { title: 'Path', render: (a, b, row) => `${row.path}` },
-   // { render: (a, b, row) => `<button (click)="extensionService.deleteExtension(${row.id})"} type="button" class="btn btn-danger btn-sm">Delete <i class="fas fa-trash"></i></button><a>`, orderable: false }
-    { render: (a, b, row) => `<button type="button" class="btn btn-danger btn-sm">Delete <i class="fas fa-trash"></i></button><a>`, orderable: false }
+    { title: 'Name', data: 'name' },
+    { title: 'Description', data: 'description' },
+    { title: 'Path', data: 'path' },
+    { render: (a, b, row) => `<button (click)="deleteExtension(${row.id})"} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button><a>`, orderable: false }
+    //{ render: (a, b, row) => `<button type="button" class="btn btn-danger btn-sm">Delete <i class="fas fa-trash"></i></button><a>`, orderable: false }
   ]
   getData = (parameters: object) => this.extensionService.getPage(this.userId, parameters)
 
@@ -32,10 +34,10 @@ export class YourextensionsComponent implements OnInit {
     //this.getData =  this.extensionService.getUserExtensions(this.userId)
 
 
-    this.extensionService.createExtension(this.userId, "EXTENSION_PATH").subscribe((extension) => {
-      console.log("extension created")
-      console.log(extension)
-    })
+    // this.extensionService.createExtension(this.userId, "gamz", "hehexd", "blablablalbla").subscribe((extension) => {
+    //   console.log("extension created")
+    //   console.log(extension)
+    // })
     
     // listar todas as extensões criadas pelo user
     this.extensionService.getUserExtensions(this.userId).subscribe((extensions) => {
@@ -45,14 +47,26 @@ export class YourextensionsComponent implements OnInit {
     })
 
 
-    // this.extensionService.deleteExtension(3).subscribe((extension) => {
-    //   console.log("extension deleted")
-    //   console.log(extension)
-    // })
+  
     
   }
 
   ngOnInit(): void {
+  }
+
+  public deleteExtension(id: number) : void {
+    console.log("_>>>", id);
+    this.extensionService.deleteExtension(id);
+    window.location.reload();
+  }
+
+  public createExtenstion(){
+    this.extensionService.createExtension(this.userId, "ervvxxxx", "zzzzz", "1234567").subscribe((extensions) => {})
+    window.location.reload();
+  }
+
+  myfunc(){
+    console.log("ehheheheheehehehxd");
   }
 
 }

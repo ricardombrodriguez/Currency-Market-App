@@ -21,18 +21,18 @@ export class ExtensionService {
   }
 
   getPage(id: number, parameters: Object): Observable<Page<Extension>> {
-    return this.http.get<Page<Extension>>(environment.API_URL + '/extension?userId=' + id, <Object>{ params: parameters })
+    return this.http.get<Page<Extension>>(environment.API_URL + '/extension/' + id, <Object>{ params: parameters })
   }
   
   installExtension(portfolioId: number, extensionId: number) { }
 
   uninstallExtension(portfolioId: number, extensionId: number) { }
 
-  createExtension(userId: number, path: string) {
-    return this.http.post<Extension>(environment.API_URL + '/extension', {}, { params: { userId, path } })
+  createExtension(userId: number, name: string, description: string, path: string) {
+    return this.http.post<Extension>(environment.API_URL + '/extension', {}, { params: { userId, name, description, path } })
   }
 
-  deleteExtension(extensionId: number) {
-    return this.http.delete(environment.API_URL + '/extension/' + extensionId)
+  deleteExtension(extension_id: number) {
+    return this.http.delete(environment.API_URL + '/extension/' + extension_id)
   }
 }
