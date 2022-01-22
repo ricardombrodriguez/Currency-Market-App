@@ -61,4 +61,5 @@ public class PortfolioService {
     public List<Extension> getPortfolioExtensions(int id) {
         return repository.findByExtensions(id);
     }
+
 }
