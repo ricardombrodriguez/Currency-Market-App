@@ -54,6 +54,9 @@ export class YourextensionsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  n_extension = { ename: "", edescription: "", epath: ""}
+  public error = false;
+  
   public deleteExtension(id: number) : void {
     console.log("_>>>", id);
     this.extensionService.deleteExtension(id);
@@ -61,12 +64,15 @@ export class YourextensionsComponent implements OnInit {
   }
 
   public createExtenstion(){
-    this.extensionService.createExtension(this.userId, "ervvxxxx", "zzzzz", "1234567").subscribe((extensions) => {})
-    window.location.reload();
-  }
+    this.error = false;
 
-  myfunc(){
-    console.log("ehheheheheehehehxd");
+    if ((<HTMLInputElement>document.getElementById("name")).value == "" || (<HTMLInputElement>document.getElementById("description")).value == "" || (<HTMLInputElement>document.getElementById("path")).value == "") {
+      this.error = true;
+      return
+    }
+
+    this.extensionService.createExtension(this.userId, (<HTMLInputElement>document.getElementById("name")).value, (<HTMLInputElement>document.getElementById("description")).value, (<HTMLInputElement>document.getElementById("path")).value).subscribe((extensions) => {})
+    window.location.reload();
   }
 
 }
