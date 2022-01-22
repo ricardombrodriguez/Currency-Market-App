@@ -106,9 +106,7 @@ public class FinanceController {
     @PostMapping("/extension")
     public Extension createExtensions(@RequestParam int userId, @RequestParam String name, @RequestParam String description, @RequestParam String path) {
         User user = userService.getUserById(userId);
-        Extension extension = new Extension(user, path);
-        extension.setName(name);
-        extension.setDescription(description);
+        Extension extension = new Extension(user, name, description, path);
         return extensionservice.saveExtension(extension);
     }
 

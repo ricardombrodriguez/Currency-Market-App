@@ -44,9 +44,11 @@ public class Extension {
     public Extension() {
     }
 
-    public Extension(User user, String path) {
+    public Extension(User user, String name, String path, String description) {
         this.user = user;
+        this.name = name;
         this.path = path;
+        this.description = description;
     }
 
     public Integer getId() {
