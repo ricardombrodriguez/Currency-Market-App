@@ -33,6 +33,7 @@ export class ExtensionService {
   }
 
   deleteExtension(extension_id: number) {
+    console.log("arrived here", extension_id);
     return this.http.delete(environment.API_URL + '/extension/' + extension_id)
   }
 }

@@ -21,7 +21,7 @@ export class YourextensionsComponent implements OnInit {
     { title: 'Name', data: 'name' },
     { title: 'Description', data: 'description' },
     { title: 'Path', data: 'path' },
-    { render: (a, b, row) => `<button (click)="deleteExtension(${row.id})"} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button><a>`, orderable: false }
+    { render: (a, b, row) => `<button type="button" id="${row.id}" class="btn btn-danger btn-sm del-extension"><i class="fas fa-trash"></i></button><a>`, orderable: false }
     //{ render: (a, b, row) => `<button type="button" class="btn btn-danger btn-sm">Delete <i class="fas fa-trash"></i></button><a>`, orderable: false }
   ]
   getData = (parameters: object) => this.extensionService.getPage(this.userId, parameters)
@@ -52,18 +52,22 @@ export class YourextensionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    var exts = this.extensionService;
+    
+    $(document).on('click', '.del-extension', function() {
+      console.log(parseInt(this.id));
+      exts.deleteExtension(parseInt(this.id)).subscribe((extensions) => {});
+      window.location.reload();
+    });
+
   }
+  
 
   n_extension = { ename: "", edescription: "", epath: ""}
   public error = false;
-  
-  public deleteExtension(id: number) : void {
-    console.log("_>>>", id);
-    this.extensionService.deleteExtension(id);
-    window.location.reload();
-  }
 
-  public createExtenstion(){
+
+  public createExtension(){
     this.error = false;
 
     if ((<HTMLInputElement>document.getElementById("name")).value == "" || (<HTMLInputElement>document.getElementById("description")).value == "" || (<HTMLInputElement>document.getElementById("path")).value == "") {
