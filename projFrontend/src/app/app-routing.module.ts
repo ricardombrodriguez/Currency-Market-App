@@ -11,6 +11,7 @@ import { CoinComponent } from './pages/coin/coin.component';
 import { MarketsComponent } from './pages/markets/markets.component';
 import { MarketComponent } from './pages/market/market.component';
 import { TickerComponent } from './pages/ticker/ticker.component';
+import { SearchComponent } from './pages/search/search.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -18,6 +19,11 @@ const routes: Routes = [
   { path: 'coins', children: [
     { path: '', component: CoinsComponent },
     { path: ':id', component: CoinComponent }
+  ] },
+
+  { path: 'search', children: [
+    { path: '', component: SearchComponent },
+    { path: ':id', component: SearchComponent }
   ] },
 
   { path: 'markets', children: [

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -21,6 +22,8 @@ import { FormsModule } from '@angular/forms';
 import { YourextensionsComponent } from './pages/yourextensions/yourextensions.component';
 import { YourextensionComponent } from './pages/yourextension/yourextension.component';
 import { DevelopersComponent } from './pages/developers/developers.component';
+
+import { SearchComponent } from './pages/search/search.component';
 
 @NgModule({
   declarations: [
@@ -46,9 +49,10 @@ import { DevelopersComponent } from './pages/developers/developers.component';
     NgChartsModule,
     HttpClientModule,
     DataTablesModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
-  providers: [],
+  providers: [SearchComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,11 @@
 import { AuthenticationService } from './services/authentication.service';
 import { Component } from '@angular/core';
 import { PortfolioServiceService } from './services/portfolio-service.service';
+import { ActivatedRoute } from '@angular/router';
 
+import { SearchComponent } from './pages/search/search.component';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -57,8 +61,10 @@ export class AppComponent {
   public userID: any
   
   public constructor(
+    public searchComponent: SearchComponent,
     public authService: AuthenticationService,
-    public service: PortfolioServiceService
+    public service: PortfolioServiceService,
+    private router: Router
   ) {
     this.loggedId = authService.isLoggedIn();
     this.userID = this.authService.curentUserId
@@ -101,5 +107,12 @@ export class AppComponent {
 
     this.service.joinPortfolio((<HTMLInputElement>document.getElementById("publicKey")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => { });
     window.location.reload()
+  }
+
+
+  onEnter() {
+    this.router.navigateByUrl('/search');
+    this.searchComponent.search( (<HTMLInputElement>document.getElementById("searchBar")).value );
+
   }
 }

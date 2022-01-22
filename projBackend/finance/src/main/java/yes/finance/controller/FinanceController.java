@@ -88,6 +88,11 @@ public class FinanceController {
         return page_markets_by_currency;
     }
 
+    @GetMapping("/currency/search")
+    public List<Currency> getCurrenciesByName(@RequestParam String name) {
+        return currencyservice.getCurrenciesByName(name);
+    }
+
     //////////////////////////////////////////// EXTENSION
     //////////////////////////////////////////// ////////////////////////////////////////////
 

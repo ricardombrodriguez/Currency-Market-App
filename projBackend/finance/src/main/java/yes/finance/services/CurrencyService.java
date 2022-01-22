@@ -32,7 +32,9 @@ public class CurrencyService {
         return repository.findById((int)id).orElse(null);
     }
 
-    // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO CurrencyRepository.java
+    public List<Currency> getCurrenciesByName(String name) {
+        return repository.findCurrenciesByName(name);
+    }
 
     public String deleteCurrency(int id) {
         repository.deleteById(id);
