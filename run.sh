@@ -39,6 +39,8 @@ sleep 25
 cd ../projBackend/finance
 ./mvnw spring-boot:run &
 
+sleep 30
+
 cd ../../projFrontend
 ng serve &
 
