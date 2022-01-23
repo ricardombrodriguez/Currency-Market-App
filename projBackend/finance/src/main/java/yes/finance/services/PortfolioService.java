@@ -54,6 +54,10 @@ public class PortfolioService {
         return repository.getPortfolioDetailsById(id, pageable);
     }
 
+    public PCurrency getCurrencyDetailsInPortfolio(int portfolioId, int currencyId) {
+        return repository.getCurrencyDetailsInPortfolio(portfolioId, currencyId);
+    }
+
     public List<User> getPortfolioByUsers(String publicKey) {
         return repository.getPortfolioByUsers(publicKey);
     }

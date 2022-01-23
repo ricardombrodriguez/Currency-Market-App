@@ -41,6 +41,10 @@ public class TickerService {
         return repository.findFirst100ByMarketOrderByCreatedAtDesc(market);
     }
 
+    public Ticker getLastTickerByMarket(Market market) {
+        return repository.findFirstByMarketOrderByCreatedAtDesc(market);
+    }
+
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO TickerRepository.java
 
     public String deleteTicker(int id) {

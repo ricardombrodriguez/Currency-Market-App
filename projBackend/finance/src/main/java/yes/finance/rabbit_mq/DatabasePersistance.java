@@ -16,10 +16,14 @@ import java.util.Comparator;
 
 import yes.finance.model.Currency;
 import yes.finance.model.Market;
+import yes.finance.model.Order;
 import yes.finance.model.Ticker;
+import yes.finance.model.Transaction;
 import yes.finance.repository.CurrencyRepository;
 import yes.finance.repository.MarketRepository;
+import yes.finance.repository.OrderRepository;
 import yes.finance.repository.TickerRepository;
+import yes.finance.repository.TransactionRepository;
 
 @Component
 public class DatabasePersistance implements ApplicationListener<MessageEvent> {
@@ -32,6 +36,12 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
     @Autowired
     private CurrencyRepository currencyRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     private ArrayList<String> currencies = new ArrayList<String>();
 
@@ -69,6 +79,25 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 Float askRate = Float.parseFloat(data.getString("askRate"));
                 Ticker ticker = new Ticker(market, lastTradeRate, bidRate, askRate);
                 tickerRepository.save(ticker);
+
+                List<Order> buyOrders = orderRepository.findSellOrderComplements(0, market.getId(), ticker.getMin_seller_value());
+                List<Order> sellOrders = orderRepository.findBuyOrderComplements(0, market.getId(), ticker.getMax_buyer_value());
+
+                for (Order order: buyOrders) {
+                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMin_seller_value(), null, order.getMarket());
+                    Transaction t = new Transaction(complementOrder, order);
+
+                    orderRepository.save(complementOrder);
+                    transactionRepository.save(t);
+                }
+
+                for (Order order: sellOrders) {
+                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMax_buyer_value(), null, order.getMarket());
+                    Transaction t = new Transaction(order, complementOrder);
+
+                    orderRepository.save(complementOrder);
+                    transactionRepository.save(t);
+                }
 
                 // change %:
 
