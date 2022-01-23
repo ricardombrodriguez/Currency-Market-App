@@ -41,6 +41,7 @@ public class FinanceController {
 
     // CLICK EXTENSION //
 
+    /*     
     @GetMapping("/click-extension/{market}/{operation}")
     public void getClickNotification(@PathVariable String market, @PathVariable String operation) {
 
@@ -54,7 +55,8 @@ public class FinanceController {
         for (Portfolio p : portfoliosWithClickExtensions) {
             this.createOrders(marketId, p.getId(), quantity, value);
         }
-    }
+    } 
+    */
 
     //////////////////////////////////////////// USER
     //////////////////////////////////////////// ////////////////////////////////////////////

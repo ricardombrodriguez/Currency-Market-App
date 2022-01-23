@@ -6,9 +6,18 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -17,9 +26,11 @@ import java.util.Comparator;
 import yes.finance.model.Currency;
 import yes.finance.model.Market;
 import yes.finance.model.Ticker;
+import yes.finance.model.Extension;
 import yes.finance.repository.CurrencyRepository;
 import yes.finance.repository.MarketRepository;
 import yes.finance.repository.TickerRepository;
+import yes.finance.repository.ExtensionRepository;
 
 @Component
 public class DatabasePersistance implements ApplicationListener<MessageEvent> {
@@ -32,6 +43,9 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
     @Autowired
     private CurrencyRepository currencyRepository;
+
+    @Autowired
+    private ExtensionRepository extensionRepository;
 
     private ArrayList<String> currencies = new ArrayList<String>();
 
@@ -62,13 +76,47 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 String symbol = data.getString("symbol");
                 Market market = marketRepository.findBySymbol(symbol);
 
-                if (market == null) return;
+                if (market == null)
+                    return;
 
                 Float lastTradeRate = Float.parseFloat(data.getString("lastTradeRate"));
                 Float bidRate = Float.parseFloat(data.getString("bidRate"));
                 Float askRate = Float.parseFloat(data.getString("askRate"));
                 Ticker ticker = new Ticker(market, lastTradeRate, bidRate, askRate);
                 tickerRepository.save(ticker);
+
+                for (Extension e : extensionRepository.findAll()) {
+
+                    URL url;
+
+                    try {
+
+                        url = new URL(e.getPath());
+                        HttpURLConnection http = (HttpURLConnection) url.openConnection();
+                        http.setRequestMethod("POST");
+                        http.setDoOutput(true);
+                        http.setRequestProperty("Accept", "application/json");
+                        http.setRequestProperty("Content-Type", "application/json");
+
+                        String json = new ObjectMapper().writeValueAsString(ticker);
+
+                        byte[] out = json.getBytes(StandardCharsets.UTF_8);
+
+                        OutputStream stream = http.getOutputStream();
+                        stream.write(out);
+
+                        System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+                        http.disconnect();
+
+                    } catch (MalformedURLException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+
+                }
 
                 // change %:
 
