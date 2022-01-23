@@ -1,6 +1,7 @@
 package yes.finance.services;
 
 import yes.finance.model.Extension;
+import yes.finance.model.Portfolio;
 import yes.finance.model.User;
 import yes.finance.repository.ExtensionRepository;
 
@@ -58,4 +59,9 @@ public class ExtensionService {
     public Extension getExtensionByPath(String path) {
         return repository.findByPath(path);
     }
+
+    public List<Portfolio> getExtensionPortfolios(Extension extension) {
+        return repository.findExtensionPortfolios(extension);
+    }
+
 }

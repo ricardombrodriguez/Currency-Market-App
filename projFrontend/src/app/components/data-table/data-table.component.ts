@@ -13,22 +13,23 @@ export class DataTableComponent implements OnInit {
   @Input() id: string = ""
   @Input() columns: DataTables.ColumnSettings[] = []
   @Input() getData: ((parameters: Object) => Observable<Page<any>>) | null = null
-  
+
   dtOptions: DataTables.Settings = {}
 
   constructor() { }
 
   ngOnInit(): void {
+
     this.dtOptions = {
       responsive: true,
       ordering: true,
 
       columns: this.columns,
-      
+
       serverSide: true,
       ajax: (parameters: any, callback: any) => {
         parameters = {
-          page: parameters.start/parameters.length,
+          page: parameters.start / parameters.length,
           size: parameters.length,
           sort: parameters.columns[parameters.order[0].column].data,
           order: parameters.order[0].dir

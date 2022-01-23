@@ -22,12 +22,14 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Integer> {
     Portfolio findByPublicKey(String publicKey);
 
     // query
-    @Query(value = "SELECT c.id, c.logo_url, c.name, c.online, c.symbol, SUM(d.quantity) quantity, SUM(d.volume) volume FROM ( " +
-                "SELECT o.portfolio_id, o.market_id, -o.quantity quantity, -o.quantity*o.order_value volume FROM `transaction` t " +
-                "INNER JOIN orders o ON t.origin_order_id = o.id " +
-                "UNION " +
-                "SELECT o.portfolio_id, o.market_id, o.quantity, o.quantity*o.order_value volume FROM `transaction` t " +
-                "INNER JOIN orders o ON t.destiny_order_id = o.id ) d " +
+    @Query(value = "SELECT c.id, c.logo_url, c.name, c.online, c.symbol, SUM(d.quantity) quantity, SUM(d.volume) volume FROM ( "
+            +
+            "SELECT o.portfolio_id, o.market_id, -o.quantity quantity, -o.quantity*o.order_value volume FROM `transaction` t "
+            +
+            "INNER JOIN orders o ON t.origin_order_id = o.id " +
+            "UNION " +
+            "SELECT o.portfolio_id, o.market_id, o.quantity, o.quantity*o.order_value volume FROM `transaction` t " +
+            "INNER JOIN orders o ON t.destiny_order_id = o.id ) d " +
             "INNER JOIN market m ON m.id = d.market_id " +
             "INNER JOIN currency c ON m.destiny_currency_id = c.id " +
             "WHERE d.portfolio_id = :id " +

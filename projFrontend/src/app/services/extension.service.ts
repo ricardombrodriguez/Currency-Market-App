@@ -23,7 +23,7 @@ export class ExtensionService {
   getPage(id: number, parameters: Object): Observable<Page<Extension>> {
     return this.http.get<Page<Extension>>(environment.API_URL + '/extension/' + id, <Object>{ params: parameters })
   }
-  
+
   installExtension(portfolioId: number, extensionId: number) { }
 
   uninstallExtension(portfolioId: number, extensionId: number) { }
@@ -36,4 +36,15 @@ export class ExtensionService {
     console.log("arrived here", extension_id);
     return this.http.delete(environment.API_URL + '/extension/' + extension_id)
   }
+
+  // funções da extensão 'click':
+
+  clickBuy() {
+    return this.http.get<any>(environment.API_URL + '/click-extension/BTC-EUR/BUY')
+  }
+
+  clickSell() {
+    return this.http.get<any>(environment.API_URL + '/click-extension/BTC-EUR/SELL')
+  }
+
 }

@@ -39,6 +39,29 @@ public class FinanceController {
     @Autowired
     private UserService userService;
 
+    // CLICK EXTENSION //
+
+    @GetMapping("/click-extension/{market}/{operation}")
+    public void getClickNotification(@PathVariable String market, @PathVariable String operation) {
+
+        System.out.println(market);
+        System.out.println(operation);
+
+        // enviar para extensão (isto se calhar pode ser feito diretamente na pagina do
+        // click)
+        // a extensão verifica a lista de todos os subscribers e envia notificação para
+        // vender/comprar
+
+        Extension clickExtension = extensionservice.getExtensionById(1);
+        List<Portfolio> portfoliosWithClickExtensions = extensionservice.getExtensionPortfolios(clickExtension);
+        System.out.println("Portfolios with click extensions");
+
+        for (Portfolio p : portfoliosWithClickExtensions) {
+            System.out.println("portfolio received " + p.getName());
+        }
+
+    }
+
     //////////////////////////////////////////// USER
     //////////////////////////////////////////// ////////////////////////////////////////////
 

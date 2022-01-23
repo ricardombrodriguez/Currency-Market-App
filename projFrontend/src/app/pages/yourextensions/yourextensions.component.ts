@@ -29,7 +29,7 @@ export class YourextensionsComponent implements OnInit {
   constructor(private extensionService: ExtensionService, private authService: AuthenticationService) {
 
     this.userId = parseInt(this.authService.curentUserId!)
-    
+
     //this.extnsns=this.extensionService.getUserExtensions(this.userId)
     //this.getData =  this.extensionService.getUserExtensions(this.userId)
 
@@ -47,8 +47,11 @@ export class YourextensionsComponent implements OnInit {
     })
 
 
-  
-    
+    // this.extensionService.deleteExtension(3).subscribe((extension) => {
+    //   console.log("extension deleted")
+    //   console.log(extension)
+    // })
+
   }
 
   ngOnInit(): void {
