@@ -75,6 +75,7 @@ export class AppComponent {
     this.userID = this.authService.curentUserId
 
     authService.userIdObs.subscribe((data) => {
+      this.userID = data
       this.loggedId = data !== null;
       if (this.loggedId) {
         $('.modal-backdrop').remove();
