@@ -1,10 +1,8 @@
 import { CoinsServiceService } from './../../services/coins-service.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Coin } from 'src/app/interfaces/coin';
-import { map, Observable } from 'rxjs';
-import { param } from 'jquery';
-import { ThrowStmt } from '@angular/compiler';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-coin',
@@ -22,10 +20,10 @@ export class CoinComponent implements OnInit {
 
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
-    { title: 'Market', render: (a, b, row) => `<a href="/coins/${row.originCurrency.id}">${row.originCurrency.name}</a>-<a href="/coins/${row.destinyCurrency.id}">${row.destinyCurrency.name}</a>` },
-    { title: 'Price', render: (a, b, row) => `${row.price}$` },
-    { title: '% 1m', render: (a, b, row) => `${row.minuteChange}%` },
-    { title: '% 1h', render: (a, b, row) => `${row.hourChange}%` }, 
+    { title: 'Market', data: 'originCurrency', render: (a, b, row) => `<a href="/coins/${row.originCurrency.id}">${row.originCurrency.name}</a>-<a href="/coins/${row.destinyCurrency.id}">${row.destinyCurrency.name}</a>` },
+    { title: 'Price', data: 'price', render: d => `${d}$` },
+    { title: '% 1m', data: 'minuteChange', render: d => `${d}%` },
+    { title: '% 1h', data: 'hourChange', render: d => `${d}%` }, 
     { title: '', render: (a, b, row) => `<a href="/markets/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>`, orderable: false },
   ]
 

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.data.domain.PageImpl;
 
 import yes.finance.model.*;
 import yes.finance.model.Currency;
@@ -106,10 +105,8 @@ public class FinanceController {
     }
 
     @GetMapping("/currency/{id}")
-    public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId) {
-        List<Market> markets_by_currency = marketservice.getMarketsByCurrency(currencyId);
-        Page<Market> page_markets_by_currency = new PageImpl<>(markets_by_currency);
-        return page_markets_by_currency;
+    public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId, Pageable pageable) {
+        return marketservice.getMarketsByCurrency(currencyId, pageable);
     }
 
     @GetMapping("/currency/search")

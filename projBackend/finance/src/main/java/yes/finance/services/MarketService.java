@@ -35,8 +35,8 @@ public class MarketService {
         return repository.findById((int) id).orElse(null);
     }
 
-    public List<Market> getMarketsByCurrency(int currency_id) {
-        return repository.findByCurrencyId(currency_id);
+    public Page<Market> getMarketsByCurrency(int currency_id, Pageable pageable) {
+        return repository.findByCurrencyId(currency_id, pageable);
     }
 
     public Long getMarketsCount() {
