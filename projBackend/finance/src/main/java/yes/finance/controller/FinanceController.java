@@ -190,6 +190,11 @@ public class FinanceController {
         return portfolioservice.getPortfolioDetailsById(id, pageable);
     }
 
+    @GetMapping("/portfolio/{id}/transactions")
+    public Page<Map<String, Object>> getPortfolioTransactions(@PathVariable int id, Pageable pageable) {
+        return transactionservice.getTransactionDetails(id, pageable);
+    }
+
     @PostMapping("porfolio/users")
     public List<User> getPortfolioUsers(@RequestParam String publicKey) {
         System.out.println("/users do portfolio");

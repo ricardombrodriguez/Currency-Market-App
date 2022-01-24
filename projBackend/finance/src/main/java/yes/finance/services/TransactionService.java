@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TransactionService {
@@ -36,6 +37,10 @@ public class TransactionService {
     public String deleteTransaction(int id) {
         repository.deleteById(id);
         return "Transaction (id="+ id +") removed!";
+    }
+
+    public Page<Map<String, Object>> getTransactionDetails(int portfolio_id, Pageable pageable) {
+        return repository.getTransactionDetails(portfolio_id, pageable);
     }
 
     /* public Transaction updateTransaction(Transaction Transaction) {

@@ -142,4 +142,14 @@ export class PortfolioComponent implements OnInit {
     { render: (a, b, row) => `<a href="/coins/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>`, orderable: false },
   ]
 
+  getTransactions = (parameters: Object) => this.portfolioService.getPortfolioTransactions(parameters, this.portfolio.id)
+
+  tcolumns: DataTables.ColumnSettings[] = [
+    { title: 'Date', data: 'created_at', render: a => (new Date(a)).toLocaleString() },
+    { title: 'Operation', render: (a, b, row) => row.is_seller === null ? '<i class="text-secondary">System</i>' : (row.is_seller == 1 ? '<i class="fas fa-arrow-left text-danger"></i>' : '<i class="fas fa-arrow-right text-success"></i>') },
+    { title: 'Market', render: (a, b, row) => (row.is_seller === null ? '' : `<a href="/coins/${row.sell_curr_id}">${row.sell_curr_name}</a>-`) + `<a href="/coins/${row.buy_curr_id}">${row.buy_curr_name}</a>` },
+    { title: 'Quantity', data: 'qt' },
+    { title: 'Value', data: 'val' },
+  ]
+
 }
