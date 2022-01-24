@@ -36,6 +36,14 @@ export class PortfolioComponent implements OnInit {
     console.log(">> this portfolio: " + this.portfolio)
     console.log(">>> all extensions: " + this.allExtensions)
 
+
+    const url_array = this.router.url.split("/");
+    const id = +url_array[url_array.length - 1];
+    this.portfolioService.startUpdates(id, () => {
+      $('#currencies').DataTable().ajax.reload()
+      $('#history').DataTable().ajax.reload()
+    })
+
     // this.portfolioService.getPortfolio(id).pipe(
     //   mergeMap((portfolio) => this.portfolioService.getAllExtensions())
     // ).subscribe((allExtensions) => {
