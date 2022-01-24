@@ -310,7 +310,8 @@ public class FinanceController {
         else req_curr = market.getDestinyCurrency(); 
 
         PCurrency pcurr = portfolioservice.getCurrencyDetailsInPortfolio(portfolioId, req_curr.getId());
-        System.out.println(pcurr.getQuantity());
+        if (pcurr == null) return null;
+        
         if ((quantity > 0 && quantity > pcurr.getQuantity()) || (quantity < 0 && -quantity > pcurr.getQuantity())) return null;
         
         Order order = orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
