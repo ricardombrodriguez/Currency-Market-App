@@ -31,5 +31,4 @@ export class MarketServiceService {
     return this.http.get<Market>(environment.API_URL + '/market/' + id)
   }
 
-
 }
