@@ -1,44 +1,47 @@
-<h1 style="display: inline-block;">My extensions</h1>
-<!-- <button (click)="createExtenstion()" type="button" class="btn btn-primary btn-sm"><i class="fas fa-folder-plus"></i></button><a> -->
-
-<a type="button" class="btn btn-primary btn-sm" href="#" aria-label="Add a new extention" data-bs-toggle="modal" data-bs-target="#newExtension" style="float:inline-end; margin-top: 10px;">
+<div style="margin-top: 20px; margin-bottom: 20px;">
+    <h1 style="display: inline-block;">My extensions</h1>
+    <a type="button" class="btn btn-primary btn-sm" href="#" aria-label="Add a new extention" data-bs-toggle="modal"
+        data-bs-target="#newExtension" style="float:right; margin-top: 10px;">
         <i class="fas fa-folder-plus"></i>
-         Create Extension
-</a>
+        Create Extension
+    </a>
+</div>
 
 <div class="modal fade" id="newExtension" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Create Extension</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form>
-            <div>
-                <label for="newPortfolioName" class="form-label">Name</label>
-                <input id="name" type="text" class="form-control" placeholder="Name" name="e_name" [(ngModel)]="n_extension.ename">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Extension</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div>
-                <label for="newPortfolioName" class="form-label">Description</label>
-                <input [(ngModel)]="n_extension.edescription" name="description" id="description" type="text" class="form-control" placeholder="Description" >
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label for="newPortfolioName" class="form-label">Name</label>
+                        <input id="name" type="text" class="form-control" placeholder="Name" name="e_name"
+                            [(ngModel)]="n_extension.ename">
+                    </div>
+                    <div>
+                        <label for="newPortfolioName" class="form-label">Description</label>
+                        <input [(ngModel)]="n_extension.edescription" name="description" id="description" type="text"
+                            class="form-control" placeholder="Description">
+                    </div>
+                    <div>
+                        <label for="newPortfolioName" class="form-label">Path</label>
+                        <input id="path" type="text" class="form-control" placeholder="Path" name="path"
+                            [(ngModel)]="n_extension.epath">
+                    </div>
+                </form>
             </div>
-            <div>
-                <label for="newPortfolioName" class="form-label">Path</label>
-                <input id="path" type="text" class="form-control" placeholder="Path" name="path" [(ngModel)]="n_extension.epath">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" (click)="createExtension()">Create</button>
             </div>
-            </form>
-        </div>
-        <div class="modal-footer" >
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary" (click)="createExtension()">Create</button>
-        </div>
-        <div *ngIf="error==true" style="text-align:center; color:red;">
-            <span>Invalid Extension's data</span>
-        </div>
+            <div *ngIf="error==true" style="text-align:center; color:red;">
+                <span>Invalid Extension's data</span>
+            </div>
         </div>
     </div>
 </div>
 
 <app-data-table [columns]="columns" [getData]="getData"></app-data-table>
-

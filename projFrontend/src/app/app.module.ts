@@ -21,7 +21,6 @@ import { FormsModule } from '@angular/forms';
 import { YourextensionsComponent } from './pages/yourextensions/yourextensions.component';
 import { YourextensionComponent } from './pages/yourextension/yourextension.component';
 import { DevelopersComponent } from './pages/developers/developers.component';
-import { ClickExtensionComponent } from './pages/click-extension/click-extension.component';
 
 @NgModule({
   declarations: [
@@ -38,9 +37,8 @@ import { ClickExtensionComponent } from './pages/click-extension/click-extension
     GraphComponent,
     YourextensionsComponent,
     YourextensionComponent,
-    DevelopersComponent,
-    ClickExtensionComponent,
-    
+    DevelopersComponent
+
   ],
   imports: [
     BrowserModule,

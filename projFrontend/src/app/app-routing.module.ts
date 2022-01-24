@@ -11,7 +11,6 @@ import { CoinComponent } from './pages/coin/coin.component';
 import { MarketsComponent } from './pages/markets/markets.component';
 import { MarketComponent } from './pages/market/market.component';
 import { TickerComponent } from './pages/ticker/ticker.component';
-import { ClickExtensionComponent } from './pages/click-extension/click-extension.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -54,9 +53,7 @@ const routes: Routes = [
         ]
       }
     ]
-  },
-
-  { path: 'click-extension', component: ClickExtensionComponent }
+  }
 
 ];
 
