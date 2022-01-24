@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Coin } from './interfaces/coin';
 
 import { SearchService } from './services/search.service';
-
+ 
 import { Router } from '@angular/router';
 import { timeout } from 'rxjs';
 
