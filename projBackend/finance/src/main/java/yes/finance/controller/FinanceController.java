@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
+
 
 import yes.finance.model.*;
 import yes.finance.model.Currency;
@@ -67,7 +70,7 @@ public class FinanceController {
     }
 
     @GetMapping("/currency")
-    public Page<Currency> getAllCurrencies(Pageable pageable) {
+    public Page<Currency> getAllCurrencies(@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return currencyservice.getCurrencies(pageable);
     }
 
@@ -219,7 +222,7 @@ public class FinanceController {
     }
 
     @GetMapping("/market")
-    public Page<Market> getAllMarkets(Pageable pageable) {
+    public Page<Market> getAllMarkets(@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return marketservice.getMarkets(pageable);
     }
 
