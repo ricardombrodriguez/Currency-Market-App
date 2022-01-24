@@ -23,7 +23,7 @@ import yes.finance.repository.CurrencyRepository;
 import yes.finance.repository.MarketRepository;
 import yes.finance.repository.OrderRepository;
 import yes.finance.repository.TickerRepository;
-import yes.finance.repository.TransactionRepository;
+import yes.finance.services.TransactionService;
 
 @Component
 public class DatabasePersistance implements ApplicationListener<MessageEvent> {
@@ -41,7 +41,7 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
     private OrderRepository orderRepository;
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionService transactionService;
 
     private ArrayList<String> currencies = new ArrayList<String>();
 
@@ -88,7 +88,7 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                     Transaction t = new Transaction(complementOrder, order);
 
                     orderRepository.save(complementOrder);
-                    transactionRepository.save(t);
+                    transactionService.saveTransaction(t);
                 }
 
                 for (Order order: sellOrders) {
@@ -96,7 +96,7 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                     Transaction t = new Transaction(order, complementOrder);
 
                     orderRepository.save(complementOrder);
-                    transactionRepository.save(t);
+                    transactionService.saveTransaction(t);
                 }
 
                 // change %:

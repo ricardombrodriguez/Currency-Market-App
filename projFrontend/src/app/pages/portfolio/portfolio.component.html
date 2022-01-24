@@ -26,13 +26,13 @@
         <div class="col-12">
             <br>
             <h2>Portfolio</h2>
-            <app-data-table [columns]="columns" [getData]="getData"></app-data-table>
+            <app-data-table [id]="'currencies'" [columns]="columns" [getData]="getData"></app-data-table>
         </div>
 
         <div class="col-12">
             <br>
             <h2>History</h2>
-            <app-data-table [columns]="tcolumns" [getData]="getTransactions"></app-data-table>
+            <app-data-table [id]="'history'" [columns]="tcolumns" [getData]="getTransactions"></app-data-table>
         </div>
     </div>
 
