@@ -26,7 +26,7 @@ export class PortfolioComponent implements OnInit {
   public id: number = 0;
 
 
-  constructor(public portfolioService: PortfolioServiceService, private router: Router, private activatedRoute: ActivatedRoute, public authService: AuthenticationService) { }
+  constructor(public portfolioService: PortfolioServiceService, private router: Router, public authService: AuthenticationService) { }
 
   ngOnInit(): void {
 
@@ -83,7 +83,6 @@ export class PortfolioComponent implements OnInit {
   getPortfolioUsers(): void {
 
     this.portfolioService.getPortfolioUsers(this.portfolio.public_key).subscribe((users) => {
-      console.log("port service....")
       this.users = users;
     })
 
@@ -122,11 +121,9 @@ export class PortfolioComponent implements OnInit {
   //   })
   // }
 
-  getAllExtensions(): void {
-    this.portfolioService.getAllExtensions().subscribe((extensions) => {
+  getAllExtensions() {
+    this.portfolioService.getAllExtensionsList().subscribe((extensions) => {
       this.allExtensions = extensions;
-      console.log("all extensionsssssssssssssssssss")
-      console.log(this.allExtensions)
     })
   }
 

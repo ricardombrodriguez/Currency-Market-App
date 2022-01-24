@@ -8,12 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-<<<<<<< HEAD
-=======
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort;
-
->>>>>>> feature/extensions
 
 import yes.finance.model.*;
 import yes.finance.model.Currency;
@@ -45,8 +40,8 @@ public class FinanceController {
     @Autowired
     private UserService userService;
 
+    private Random random = new Random();
 
-    
     //////////////////////////////////////////// USER
     //////////////////////////////////////////// ////////////////////////////////////////////
 
@@ -75,7 +70,8 @@ public class FinanceController {
     }
 
     @GetMapping("/currency")
-    public Page<Currency> getAllCurrencies(@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<Currency> getAllCurrencies(
+            @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return currencyservice.getCurrencies(pageable);
     }
 
@@ -106,16 +102,21 @@ public class FinanceController {
     public Page<Extension> getAllExtensions(Pageable pageable) {
         return extensionservice.getExtensions(pageable);
     }
-    
+
+    @GetMapping("/extensions")
+    public List<Extension> getExtensionsList() {
+        return extensionservice.getExtensionsList();
+    }
 
     @GetMapping("/extension/{id}")
     public Page<Extension> getUserExtensions(@PathVariable int id, Pageable pageable) {
-        //User user = userService.getUserById(id);
+        // User user = userService.getUserById(id);
         return extensionservice.getExtensionsByUser(id, pageable);
     }
 
     @PostMapping("/extension")
-    public Extension createExtensions(@RequestParam int userId, @RequestParam String name, @RequestParam String description, @RequestParam String path) {
+    public Extension createExtensions(@RequestParam int userId, @RequestParam String name,
+            @RequestParam String description, @RequestParam String path) {
         User user = userService.getUserById(userId);
         Extension extension = new Extension(user, name, description, path);
         return extensionservice.saveExtension(extension);
@@ -165,7 +166,6 @@ public class FinanceController {
         u.addPortfolio(p);
         userService.saveUser(u);
 
-        System.out.println(random.nextInt(marketservice.getMarketsCount().intValue() + 1));
         Market m = marketservice.getMarketById(random.nextInt(marketservice.getMarketsCount().intValue() + 1));
         Order origin_order = orderservice.saveOrder(new Order(Float.valueOf(-100), Float.valueOf(0), null, m));
         Order destiny_order = orderservice.saveOrder(new Order(Float.valueOf(100), Float.valueOf(0), p, m));
@@ -282,21 +282,28 @@ public class FinanceController {
     }
 
     @PostMapping("/order")
-    public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity, @RequestParam Float orderValue) {
-        if (quantity == 0) return null;
+    public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity,
+            @RequestParam Float orderValue) {
+        if (quantity == 0)
+            return null;
 
         Market market = marketservice.getMarketById(marketId);
 
         Currency req_curr;
-        if (quantity > 0) req_curr = market.getOriginCurrency(); 
-        else req_curr = market.getDestinyCurrency(); 
+        if (quantity > 0)
+            req_curr = market.getOriginCurrency();
+        else
+            req_curr = market.getDestinyCurrency();
 
         PCurrency pcurr = portfolioservice.getCurrencyDetailsInPortfolio(portfolioId, req_curr.getId());
-        if (pcurr == null) return null;
-        
-        if ((quantity > 0 && quantity > pcurr.getQuantity()) || (quantity < 0 && -quantity > pcurr.getQuantity())) return null;
-        
-        Order order = orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
+        if (pcurr == null)
+            return null;
+
+        if ((quantity > 0 && quantity > pcurr.getQuantity()) || (quantity < 0 && -quantity > pcurr.getQuantity()))
+            return null;
+
+        Order order = orderservice
+                .saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
         if (order != null) {
             sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
             orderservice.checkClose(order);

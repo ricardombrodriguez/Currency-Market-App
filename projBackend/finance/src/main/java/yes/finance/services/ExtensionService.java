@@ -28,7 +28,7 @@ public class ExtensionService {
         return repository.findAll(pageable);
     }
 
-    public List<Extension> getExtensions() {
+    public List<Extension> getExtensionsList() {
         return repository.findAll();
     }
 
