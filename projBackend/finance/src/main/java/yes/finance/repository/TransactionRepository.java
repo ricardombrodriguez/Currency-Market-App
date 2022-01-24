@@ -19,6 +19,7 @@ public interface TransactionRepository extends JpaRepository<Transaction,Integer
     "INNER JOIN market m ON m.id = oo.market_id " +
     "INNER JOIN currency co ON m.origin_currency_id = co.id " +
     "INNER JOIN currency cd ON m.destiny_currency_id = cd.id " +
-    "WHERE oo.portfolio_id = ?1 OR do.portfolio_id = ?1", nativeQuery=true)
+    "WHERE oo.portfolio_id = ?1 OR do.portfolio_id = ?1 " +
+    "ORDER BY t.created_at DESC", nativeQuery=true)
     public Page<Map<String, Object>> getTransactionDetails(int portfolio_id, Pageable pageable);
 }

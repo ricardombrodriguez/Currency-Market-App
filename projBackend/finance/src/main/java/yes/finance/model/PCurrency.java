@@ -12,6 +12,4 @@ public interface PCurrency {
     Boolean getOnline();
 
     Float getQuantity();
-
-    Float getVolume();
 }
