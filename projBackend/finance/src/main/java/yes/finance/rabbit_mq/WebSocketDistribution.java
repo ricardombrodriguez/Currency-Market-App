@@ -19,8 +19,12 @@ public class WebSocketDistribution implements ApplicationListener<MessageEvent> 
 
     if (channel == MQChannels.Tickers) {
       JSONObject data = new JSONObject(input);
+
+      // send to specific market (to update graph and everything)
       sendingOperations.convertAndSend("/market/" + data.getString("symbol"), input);
+
     }
+
   }
-  
+
 }

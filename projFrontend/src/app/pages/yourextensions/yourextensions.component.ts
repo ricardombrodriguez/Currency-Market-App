@@ -18,24 +18,26 @@ export class YourextensionsComponent implements OnInit {
 
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
-    { title: 'Path', render: (a, b, row) => `${row.path}` },
-   // { render: (a, b, row) => `<button (click)="extensionService.deleteExtension(${row.id})"} type="button" class="btn btn-danger btn-sm">Delete <i class="fas fa-trash"></i></button><a>`, orderable: false }
-    { render: (a, b, row) => `<button type="button" class="btn btn-danger btn-sm">Delete <i class="fas fa-trash"></i></button><a>`, orderable: false }
+    { title: 'Name', data: 'name' },
+    { title: 'Description', data: 'description' },
+    { title: 'Path', data: 'path' },
+    { render: (a, b, row) => `<button type="button" id="${row.id}" class="btn btn-danger btn-sm del-extension"><i class="fas fa-trash"></i></button><a>`, orderable: false }
+    //{ render: (a, b, row) => `<button type="button" class="btn btn-danger btn-sm">Delete <i class="fas fa-trash"></i></button><a>`, orderable: false }
   ]
   getData = (parameters: object) => this.extensionService.getPage(this.userId, parameters)
 
   constructor(private extensionService: ExtensionService, private authService: AuthenticationService) {
 
     this.userId = parseInt(this.authService.curentUserId!)
-    
+
     //this.extnsns=this.extensionService.getUserExtensions(this.userId)
     //this.getData =  this.extensionService.getUserExtensions(this.userId)
 
 
-    this.extensionService.createExtension(this.userId, "EXTENSION_PATH").subscribe((extension) => {
-      console.log("extension created")
-      console.log(extension)
-    })
+    // this.extensionService.createExtension(this.userId, "gamz", "hehexd", "blablablalbla").subscribe((extension) => {
+    //   console.log("extension created")
+    //   console.log(extension)
+    // })
     
     // listar todas as extensões criadas pelo user
     this.extensionService.getUserExtensions(this.userId).subscribe((extensions) => {
@@ -49,10 +51,35 @@ export class YourextensionsComponent implements OnInit {
     //   console.log("extension deleted")
     //   console.log(extension)
     // })
-    
+
   }
 
   ngOnInit(): void {
+    var exts = this.extensionService;
+    
+    $(document).on('click', '.del-extension', function() {
+      console.log(parseInt(this.id));
+      exts.deleteExtension(parseInt(this.id)).subscribe((extensions) => {});
+      window.location.reload();
+    });
+
+  }
+  
+
+  n_extension = { ename: "", edescription: "", epath: ""}
+  public error = false;
+
+
+  public createExtension(){
+    this.error = false;
+
+    if ((<HTMLInputElement>document.getElementById("name")).value == "" || (<HTMLInputElement>document.getElementById("description")).value == "" || (<HTMLInputElement>document.getElementById("path")).value == "") {
+      this.error = true;
+      return
+    }
+
+    this.extensionService.createExtension(this.userId, (<HTMLInputElement>document.getElementById("name")).value, (<HTMLInputElement>document.getElementById("description")).value, (<HTMLInputElement>document.getElementById("path")).value).subscribe((extensions) => {})
+    window.location.reload();
   }
 
 }

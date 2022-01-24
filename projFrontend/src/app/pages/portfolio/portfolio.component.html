@@ -20,75 +20,49 @@
             role="tab" aria-controls="profile" aria-selected="false">Extensions</button>
     </li>
 </ul>
-<!-- 
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
-        <div class="col-12">
-            <h2>tabela e gráfico</h2>
-            <app-data-table [columns]="columns" [getData]="getData"></app-data-table>
-</div>
-
-
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <div style="display:flex">
-        <h1 class="h2"> Portfolio details </h1>
-        <h5>Public key: </h5>
-        <p>{{ portfolio.public_key }} </p>
-    </div>
-    <div style="display:flex">
-        <h5>Owner: </h5>
-        <p>{{ portfolio.users[0].username }}</p>
-    </div>
-    <div style="display:flex">
-        <ul *ngFor="let user of users;">
-            <li>{{ user.username }}</li>
-        </ul>
-    </div>
-</div> 
--->
-
 
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
         <div class="col-12">
-            <h2>Tabela</h2>
+            <br>
+            <h2>Portfolio</h2>
             <app-data-table [columns]="columns" [getData]="getData"></app-data-table>
         </div>
+    </div>
 
 
-        <div class="tab-pane fade" id="extensions" role="tabpanel" aria-labelledby="extensions-tab">
-            <div class="mt-4 col-sm-12 col-md-6 col-lg-4">
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-secondary" type="submit">Search</button>
-                </form>
-            </div>
+    <div class="tab-pane fade" id="extensions" role="tabpanel" aria-labelledby="extensions-tab">
+        <div class="mt-4 col-sm-12 col-md-6 col-lg-4">
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </form>
+        </div>
 
-            <div class="list-group mt-4">
+        <div class="list-group mt-4">
 
-                <ul *ngFor="let extension of allExtensions;">
-                    <div class="d-flex align-items-center list-group-item list-group-item-action">
-                        <div class="w-100">
+            <ul *ngFor="let extension of allExtensions;">
+                <div class="d-flex align-items-center list-group-item list-group-item-action">
+                    <div class="w-100">
 
-                            <h5 class="mb-0">{{ extension.name }}</h5>
-                            <p class="mb-0">{{ extension.description }}</p>
-                            <small>By <b>{{ extension.user.username}}</b></small>
-                        </div>
-
-                        <div *ngIf="isInstalled(extension)">
-                            <button class="btn btn-danger text-nowrap" (click)="deleteExtension(extension)"><i
-                                    class="fas fa-trash"></i></button>
-                        </div>
-
-                        <div *ngIf="!isInstalled(extension)">
-                            <button class="btn btn-primary text-nowrap" (click)="addExtension(extension)"><i
-                                    class="fas fa-download"></i></button>
-                        </div>
+                        <h5 class="mb-0">{{ extension.name }}</h5>
+                        <p class="mb-0">{{ extension.description }}</p>
+                        <small>By <b>{{ extension.user.username}}</b></small>
                     </div>
-                </ul>
 
-            </div>
+                    <div *ngIf="isInstalled(extension)">
+                        <button class="btn btn-danger text-nowrap" (click)="deleteExtension(extension)"><i
+                                class="fas fa-trash"></i></button>
+                    </div>
+
+                    <div *ngIf="!isInstalled(extension)">
+                        <button class="btn btn-primary text-nowrap" (click)="addExtension(extension)"><i
+                                class="fas fa-download"></i></button>
+                    </div>
+                </div>
+            </ul>
 
         </div>
+
     </div>
 </div>

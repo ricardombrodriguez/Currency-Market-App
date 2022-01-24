@@ -39,6 +39,29 @@ public class FinanceController {
     @Autowired
     private UserService userService;
 
+    // CLICK EXTENSION //
+
+    @GetMapping("/click-extension/{market}/{operation}")
+    public void getClickNotification(@PathVariable String market, @PathVariable String operation) {
+
+        System.out.println(market);
+        System.out.println(operation);
+
+        // enviar para extensão (isto se calhar pode ser feito diretamente na pagina do
+        // click)
+        // a extensão verifica a lista de todos os subscribers e envia notificação para
+        // vender/comprar
+
+        Extension clickExtension = extensionservice.getExtensionById(1);
+        List<Portfolio> portfoliosWithClickExtensions = extensionservice.getExtensionPortfolios(clickExtension);
+        System.out.println("Portfolios with click extensions");
+
+        for (Portfolio p : portfoliosWithClickExtensions) {
+            System.out.println("portfolio received " + p.getName());
+        }
+
+    }
+
     //////////////////////////////////////////// USER
     //////////////////////////////////////////// ////////////////////////////////////////////
 
@@ -97,22 +120,21 @@ public class FinanceController {
     //////////////////////////////////////////// ////////////////////////////////////////////
 
     @GetMapping("/extension")
-    public List<Extension> getAllExtensions() {
-        return extensionservice.getExtensions();
+    public Page<Extension> getAllExtensions(Pageable pageable) {
+        return extensionservice.getExtensions(pageable);
     }
+    
 
     @GetMapping("/extension/{id}")
-    public List<Extension> getUserExtensions(@PathVariable int id) {
-        User user = userService.getUserById(id);
-        return extensionservice.getExtensionsByUser(user);
+    public Page<Extension> getUserExtensions(@PathVariable int id, Pageable pageable) {
+        //User user = userService.getUserById(id);
+        return extensionservice.getExtensionsByUser(id, pageable);
     }
 
     @PostMapping("/extension")
-    public Extension createExtensions(@RequestParam int userId, @RequestParam String path) {
+    public Extension createExtensions(@RequestParam int userId, @RequestParam String name, @RequestParam String description, @RequestParam String path) {
         User user = userService.getUserById(userId);
-        Extension extension = new Extension(user, path);
-        extension.setName("NOME PORT");
-        extension.setDescription("descriptionnnnnnnnnnnnnn abababababab");
+        Extension extension = new Extension(user, name, description, path);
         return extensionservice.saveExtension(extension);
     }
 
