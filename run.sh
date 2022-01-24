@@ -30,21 +30,13 @@ docker run --name finance_mq --health-cmd='rabbitmq-diagnostics -q status' -p 56
 
 sleep 1
 
-<<<<<<< HEAD
 sleep 30;
-=======
-sleep 25
->>>>>>> 4bcb91450666e55a7457c1e5bb73fb495ebd69a8
 
 cd ./projDataGenerator
 docker build -t datagen .
 docker run --name datagen --add-host host.docker.internal:host-gateway -e FINANCE_RABBITMQ_HOST='host.docker.internal' datagen &
 
-<<<<<<< HEAD
 sleep 30;
-=======
-sleep 25
->>>>>>> 4bcb91450666e55a7457c1e5bb73fb495ebd69a8
 
 
 cd ../projBackend/finance
