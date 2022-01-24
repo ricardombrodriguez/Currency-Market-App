@@ -1,13 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PortfolioServiceService } from './../../services/portfolio-service.service';
 import { Portfolio } from './../../interfaces/portfolio';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AuthenticationService } from './../../services/authentication.service';
 import { User } from 'src/app/interfaces/user';
 import { Extension } from 'src/app/interfaces/extension';
 import { Order } from 'src/app/interfaces/order';
-import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-portfolio',
@@ -24,7 +23,6 @@ export class PortfolioComponent implements OnInit {
   public orders!: Order[];
   public public_key: string = ""
   public id: number = 0;
-
 
   constructor(public portfolioService: PortfolioServiceService, private router: Router, public authService: AuthenticationService) { }
 
@@ -43,23 +41,6 @@ export class PortfolioComponent implements OnInit {
       $('#currencies').DataTable().ajax.reload()
       $('#history').DataTable().ajax.reload()
     })
-
-    // this.portfolioService.getPortfolio(id).pipe(
-    //   mergeMap((portfolio) => this.portfolioService.getAllExtensions())
-    // ).subscribe((allExtensions) => {
-    //   this.portfolio = this.portfolio;
-    //   this.allExtensions = allExtensions;
-    // });
-
-
-
-    // this.name = portfolio.name;
-    // this.extensions = portfolio.extensions;
-    // this.orders = portfolio.orders;
-    // this.public_key = portfolio.public_key;
-    // this.id = portfolio.id
-
-    // this.extensions = extensions;
   }
 
 
@@ -110,16 +91,6 @@ export class PortfolioComponent implements OnInit {
     })
     window.location.reload();
   }
-
-
-  // getPortfolioExtensions(): void {
-  //   if (this.portfolio === undefined) { return }
-  //   this.portfolioService.getPortfolioExtensions(this.portfolio).subscribe((extensions) => {
-  //     this.extensions = extensions;
-  //     console.log("extensions list (of portfolio)")
-  //     console.log(extensions)
-  //   })
-  // }
 
   getAllExtensions() {
     this.portfolioService.getAllExtensionsList().subscribe((extensions) => {

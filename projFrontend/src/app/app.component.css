@@ -4,9 +4,14 @@
 }
 
 .op {
-    width: 285px;
+    width: 585px;
     background-color: white;
 }
+
+li.nav-item {
+  font-size: medium;
+}
+
 
 *{
     box-sizing: border-box;
@@ -18,8 +23,8 @@
     position: relative;
   }
   .input-search{
+    font-family: Arial, Helvetica, sans-serif;
     height: 50px;
-    width: 50px;
     border-style: none;
     padding: 10px;
     font-size: 18px;
@@ -55,7 +60,7 @@
   }
 
   .input-search:focus{
-    width: 300px;
+    width: 600px;
     border-radius: 0px;
     background-color: transparent;
     border-bottom:1px solid rgba(255,255,255,.5);
