@@ -1,0 +1,8 @@
+.op:hover {
+    background-color: #f0ecec;
+    cursor: pointer;
+}
+
+.op {
+    width: 76%
+}

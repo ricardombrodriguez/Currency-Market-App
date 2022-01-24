@@ -23,8 +23,6 @@ import { YourextensionsComponent } from './pages/yourextensions/yourextensions.c
 import { YourextensionComponent } from './pages/yourextension/yourextension.component';
 import { DevelopersComponent } from './pages/developers/developers.component';
 
-import { SearchComponent } from './pages/search/search.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +50,7 @@ import { SearchComponent } from './pages/search/search.component';
     FormsModule,
     CommonModule
   ],
-  providers: [SearchComponent],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -25,7 +25,7 @@ public class CurrencyService {
     }
 
     public Page<Currency> getCurrencies(Pageable pageable) {
-        return repository.findByOnline(pageable);
+        return repository.findAll(pageable);
     }
 
     public Currency getCurrencyById(int id) {

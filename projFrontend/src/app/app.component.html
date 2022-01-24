@@ -5,7 +5,14 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" (keyup.enter)="onEnter()" id="searchBar">
+  <div class="w-100" >
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" (keyup)="onEnter()" id="searchBar" (focusout)="clean()">
+    <div class="w-100" style="position: absolute; background-color: white; max-height: 200px; overflow-y: scroll;" >
+      <div *ngFor="let coin of coin_data" (click)="href(coin.id)" class="op" >
+        <p style="padding: 20px;" > {{ coin.name }}</p>
+      </div>
+    </div>
+  </div>
 
   <div class="navbar-nav" *ngIf="!loggedId">
     <div class="nav-item text-nowrap">
@@ -14,8 +21,7 @@
   </div>
 
   <div class="navbar-nav" *ngIf="!loggedId">
-    <!-- <div class="nav-item text-nowrap" data-bs-toggle="modal" data-bs-target="#logIn"> -->
-    <div class="nav-item text-nowrap" routerLink="/login">
+    <div class="nav-item text-nowrap" data-bs-toggle="modal" data-bs-target="#logIn"> 
       <a class="nav-link px-3">Log in</a>
     </div>
   </div>
