@@ -1,6 +1,5 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2"> {{ portfolio.name }} </h1>
-    <h5> Public key: {{ portfolio.public_key }} </h5>
     <div class="m-2 float-right">
         <a class="nav-link" routerLink="/" routerLinkActive="active">
             <button type="button" class="btn btn-outline-danger" (click)="deletePortfolio()">
@@ -23,13 +22,23 @@
 
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
+
+        <div class="col-12" style="display:flex;">
+            <h4> Public key: </h4> <h5> {{ portfolio.public_key }} </h5>
+        </div>
+
         <div class="col-12">
             <br>
-            <h2>Portfolio</h2>
-            <app-data-table [columns]="columns" [getData]="getData"></app-data-table>
+            <h4>Portfolio</h4>
+            <app-data-table [id]="'currencies'" [columns]="columns" [getData]="getData"></app-data-table>
+        </div>
+
+        <div class="col-12">
+            <br>
+            <h4>History</h4>
+            <app-data-table [id]="'history'" [columns]="tcolumns" [getData]="getTransactions"></app-data-table>
         </div>
     </div>
-
 
     <div class="tab-pane fade" id="extensions" role="tabpanel" aria-labelledby="extensions-tab">
         <div class="mt-4 col-sm-12 col-md-6 col-lg-4">

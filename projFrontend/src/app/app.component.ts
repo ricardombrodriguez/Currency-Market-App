@@ -51,9 +51,7 @@ export class AppComponent {
   logIn = () =>
     this.authService.logIn(this.logInData.email, this.logInData.password);
   signUp = () => {
-    console.log("entrou")
     if (this.signUpData.password === this.signUpData.passwordRepeat) {
-      console.log("velhice")
       this.authService.signUp(
         this.signUpData.username,
         this.signUpData.fullname,
@@ -76,6 +74,7 @@ export class AppComponent {
     this.userID = this.authService.curentUserId
 
     authService.userIdObs.subscribe((data) => {
+      this.userID = data
       this.loggedId = data !== null;
       if (this.loggedId) {
         $('.modal-backdrop').remove();

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.data.domain.PageImpl;
 
 import yes.finance.model.*;
 import yes.finance.model.Currency;
@@ -61,6 +60,7 @@ public class FinanceController {
         }
 
     }
+    private Random random = new Random();
 
     //////////////////////////////////////////// USER
     //////////////////////////////////////////// ////////////////////////////////////////////
@@ -105,10 +105,8 @@ public class FinanceController {
     }
 
     @GetMapping("/currency/{id}")
-    public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId) {
-        List<Market> markets_by_currency = marketservice.getMarketsByCurrency(currencyId);
-        Page<Market> page_markets_by_currency = new PageImpl<>(markets_by_currency);
-        return page_markets_by_currency;
+    public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId, Pageable pageable) {
+        return marketservice.getMarketsByCurrency(currencyId, pageable);
     }
 
     @GetMapping("/currency/search")
@@ -176,13 +174,19 @@ public class FinanceController {
     @PostMapping("/portfolio")
     public Portfolio createPortfolio(@RequestParam String name, @RequestParam int id) {
 
-        System.out.println(">> A criar Portfolio '" + name + "'...");
-        Portfolio p = new Portfolio(name);
+        Portfolio p = portfolioservice.savePortfolio(new Portfolio(name));
+
         User u = service.getUserById(id);
         u.addPortfolio(p);
         userService.saveUser(u);
-        // p.addUser(u);
-        // return portfolioservice.savePortfolio(p);
+
+        System.out.println(random.nextInt(marketservice.getMarketsCount().intValue() + 1));
+        Market m = marketservice.getMarketById(random.nextInt(marketservice.getMarketsCount().intValue() + 1));
+        Order origin_order = orderservice.saveOrder(new Order(Float.valueOf(-100), Float.valueOf(0), null, m));
+        Order destiny_order = orderservice.saveOrder(new Order(Float.valueOf(100), Float.valueOf(0), p, m));
+
+        transactionservice.saveTransaction(new Transaction(origin_order, destiny_order));
+
         return p;
 
     }
@@ -207,6 +211,11 @@ public class FinanceController {
     @GetMapping("/portfolio/{id}/details")
     public Page<PCurrency> getPortfolioDetails(@PathVariable int id, Pageable pageable) {
         return portfolioservice.getPortfolioDetailsById(id, pageable);
+    }
+
+    @GetMapping("/portfolio/{id}/transactions")
+    public Page<Map<String, Object>> getPortfolioTransactions(@PathVariable int id, Pageable pageable) {
+        return transactionservice.getTransactionDetails(id, pageable);
     }
 
     @PostMapping("porfolio/users")
@@ -288,11 +297,21 @@ public class FinanceController {
     }
 
     @PostMapping("/order")
-    public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity,
-            @RequestParam Float orderValue) {
+    public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity, @RequestParam Float orderValue) {
+        if (quantity == 0) return null;
+
         Market market = marketservice.getMarketById(marketId);
-        Order order = orderservice
-                .saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
+
+        Currency req_curr;
+        if (quantity > 0) req_curr = market.getOriginCurrency(); 
+        else req_curr = market.getDestinyCurrency(); 
+
+        PCurrency pcurr = portfolioservice.getCurrencyDetailsInPortfolio(portfolioId, req_curr.getId());
+        if (pcurr == null) return null;
+        
+        if ((quantity > 0 && quantity > pcurr.getQuantity()) || (quantity < 0 && -quantity > pcurr.getQuantity())) return null;
+        
+        Order order = orderservice.saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
         if (order != null) {
             sendingOperations.convertAndSend("/order/" + market.getSymbol(), order);
             orderservice.checkClose(order);

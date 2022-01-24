@@ -39,9 +39,9 @@ public class MessageQueue {
             channel.queueDeclare("Currencies", true, false, false, null);
             channel.queueDeclare("Markets", true, false, false, null);
 
-            channel.basicConsume("Tickers", false, this::tickersReceiver, consumerTag -> {});
-            channel.basicConsume("Currencies", false, this::currenciesReceiver, consumerTag -> {});
-            channel.basicConsume("Markets", false, this::marketReceiver, consumerTag -> {});
+            channel.basicConsume("Tickers", true, this::tickersReceiver, consumerTag -> {});
+            channel.basicConsume("Currencies", true, this::currenciesReceiver, consumerTag -> {});
+            channel.basicConsume("Markets", true, this::marketReceiver, consumerTag -> {});
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -82,12 +82,12 @@ public class MessageQueue {
                 String data = new String(delivery.getBody(), "UTF-8");
                 
                 applicationEventPublisher.publishEvent(new MessageEvent(this, channel, data));
-                this.channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                //this.channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             } catch (UnsupportedEncodingException e) {
-                this.channel.basicNack(delivery.getEnvelope().getDeliveryTag(), false, true);
+                //this.channel.basicNack(delivery.getEnvelope().getDeliveryTag(), false, true);
             } catch (AlreadyClosedException e) {
                 this.connect();
-                this.channel.basicNack(delivery.getEnvelope().getDeliveryTag(), false, true);
+                //this.channel.basicNack(delivery.getEnvelope().getDeliveryTag(), false, true);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -21,19 +21,19 @@
 
   <div class="navbar-nav" *ngIf="!loggedId">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" data-bs-toggle="modal" data-bs-target="#signUp">Sign up</a>
+      <a class="nav-link px-3" data-bs-toggle="modal" data-bs-target="#signUp"><i class="fas fa-user-plus"></i> Sign up</a>
     </div>
   </div>
 
   <div class="navbar-nav" *ngIf="!loggedId">
     <div class="nav-item text-nowrap" data-bs-toggle="modal" data-bs-target="#logIn"> 
-      <a class="nav-link px-3">Log in</a>
+      <a class="nav-link px-3"><i class="fas fa-sign-in-alt"></i> Log in</a>
     </div>
   </div>
 
   <div class="navbar-nav" *ngIf="loggedId">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#" (click)="logOut()">Log out</a>
+      <a class="nav-link px-3" href="#" (click)="logOut()"><i class="fas fa-sign-out-alt"></i> Log out</a>
     </div>
   </div>
 </header>
@@ -85,7 +85,7 @@
           <app-portfolio-list></app-portfolio-list>
         </div>
 
-        <div>
+        <div *ngIf="userID != null" >
           <hr style="width:90%;text-align:left;margin-left:5%">
 
           <ul class="nav flex-column pb-2">

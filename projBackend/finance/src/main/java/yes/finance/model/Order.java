@@ -103,6 +103,10 @@ public class Order {
         return this.market.getId();
     }
 
+    public Market getMarket() {
+        return this.market;
+    }
+
     public void setMarket(Market market) {
         this.market = market;
     }

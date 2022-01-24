@@ -31,10 +31,15 @@ export class MarketComponent implements OnInit {
   hourChange: number = 0
   minuteChange: number = 0
 
+  portfolio_ids: number[] = []
+
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
     { title: 'Amount', data: 'quantity', render: d => Math.abs(d) },
     { title: 'Price', data: 'order_value' },
+    { render: (d, i, row) =>
+      this.portfolio_ids.includes(row.portfolioId) ? `<i role='button' class="fas fa-trash text-danger delete-order" data-id="${row.id}"></i>` : `<i class="fas fa-trash text-secondary"></i>`
+      , orderable: false }
   ]
 
   portfolios: Portfolio[] = []
@@ -54,9 +59,17 @@ export class MarketComponent implements OnInit {
     private portfolioService: PortfolioServiceService, 
     private authService: AuthenticationService,
     private route: ActivatedRoute
-  ) { }
+  ) { 
+    $(document).on("click", ".delete-order", 
+      (e) => orderService.deleteOrder($(e.target).data('id')).subscribe(null, () => {
+        $('#sellOrders').DataTable().ajax.reload()
+        $('#buyOrders').DataTable().ajax.reload()
+      })
+    )
+  }
 
   ngOnInit(): void {
+    this.portfolioService.getPortfolios(parseInt(this.authService.curentUserId!)).subscribe(portfolios => this.portfolio_ids = portfolios.map(p => p.id))
 
     if (this.authService.curentUserId != null) {
      this.portfolioService.getPortfolios(parseInt(this.authService.curentUserId)).subscribe(data => this.portfolios = data)
@@ -71,6 +84,7 @@ export class MarketComponent implements OnInit {
       this.minuteChange = market.minuteChange
       this.active = market.originCurrency.online && market.destinyCurrency.online
 
+      market.tickers = market.tickers.reverse()
       this.data = market.tickers.map(t => t.prev_value)
       this.labels = market.tickers.map(t => ((new Date(t.createdAt)).toLocaleString()))
 
@@ -90,7 +104,7 @@ export class MarketComponent implements OnInit {
         this.orderService.startOrderUpdates(this.marketSymbol, message => {
           let order = <Order>JSON.parse(message.body)
           let tableId = order.quantity > 0 ? 'buyOrders' : 'sellOrders'
-          $('#' + tableId).DataTable().row.add({id: order.id, quantity: order.quantity, order_value: order.order_value}).draw()
+          $('#' + tableId).DataTable().ajax.reload()
         })
       }
       

@@ -14,4 +14,6 @@ public interface TickerRepository extends JpaRepository<Ticker, Integer> {
     List<Ticker> findBymarket(@Param("id") int id);
 
     List<Ticker> findFirst100ByMarketOrderByCreatedAtDesc(Market market);
+
+    Ticker findFirstByMarketOrderByCreatedAtDesc(Market market);
 }

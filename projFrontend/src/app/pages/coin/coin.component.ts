@@ -1,10 +1,8 @@
 import { CoinsServiceService } from './../../services/coins-service.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Coin } from 'src/app/interfaces/coin';
-import { map, Observable } from 'rxjs';
-import { param } from 'jquery';
-import { ThrowStmt } from '@angular/compiler';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-coin',
