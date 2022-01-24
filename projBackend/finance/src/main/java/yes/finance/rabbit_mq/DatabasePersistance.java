@@ -1,14 +1,29 @@
 package yes.finance.rabbit_mq;
 
+import org.apache.tomcat.util.digester.SystemPropertySource;
+import org.hibernate.mapping.Map;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -16,14 +31,19 @@ import java.util.Comparator;
 
 import yes.finance.model.Currency;
 import yes.finance.model.Market;
-import yes.finance.model.Order;
+import yes.finance.model.Order;<<<<<<<HEAD
 import yes.finance.model.Ticker;
-import yes.finance.model.Transaction;
+import yes.finance.model.Transaction;=======
+import yes.finance.model.Portfolio;
+import yes.finance.model.Ticker;
+import yes.finance.model.Extension;>>>>>>>feature/extensions
 import yes.finance.repository.CurrencyRepository;
 import yes.finance.repository.MarketRepository;
 import yes.finance.repository.OrderRepository;
-import yes.finance.repository.TickerRepository;
-import yes.finance.services.TransactionService;
+import yes.finance.repository.TickerRepository;<<<<<<<HEAD
+import yes.finance.services.TransactionService;=======
+import yes.finance.services.OrderService;
+import yes.finance.repository.ExtensionRepository;>>>>>>>feature/extensions
 
 @Component
 public class DatabasePersistance implements ApplicationListener<MessageEvent> {
@@ -38,10 +58,15 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
     private CurrencyRepository currencyRepository;
 
     @Autowired
+<<<<<<< HEAD
     private OrderRepository orderRepository;
 
     @Autowired
-    private TransactionService transactionService;
+    private TransactionService transactionService;=======
+    private ExtensionRepository extensionRepository;
+
+    @Autowired
+    private OrderService orderService;>>>>>>>feature/extensions
 
     private ArrayList<String> currencies = new ArrayList<String>();
 
@@ -72,7 +97,8 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 String symbol = data.getString("symbol");
                 Market market = marketRepository.findBySymbol(symbol);
 
-                if (market == null) return;
+                if (market == null)
+                    return;
 
                 Float lastTradeRate = Float.parseFloat(data.getString("lastTradeRate"));
                 Float bidRate = Float.parseFloat(data.getString("bidRate"));
@@ -97,6 +123,58 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
                     orderRepository.save(complementOrder);
                     transactionService.saveTransaction(t);
+
+                Gson gson = new Gson();
+                String json = gson.toJson(ticker);
+
+                for (Extension e : extensionRepository.findAll()) {
+
+                    List<Portfolio> extensionPortfolios = extensionRepository.findExtensionPortfolios(e);
+
+                    URL url;
+
+                    try {
+                        url = new URL(e.getPath());
+                        HttpURLConnection http = (HttpURLConnection) url.openConnection();
+                        http.setRequestMethod("POST");
+                        http.setDoOutput(true);
+                        http.setRequestProperty("Accept", "application/json");
+                        http.setRequestProperty("Content-Type", "application/json");
+
+                        byte[] out = json.getBytes(StandardCharsets.UTF_8);
+
+                        OutputStream stream = http.getOutputStream();
+                        stream.write(out);
+
+                        BufferedReader buffer;
+                        HashMap<String, Object> dict = new HashMap<>();
+                        if (http.getResponseCode() == 200) {
+                            buffer = new BufferedReader(new InputStreamReader(http.getInputStream()));
+                            String response;
+                            while ((response = buffer.readLine()) != null) {
+                                dict = new Gson().fromJson(response.toString(), HashMap.class);
+                            }
+                        }
+
+                        Double quantity = dict.get("operation").equals("BUY") ? (Double) dict.get("quantity")
+                                : (Double) dict.get("quantity") * -1;
+                        Double value = (Double) dict.get("quantity") * lastTradeRate;
+
+                        for (Portfolio p : extensionPortfolios) {
+
+                            Order ord = new Order(quantity.floatValue(), value.floatValue(), p, market);
+                            orderService.saveOrder(ord);
+                            System.out.println(ord);
+                        }
+
+                        http.disconnect();
+
+                    } catch (MalformedURLException e1) {
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
                 }
 
                 // change %:

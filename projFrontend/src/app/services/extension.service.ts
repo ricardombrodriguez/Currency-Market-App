@@ -37,14 +37,4 @@ export class ExtensionService {
     return this.http.delete(environment.API_URL + '/extension/' + extension_id)
   }
 
-  // funções da extensão 'click':
-
-  clickBuy() {
-    return this.http.get<any>(environment.API_URL + '/click-extension/BTC-EUR/BUY')
-  }
-
-  clickSell() {
-    return this.http.get<any>(environment.API_URL + '/click-extension/BTC-EUR/SELL')
-  }
-
 }
