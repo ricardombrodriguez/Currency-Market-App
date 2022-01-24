@@ -36,7 +36,11 @@ public class MarketService {
     }
 
     public List<Market> getMarketsByCurrency(int currency_id) {
-        return repository.findByOriginCurrencyId(currency_id);
+        return repository.findByCurrencyId(currency_id);
+    }
+
+    public Long getMarketsCount() {
+        return repository.count();
     }
 
     public String deleteMarket(int id) {

@@ -1,3 +1,4 @@
+import { TransactionDetails } from './../interfaces/transaction-details';
 import { Portfolio } from './../interfaces/portfolio';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -82,6 +83,10 @@ export class PortfolioServiceService {
 
   getPortfolioDetails(parameters: Object, portfolio_id: number): Observable<Page<Wallet>> {
     return this.http.get<Page<Wallet>>(environment.API_URL + '/portfolio/' + portfolio_id + '/details', <Object>{ params: parameters });
+  }
+
+  getPortfolioTransactions(parameters: Object, portfolio_id: number): Observable<Page<TransactionDetails>> {
+    return this.http.get<Page<TransactionDetails>>(environment.API_URL + '/portfolio/' + portfolio_id + '/transactions', <Object>{ params: parameters });
   }
 
 }

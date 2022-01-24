@@ -42,7 +42,7 @@ public class AuthenticationController {
 
     if (userService.isEmailInUse(user.getEmail())) response.put("success", false);
     else {
-      userService.saveUser(user);
+      user = userService.saveUser(user);
       response.put("success", true);
       response.put("id", user.getId());
     }

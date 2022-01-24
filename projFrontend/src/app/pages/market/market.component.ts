@@ -71,7 +71,7 @@ export class MarketComponent implements OnInit {
       this.minuteChange = market.minuteChange
       this.active = market.originCurrency.online && market.destinyCurrency.online
 
-      this.data = market.tickers.map(t => t.prev_value)
+      this.data = market.tickers.map(t => t.prev_value).reverse()
       this.labels = market.tickers.map(t => ((new Date(t.createdAt)).toLocaleString()))
 
       if (this.active) {

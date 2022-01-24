@@ -4,10 +4,12 @@ killall(){
   echo "Killing containers..."
   docker kill finance_db
   docker kill finance_mq
+  docker kill datagen
 
   echo "Removing containers..."
   docker rm finance_db
   docker rm finance_mq
+  docker rm datagen
 
   echo "Killing other processes..."
   kill 0
@@ -35,7 +37,8 @@ sleep 25
 >>>>>>> 4bcb91450666e55a7457c1e5bb73fb495ebd69a8
 
 cd ./projDataGenerator
-python3 main.py &
+docker build -t datagen .
+docker run --name datagen --add-host host.docker.internal:host-gateway -e FINANCE_RABBITMQ_HOST='host.docker.internal' datagen &
 
 <<<<<<< HEAD
 sleep 30;
