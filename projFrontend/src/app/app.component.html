@@ -5,9 +5,15 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="w-100" >
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" (keyup)="onEnter()" id="searchBar" (focusout)="clean()">
-    <div class="w-100" style="position: absolute; background-color: white; max-height: 200px; overflow-y: scroll;" >
+  <div class="w-100" style="padding-left: 20px;">
+    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" (keyup)="onEnter()" id="searchBar" (focusout)="clean()"> -->
+    <div class="search-box">
+      <button class="btn-search"><i class="fas fa-search"></i></button>
+      <input type="text" class="input-search" placeholder="Search for a coin..." (keyup)="onEnter()" id="searchBar" (focusout)="clean()">
+    </div>
+
+    
+    <div style="position: absolute; max-height: 200px; overflow-y: scroll; background-color: white; box-shadow: 0px 0px 10px 1px;" >
       <div *ngFor="let coin of coin_data" (click)="href(coin.id)" class="op" >
         <p style="padding: 20px;" > {{ coin.name }}</p>
       </div>

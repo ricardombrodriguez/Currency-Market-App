@@ -119,6 +119,7 @@ export class AppComponent {
   public coin_data: Coin[] = []
 
   onEnter() {
+    if ((<HTMLInputElement>document.getElementById("searchBar")).value == "") return
     this.searchService.getData( (<HTMLInputElement>document.getElementById("searchBar")).value ).subscribe(data => this.coin_data = data)
   }
 
