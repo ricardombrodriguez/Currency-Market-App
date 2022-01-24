@@ -51,14 +51,15 @@ export class AppComponent {
   logIn = () =>
     this.authService.logIn(this.logInData.email, this.logInData.password);
   signUp = () => {
+    console.log("entrou")
     if (this.signUpData.password === this.signUpData.passwordRepeat) {
+      console.log("velhice")
       this.authService.signUp(
         this.signUpData.username,
         this.signUpData.fullname,
         this.signUpData.email,
         this.signUpData.password
       );
-      window.location.reload();
     }
   };
   logOut = () => this.authService.logOut();
@@ -83,8 +84,7 @@ export class AppComponent {
     });
   }
 
-  ngOnInit() { 
-  }
+  ngOnInit() {}
 
   portfolio = { pname: "", pkey: "" }
   public error = false;

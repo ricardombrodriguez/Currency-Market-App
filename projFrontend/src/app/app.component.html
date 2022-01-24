@@ -1,3 +1,4 @@
+
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#"><img src="./assets/img/yesfinance.png" alt=" yesFinance logo" style="width: 150px;"/></a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
@@ -5,13 +6,11 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="w-100" style="padding-left: 20px;">
-    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" (keyup)="onEnter()" id="searchBar" (focusout)="clean()"> -->
+  <div class="w-100" style="padding-right: 20px; display: flex; justify-content: flex-end">
     <div class="search-box">
       <button class="btn-search"><i class="fas fa-search"></i></button>
       <input type="text" class="input-search" placeholder="Search for a coin..." (keyup)="onEnter()" id="searchBar" (focusout)="clean()">
     </div>
-
     
     <div style="position: absolute; max-height: 200px; overflow-y: scroll; background-color: white; box-shadow: 0px 0px 10px 1px;" >
       <div *ngFor="let coin of coin_data" (click)="href(coin.id)" class="op" >
@@ -39,13 +38,13 @@
   </div>
 </header>
 
-<div class="container-fluid">
+<div class="container-fluid" >
   <div class="row" >
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3 d-flex flex-column h-100">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" href="#" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" href="#" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" style="padding-top: 25px;">
               <i class="icon fas fa-home"></i>
               Dashboard
             </a>

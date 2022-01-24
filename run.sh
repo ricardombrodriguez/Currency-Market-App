@@ -28,20 +28,12 @@ docker run --name finance_mq --health-cmd='rabbitmq-diagnostics -q status' -p 56
 
 sleep 1
 
-<<<<<<< HEAD
 sleep 30;
-=======
-sleep 25
->>>>>>> 4bcb91450666e55a7457c1e5bb73fb495ebd69a8
 
 cd ./projDataGenerator
 python3 main.py &
 
-<<<<<<< HEAD
 sleep 30;
-=======
-sleep 25
->>>>>>> 4bcb91450666e55a7457c1e5bb73fb495ebd69a8
 
 
 cd ../projBackend/finance
