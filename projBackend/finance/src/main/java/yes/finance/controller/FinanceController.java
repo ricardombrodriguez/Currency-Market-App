@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 
@@ -70,7 +71,15 @@ public class FinanceController {
     }
 
     @GetMapping("/currency")
-    public Page<Currency> getAllCurrencies(@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<Currency> getAllCurrencies(@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(value = "order", defaultValue = "asc") String order) {
+        String atrbt="";
+        for (Sort.Order ordery : pageable.getSort()){
+            atrbt = ordery.getProperty();
+            }
+            //System.out.println("->" + atrbt +" - " +order);
+        if (order.equals("desc")){
+            pageable = PageRequest.of(0, 10, Sort.by(atrbt).descending()); 
+        }
         return currencyservice.getCurrencies(pageable);
     }
 
@@ -101,11 +110,19 @@ public class FinanceController {
     
 
     @GetMapping("/extension/{id}")
-    public Page<Extension> getUserExtensions(@PathVariable int id, Pageable pageable) {
+    public Page<Extension> getUserExtensions(@PathVariable int id, @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(value = "order", defaultValue = "asc") String order) {
         //User user = userService.getUserById(id);
+        String atrbt="";
+        for (Sort.Order ordery : pageable.getSort()){
+            atrbt = ordery.getProperty();
+            }
+            //System.out.println("->" + atrbt +" - " +order);
+        if (order.equals("desc")){
+            pageable = PageRequest.of(0, 10, Sort.by(atrbt).descending()); 
+        }
         return extensionservice.getExtensionsByUser(id, pageable);
     }
-
+ 
     @PostMapping("/extension")
     public Extension createExtensions(@RequestParam int userId, @RequestParam String name, @RequestParam String description, @RequestParam String path) {
         User user = userService.getUserById(userId);
@@ -180,7 +197,15 @@ public class FinanceController {
     }
 
     @GetMapping("/portfolio/{id}/details")
-    public Page<PCurrency> getPortfolioDetails(@PathVariable int id, Pageable pageable) {
+    public Page<PCurrency> getPortfolioDetails(@PathVariable int id,@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(value = "order", defaultValue = "asc") String order) {
+        String atrbt="";
+        for (Sort.Order ordery : pageable.getSort()){
+            atrbt = ordery.getProperty();
+            }
+            //System.out.println("->" + atrbt +" - " +order);
+        if (order.equals("desc")){
+            pageable = PageRequest.of(0, 10, Sort.by(atrbt).descending()); 
+        }
         return portfolioservice.getPortfolioDetailsById(id, pageable);
     }
 
@@ -222,7 +247,28 @@ public class FinanceController {
     }
 
     @GetMapping("/market")
-    public Page<Market> getAllMarkets(@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<Market> getAllMarkets(@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(value = "order", defaultValue = "asc") String order) {
+        String atrbt="";
+        for (Sort.Order ordery : pageable.getSort()){
+            atrbt = ordery.getProperty();
+        }
+        switch(atrbt){
+            case "1":
+                atrbt="origin_currency_id";
+                break;
+            case "2":
+                atrbt="price";
+                break;
+            default:
+                System.out.println("Unexpected sortable property, using id");
+                atrbt="id";
+        }
+        //System.out.println("->" + atrbt +" - " +order);
+        if (order.equals("desc")){
+            pageable = PageRequest.of(0, 10, Sort.by(atrbt).descending()); 
+        }else{
+            pageable = PageRequest.of(0, 10, Sort.by(atrbt).ascending()); 
+        }
         return marketservice.getMarkets(pageable);
     }
 

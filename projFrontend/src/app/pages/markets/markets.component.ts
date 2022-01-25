@@ -10,10 +10,10 @@ export class MarketsComponent implements OnInit {
 
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
-    { title: 'Market', render: (a, b, row) => `<a href="/coins/${row.originCurrency.id}">${row.originCurrency.name}</a>-<a href="/coins/${row.destinyCurrency.id}">${row.destinyCurrency.name}</a>` },
-    { title: 'Price', render: (a, b, row) => `${row.price} ${row.destinyCurrency.symbol}` },
-    { title: '% 1m', render: (a, b, row) => `${row.minuteChange}%` },
-    { title: '% 1h', render: (a, b, row) => `${row.hourChange}%` },
+    { title: 'Market', render: (a, b, row) => `<a href="/coins/${row.originCurrency.id}">${row.originCurrency.name}</a>-<a href="/coins/${row.destinyCurrency.id}">${row.destinyCurrency.name}</a>`, orderable: false },
+    { title: 'Price', render: (a, b, row) => `${row.price} ${row.destinyCurrency.symbol}`  },
+    { title: '% 1m', render: (a, b, row) => `${row.minuteChange}%` , orderable: false},
+    { title: '% 1h', render: (a, b, row) => `${row.hourChange}%` , orderable: false},
     { render: (a, b, row) => `<a href="/markets/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>`, orderable: false },
   ]
 
