@@ -69,7 +69,7 @@ export class MarketComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.portfolioService.getPortfolios(parseInt(this.authService.curentUserId!)).subscribe(portfolios => this.portfolio_ids = portfolios.map(p => p.id))
+    if (this.authService.curentUserId) this.portfolioService.getPortfolios(parseInt(this.authService.curentUserId)).subscribe(portfolios => this.portfolio_ids = portfolios.map(p => p.id))
 
     if (this.authService.curentUserId != null) {
      this.portfolioService.getPortfolios(parseInt(this.authService.curentUserId)).subscribe(data => this.portfolios = data)

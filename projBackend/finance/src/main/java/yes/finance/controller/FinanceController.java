@@ -355,7 +355,6 @@ public class FinanceController {
             return null;
 
         Market market = marketservice.getMarketById(marketId);
-
         Currency req_curr;
         if (quantity > 0)
             req_curr = market.getOriginCurrency();
