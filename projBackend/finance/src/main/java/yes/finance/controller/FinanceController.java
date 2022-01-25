@@ -43,6 +43,25 @@ public class FinanceController {
     @Autowired
     private UserService userService;
 
+    // CLICK EXTENSION //
+
+    /*     
+    @GetMapping("/click-extension/{market}/{operation}")
+    public void getClickNotification(@PathVariable String market, @PathVariable String operation) {
+
+        Extension clickExtension = extensionservice.getExtensionById(1);
+        Integer marketId = marketservice.getMarketBySymbol(market).getId();
+        List<Portfolio> portfoliosWithClickExtensions = extensionservice.getExtensionPortfolios(clickExtension);
+
+        Float quantity = operation.equals("BUY") ? (float) 2 : (float) -2;
+        Float value = (float) 100.0;
+
+        for (Portfolio p : portfoliosWithClickExtensions) {
+            this.createOrders(marketId, p.getId(), quantity, value);
+        }
+    } 
+    */
+
     //////////////////////////////////////////// USER
     //////////////////////////////////////////// ////////////////////////////////////////////
 

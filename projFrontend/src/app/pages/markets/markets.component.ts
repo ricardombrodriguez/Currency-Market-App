@@ -21,7 +21,6 @@ export class MarketsComponent implements OnInit {
 
   constructor(public marketService: MarketServiceService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
 }

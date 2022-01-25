@@ -37,8 +37,8 @@ import { DevelopersComponent } from './pages/developers/developers.component';
     GraphComponent,
     YourextensionsComponent,
     YourextensionComponent,
-    DevelopersComponent,
-    
+    DevelopersComponent
+
   ],
   imports: [
     BrowserModule,

@@ -35,6 +35,10 @@ public class MarketService {
         return repository.findById((int) id).orElse(null);
     }
 
+    public Market getMarketBySymbol(String symbol) {
+        return repository.findBySymbol(symbol);
+    }
+
     public List<Market> getMarketsByCurrency(int currency_id) {
         return repository.findByOriginCurrencyId(currency_id);
     }

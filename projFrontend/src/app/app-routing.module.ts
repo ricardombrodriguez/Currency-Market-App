@@ -15,33 +15,45 @@ import { TickerComponent } from './pages/ticker/ticker.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
 
-  { path: 'coins', children: [
-    { path: '', component: CoinsComponent },
-    { path: ':id', component: CoinComponent }
-  ] },
+  {
+    path: 'coins', children: [
+      { path: '', component: CoinsComponent },
+      { path: ':id', component: CoinComponent }
+    ]
+  },
 
-  { path: 'markets', children: [
-    { path: '', component: MarketsComponent },
-    { path: ':id', component: MarketComponent }
-  ] },
+  {
+    path: 'markets', children: [
+      { path: '', component: MarketsComponent },
+      { path: ':id', component: MarketComponent }
+    ]
+  },
 
-  { path: 'ticker', children: [
-    { path: '', component: TickerComponent },
-    { path: ':id', component: TickerComponent }
-  ] },
+  {
+    path: 'ticker', children: [
+      { path: '', component: TickerComponent },
+      { path: ':id', component: TickerComponent }
+    ]
+  },
 
-  { path: 'portfolio', children: [
-    { path: '', component: PortfolioComponent },
-    { path: ':id', component: PortfolioComponent }
-  ] },
+  {
+    path: 'portfolio', children: [
+      { path: '', component: PortfolioComponent },
+      { path: ':id', component: PortfolioComponent }
+    ]
+  },
 
-  { path: 'developers', children: [
-    { path: '', component: DevelopersComponent },
-    { path: 'yourextensions', children: [
-      { path: '', component: YourextensionsComponent },
-      { path: ':id', component: YourextensionComponent }
-    ] }
-  ] }
+  {
+    path: 'developers', children: [
+      { path: '', component: DevelopersComponent },
+      {
+        path: 'yourextensions', children: [
+          { path: '', component: YourextensionsComponent },
+          { path: ':id', component: YourextensionComponent }
+        ]
+      }
+    ]
+  }
 
 ];
 
