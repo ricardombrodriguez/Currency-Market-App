@@ -6,9 +6,20 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
+
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -19,11 +30,15 @@ import yes.finance.model.Market;
 import yes.finance.model.Order;
 import yes.finance.model.Ticker;
 import yes.finance.model.Transaction;
+import yes.finance.model.Portfolio;
+import yes.finance.model.Extension;
 import yes.finance.repository.CurrencyRepository;
 import yes.finance.repository.MarketRepository;
 import yes.finance.repository.OrderRepository;
 import yes.finance.repository.TickerRepository;
 import yes.finance.services.TransactionService;
+import yes.finance.services.OrderService;
+import yes.finance.repository.ExtensionRepository;
 
 @Component
 public class DatabasePersistance implements ApplicationListener<MessageEvent> {
@@ -43,11 +58,18 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
     @Autowired
     private TransactionService transactionService;
 
+    @Autowired
+    private ExtensionRepository extensionRepository;
+
+    @Autowired
+    private OrderService orderService;
+
     private ArrayList<String> currencies = new ArrayList<String>();
 
     private HashMap<String, ArrayList<String>> markets = new HashMap<>();
 
     public class CustomComparator implements Comparator<Ticker> {
+
         @Override
         public int compare(Ticker t1, Ticker t2) {
             return t1.getCreatedAt().compareTo(t2.getCreatedAt());
@@ -72,7 +94,8 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 String symbol = data.getString("symbol");
                 Market market = marketRepository.findBySymbol(symbol);
 
-                if (market == null) return;
+                if (market == null)
+                    return;
 
                 Float lastTradeRate = Float.parseFloat(data.getString("lastTradeRate"));
                 Float bidRate = Float.parseFloat(data.getString("bidRate"));
@@ -80,23 +103,80 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 Ticker ticker = new Ticker(market, lastTradeRate, bidRate, askRate);
                 tickerRepository.save(ticker);
 
-                List<Order> buyOrders = orderRepository.findSellOrderComplements(0, market.getId(), ticker.getMin_seller_value());
-                List<Order> sellOrders = orderRepository.findBuyOrderComplements(0, market.getId(), ticker.getMax_buyer_value());
+                List<Order> buyOrders = orderRepository.findSellOrderComplements(0, market.getId(),
+                        ticker.getMin_seller_value());
+                List<Order> sellOrders = orderRepository.findBuyOrderComplements(0, market.getId(),
+                        ticker.getMax_buyer_value());
 
-                for (Order order: buyOrders) {
-                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMin_seller_value(), null, order.getMarket());
+                for (Order order : buyOrders) {
+                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMin_seller_value(), null,
+                            order.getMarket());
                     Transaction t = new Transaction(complementOrder, order);
 
                     orderRepository.save(complementOrder);
                     transactionService.saveTransaction(t);
                 }
 
-                for (Order order: sellOrders) {
-                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMax_buyer_value(), null, order.getMarket());
+                for (Order order : sellOrders) {
+                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMax_buyer_value(), null,
+                            order.getMarket());
                     Transaction t = new Transaction(order, complementOrder);
 
                     orderRepository.save(complementOrder);
                     transactionService.saveTransaction(t);
+
+                }
+
+                Gson gson = new Gson();
+                String json = gson.toJson(ticker);
+
+                for (Extension e : extensionRepository.findAll()) {
+
+                    List<Portfolio> extensionPortfolios = extensionRepository.findExtensionPortfolios(e);
+
+                    URL url;
+
+                    try {
+                        url = new URL(e.getPath());
+                        HttpURLConnection http = (HttpURLConnection) url.openConnection();
+                        http.setRequestMethod("POST");
+                        http.setDoOutput(true);
+                        http.setRequestProperty("Accept", "application/json");
+                        http.setRequestProperty("Content-Type", "application/json");
+
+                        byte[] out = json.getBytes(StandardCharsets.UTF_8);
+
+                        OutputStream stream = http.getOutputStream();
+                        stream.write(out);
+
+                        BufferedReader buffer;
+                        HashMap<String, Object> dict = new HashMap<>();
+                        if (http.getResponseCode() == 200) {
+                            buffer = new BufferedReader(new InputStreamReader(http.getInputStream()));
+                            String response;
+                            while ((response = buffer.readLine()) != null) {
+                                dict = new Gson().fromJson(response.toString(), HashMap.class);
+                            }
+                        }
+
+                        Double quantity = dict.get("operation").equals("BUY") ? (Double) dict.get("quantity")
+                                : (Double) dict.get("quantity") * -1;
+                        Double value = (Double) dict.get("quantity") * lastTradeRate;
+
+                        for (Portfolio p : extensionPortfolios) {
+
+                            Order ord = new Order(quantity.floatValue(), value.floatValue(), p, market);
+                            orderService.saveOrder(ord);
+                        }
+
+                        http.disconnect();
+
+                    } catch (MalformedURLException e1) {
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
                 }
 
                 // change %:
@@ -123,18 +203,18 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                     Float value_last_minute = 0f;
                     Float value_last_hour = 0f;
 
-                    for (Ticker t : tickers) {
+                    for (Ticker tick : tickers) {
 
-                        if (t.getCreatedAt().after(last_minute)) {
-                            value_last_minute = t.getPrev_value();
+                        if (tick.getCreatedAt().after(last_minute)) {
+                            value_last_minute = tick.getPrev_value();
                             break;
                         }
                     }
 
-                    for (Ticker t : tickers) {
+                    for (Ticker tic : tickers) {
 
-                        if (t.getCreatedAt().after(last_minute)) {
-                            value_last_hour = t.getPrev_value();
+                        if (tic.getCreatedAt().after(last_hour)) {
+                            value_last_hour = tic.getPrev_value();
                             break;
                         }
                     }
@@ -148,7 +228,6 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                     marketRepository.save(market);
 
                 }
-
                 break;
 
             case Currencies:
@@ -202,5 +281,4 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
         }
 
     }
-
 }

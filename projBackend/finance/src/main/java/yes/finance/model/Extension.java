@@ -44,7 +44,7 @@ public class Extension {
     public Extension() {
     }
 
-    public Extension(User user, String name, String path, String description) {
+    public Extension(User user, String name, String description, String path) {
         this.user = user;
         this.name = name;
         this.path = path;

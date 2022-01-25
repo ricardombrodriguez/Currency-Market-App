@@ -2,7 +2,6 @@ package yes.finance.services;
 
 import yes.finance.model.Extension;
 import yes.finance.model.Portfolio;
-import yes.finance.model.User;
 import yes.finance.repository.ExtensionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class ExtensionService {
         return repository.findAll(pageable);
     }
 
-    public List<Extension> getExtensions() {
+    public List<Extension> getExtensionsList() {
         return repository.findAll();
     }
 

@@ -77,6 +77,10 @@ export class PortfolioServiceService {
     return this.http.get<Extension[]>(environment.API_URL + '/extension/');
   }
 
+  getAllExtensionsList(): Observable<Extension[]> {
+    return this.http.get<Extension[]>(environment.API_URL + '/extensions/');
+  }
+
   getPortfolioExtensions(portfolio: Portfolio) {
     console.log("portfolio id::::::: " + portfolio.id)
     return this.http.get<Extension[]>(environment.API_URL + '/extension/portfolio/' + portfolio.id);
@@ -89,7 +93,7 @@ export class PortfolioServiceService {
   getPortfolioTransactions(parameters: Object, portfolio_id: number): Observable<Page<TransactionDetails>> {
     return this.http.get<Page<TransactionDetails>>(environment.API_URL + '/portfolio/' + portfolio_id + '/transactions', <Object>{ params: parameters });
   }
-  
+
   startUpdates(portfolio: number, callback: (data: any) => void): void {
     this.websocketService.startUpdates('/portfolio/' + portfolio, callback)
   }

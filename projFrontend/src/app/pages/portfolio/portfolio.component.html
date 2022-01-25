@@ -15,6 +15,10 @@
             role="tab" aria-controls="home" aria-selected="true">Main View</button>
     </li>
     <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#history" type="button"
+            role="tab" aria-controls="profile" aria-selected="false">Historic</button>
+    </li>
+    <li class="nav-item" role="presentation">
         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#extensions" type="button"
             role="tab" aria-controls="profile" aria-selected="false">Extensions</button>
     </li>
@@ -24,7 +28,7 @@
     <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
 
         <div class="col-12" style="display:flex;">
-            <h4> Public key: </h4> <h5> {{ portfolio.public_key }} </h5>
+            <h4> Public key: </h4> <h4 style="margin-left: 10px"> {{ portfolio.public_key }} </h4>
         </div>
 
         <div class="col-12">
@@ -33,11 +37,14 @@
             <app-data-table [id]="'currencies'" [columns]="columns" [getData]="getData"></app-data-table>
         </div>
 
+    </div>
+
+    <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
         <div class="col-12">
             <br>
-            <h4>History</h4>
             <app-data-table [id]="'history'" [columns]="tcolumns" [getData]="getTransactions"></app-data-table>
         </div>
+
     </div>
 
     <div class="tab-pane fade" id="extensions" role="tabpanel" aria-labelledby="extensions-tab">

@@ -43,6 +43,10 @@ public class MarketService {
         return repository.count();
     }
 
+    public Market getMarketBySymbol(String symbol) {
+        return repository.findBySymbol(symbol);
+    }
+
     public String deleteMarket(int id) {
         repository.deleteById(id);
         return "Market (id=" + id + ") removed!";
