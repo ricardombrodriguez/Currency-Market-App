@@ -2,12 +2,15 @@ package yes.finance.controller;
 
 import java.util.*;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.util.SystemPropertyUtils;
 import org.springframework.data.domain.Sort;
 
 import yes.finance.model.*;
@@ -41,6 +44,16 @@ public class FinanceController {
     private UserService userService;
 
     private Random random = new Random();
+
+    private Portfolio systemPortfolio;
+
+    //// INIT ///
+
+    @PostConstruct
+    public void init() {
+        systemPortfolio = new Portfolio("system");
+        portfolioservice.savePortfolio(systemPortfolio);
+    }
 
     //////////////////////////////////////////// USER
     //////////////////////////////////////////// ////////////////////////////////////////////
@@ -139,21 +152,20 @@ public class FinanceController {
     @DeleteMapping("/portfolio/{id}")
     public void deletePortfolios(@PathVariable int id, @RequestParam int user_id) {
 
-        // return portfolioservice.deletePortfolio(id);
+        System.out.println("deleting portfolio..." + id);
 
-        // remover o portfolio da lista de portfolios do user
         Portfolio p = portfolioservice.getPortfolioById(id);
+
         User u = service.getUserById(user_id);
 
         u.removePortfolio(p);
+
         p.removeUser(u);
-        if (p.getUsers().size() == 0) {
-            portfolioservice.deletePortfolio(id);
-        } else {
-            portfolioservice.savePortfolio(p);
-        }
+
+        portfolioservice.savePortfolio(p);
+
         userService.saveUser(u);
-        System.out.println("deleting portfolio with id " + id);
+
     }
 
     // recebe um post do angular com os parametros name e user (maybe)
@@ -167,7 +179,8 @@ public class FinanceController {
         userService.saveUser(u);
 
         Market m = marketservice.getMarketById(random.nextInt(marketservice.getMarketsCount().intValue() + 1));
-        Order origin_order = orderservice.saveOrder(new Order(Float.valueOf(-100), Float.valueOf(0), null, m));
+        Order origin_order = orderservice
+                .saveOrder(new Order(Float.valueOf(-100), Float.valueOf(0), systemPortfolio, m));
         Order destiny_order = orderservice.saveOrder(new Order(Float.valueOf(100), Float.valueOf(0), p, m));
 
         transactionservice.saveTransaction(new Transaction(origin_order, destiny_order));

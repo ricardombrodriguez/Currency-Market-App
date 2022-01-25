@@ -76,6 +76,7 @@ export class PortfolioComponent implements OnInit {
   deletePortfolio(): void {
     this.portfolioService.deletePortfolio(this.portfolio, parseInt(this.authService.curentUserId!)).subscribe();
     window.location.reload();
+    console.log("delelet portfolio")
     this.router.navigateByUrl("/");
   }
 
@@ -92,7 +93,6 @@ export class PortfolioComponent implements OnInit {
     if (this.portfolio === undefined) { return }
     this.portfolioService.deleteExtension(this.portfolio, extension).subscribe((extension) => {
     })
-    window.location.reload();
   }
 
   getAllExtensions() {

@@ -85,20 +85,20 @@ public class Portfolio {
         this.users.remove(user);
     }
 
-    public List<Order> getOrders() {
-        return this.orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
     public void addExtension(Extension extension) {
         this.extensions.add(extension);
     }
 
     public void removeExtension(Extension extension) {
         this.extensions.remove(extension);
+    }
+
+    public List<Order> getOrders() {
+        return this.orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
