@@ -296,6 +296,9 @@ public class FinanceController {
             case "2":
                 atrbt="price";
                 break;
+            case "id":
+                atrbt="id";
+                break;
             default:
                 System.out.println("Unexpected sortable property, using id");
                 atrbt="id";
