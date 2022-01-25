@@ -74,6 +74,8 @@ export class AppComponent {
     console.log(this.loggedId)
     this.userID = this.authService.curentUserId
 
+    console.log("userID "+ this.userID)
+
     authService.userIdObs.subscribe((data) => {
       this.userID = data
       this.loggedId = data !== null;

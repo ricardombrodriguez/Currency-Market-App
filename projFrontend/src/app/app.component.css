@@ -28,7 +28,6 @@ li.nav-item {
     border-style: none;
     padding: 10px;
     font-size: 18px;
-    letter-spacing: 2px;
     padding-right: 40px;
     color:#fff;
     width: 300px;
@@ -40,7 +39,6 @@ li.nav-item {
   .input-search::placeholder{
     color:#ffffff;
     font-size: 18px;
-    letter-spacing: 2px;
     font-weight: 100;
   }
   .btn-search{

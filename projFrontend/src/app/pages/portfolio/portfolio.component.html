@@ -1,8 +1,9 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2"> {{ portfolio.name }} </h1>
+    <h5> Public key: {{ portfolio.public_key }} </h5>
     <div class="m-2 float-right">
-        <a class="nav-link" routerLink="/">
-            <button type=" button" class="btn btn-outline-danger" (click)="deletePortfolio()">
+        <a class="nav-link" routerLink="/" routerLinkActive="active">
+            <button type="button" class="btn btn-outline-danger" (click)="deletePortfolio()">
                 Leave Portfolio
             </button>
         </a>
@@ -12,7 +13,7 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#main" type="button"
-            role="tab" aria-controls="home" aria-selected="true">Main View</button>
+            role="tab" aria-controls="home" aria-selected="true">Wallet</button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#history" type="button"
@@ -27,13 +28,9 @@
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
 
-        <div class="col-12" style="display:flex;">
-            <h4> Public key: </h4> <h4 style="margin-left: 10px"> {{ portfolio.public_key }} </h4>
-        </div>
-
         <div class="col-12">
             <br>
-            <h4>Portfolio</h4>
+            <h4>My Coins</h4>
             <app-data-table [id]="'currencies'" [columns]="columns" [getData]="getData"></app-data-table>
         </div>
 
