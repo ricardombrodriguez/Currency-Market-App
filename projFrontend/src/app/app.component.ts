@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Coin } from './interfaces/coin';
 
 import { SearchService } from './services/search.service';
- 
+
 import { Router } from '@angular/router';
 import { timeout } from 'rxjs';
 
@@ -63,7 +63,7 @@ export class AppComponent {
   logOut = () => this.authService.logOut();
 
   public userID: any
-  
+
   public constructor(
     public authService: AuthenticationService,
     public service: PortfolioServiceService,
@@ -71,6 +71,7 @@ export class AppComponent {
     private router: Router
   ) {
     this.loggedId = authService.isLoggedIn();
+    console.log(this.loggedId)
     this.userID = this.authService.curentUserId
 
     authService.userIdObs.subscribe((data) => {
@@ -83,7 +84,7 @@ export class AppComponent {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   portfolio = { pname: "", pkey: "" }
   public error = false;
@@ -119,14 +120,14 @@ export class AppComponent {
 
   onEnter() {
     if ((<HTMLInputElement>document.getElementById("searchBar")).value == "") return
-    this.searchService.getData( (<HTMLInputElement>document.getElementById("searchBar")).value ).subscribe(data => this.coin_data = data)
+    this.searchService.getData((<HTMLInputElement>document.getElementById("searchBar")).value).subscribe(data => this.coin_data = data)
   }
 
   clean() {
-    setTimeout( () => this.coin_data = [], 500 )
+    setTimeout(() => this.coin_data = [], 500)
   }
 
   href(id: number) {
-    window.location.href = "/coins/"+id;
+    window.location.href = "/coins/" + id;
   }
 }
