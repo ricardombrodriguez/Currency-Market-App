@@ -116,7 +116,7 @@ export class PortfolioComponent implements OnInit {
   columns: DataTables.ColumnSettings[] = [
     { title: '#', data: 'id' },
     { title: 'Currency', render: (a, b, row) => `<img style="height: 20px;" src="${row.logo_url}"> ${row.name}`, orderable: false },
-    { title: 'Quantity', data: 'quantity' },
+    { title: 'Quantity', data: 'quantity', orderable: false},
     { render: (a, b, row) => `<a href="/coins/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>`, orderable: false },
   ]
 

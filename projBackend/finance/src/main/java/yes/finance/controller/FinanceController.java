@@ -1,4 +1,4 @@
-package yes.finance.controller;
+package yes.finance.controller; 
 
 import java.util.*;
 
@@ -88,14 +88,14 @@ public class FinanceController {
     public Page<Currency> getAllCurrencies(
             @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, 
             @RequestParam(value = "order", defaultValue = "asc") String order) {
-        // String atrbt="";
-        // for (Sort.Order ordery : pageable.getSort()){
-        //     atrbt = ordery.getProperty();
-        //     }
-            //System.out.println("->" + atrbt +" - " +order);
-        // if (order.equals("desc")){
-        //     pageable = PageRequest.of(0, 10, Sort.by(atrbt).descending()); 
-        // }
+        String atrbt="";
+        for (Sort.Order ordery : pageable.getSort()){
+            atrbt = ordery.getProperty();
+            }
+            System.out.println("->" + atrbt +" - " +order);
+        if (order.equals("desc")){
+            pageable = PageRequest.of(pageable.getPageNumber(), 10, Sort.by(atrbt).descending()); 
+        }
         return currencyservice.getCurrencies(pageable);
     }
 
@@ -110,7 +110,31 @@ public class FinanceController {
     }
 
     @GetMapping("/currency/{id}")
-    public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId, Pageable pageable) {
+    public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId, @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(value = "order", defaultValue = "asc") String order) {
+        String atrbt="";
+        for (Sort.Order ordery : pageable.getSort()){
+            atrbt = ordery.getProperty();
+        }
+        switch(atrbt){
+            case "1":
+                atrbt="origin_currency_id";
+                break;
+            case "2":
+                atrbt="price";
+                break;
+            case "id":
+                atrbt="id";
+                break;
+            default:
+                System.out.println("Unexpected sortable property, using id");
+                atrbt="id";
+        }
+        System.out.println("->" + atrbt +" - " +order);
+        if (order.equals("desc")){
+            pageable = PageRequest.of(pageable.getPageNumber(), 10, Sort.by(atrbt).descending()); 
+        }else{
+            pageable = PageRequest.of(pageable.getPageNumber(), 10, Sort.by(atrbt).ascending()); 
+        }
         return marketservice.getMarketsByCurrency(currencyId, pageable);
     }
 
@@ -138,14 +162,14 @@ public class FinanceController {
             @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, 
             @RequestParam(value = "order", defaultValue = "asc") String order) {
         //User user = userService.getUserById(id);
-        // String atrbt="";
-        // for (Sort.Order ordery : pageable.getSort()){
-        //     atrbt = ordery.getProperty();
-        //     }
-        //     //System.out.println("->" + atrbt +" - " +order);
-        // if (order.equals("desc")){
-        //     pageable = PageRequest.of(0, 10, Sort.by(atrbt).descending()); 
-        // }
+        String atrbt="";
+        for (Sort.Order ordery : pageable.getSort()){
+            atrbt = ordery.getProperty();
+            }
+            //System.out.println("->" + atrbt +" - " +order);
+        if (order.equals("desc")){
+            pageable = PageRequest.of(pageable.getPageNumber(), 10, Sort.by(atrbt).descending()); 
+        }
         return extensionservice.getExtensionsByUser(id, pageable);
     }
  
@@ -230,14 +254,14 @@ public class FinanceController {
 
     @GetMapping("/portfolio/{id}/details")
     public Page<PCurrency> getPortfolioDetails(@PathVariable int id,@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(value = "order", defaultValue = "asc") String order) {
-        // String atrbt="";
-        // for (Sort.Order ordery : pageable.getSort()){
-        //     atrbt = ordery.getProperty();
-        //     }
-        //     //System.out.println("->" + atrbt +" - " +order);
-        // if (order.equals("desc")){
-        //     pageable = PageRequest.of(0, 10, Sort.by(atrbt).descending()); 
-        // }
+        String atrbt="";
+        for (Sort.Order ordery : pageable.getSort()){
+            atrbt = ordery.getProperty();
+            }
+            //System.out.println("->" + atrbt +" - " +order);
+        if (order.equals("desc")){
+            pageable = PageRequest.of(pageable.getPageNumber(), 10, Sort.by(atrbt).descending()); 
+        }
         return portfolioservice.getPortfolioDetailsById(id, pageable);
     }
 
@@ -303,12 +327,12 @@ public class FinanceController {
                 System.out.println("Unexpected sortable property, using id");
                 atrbt="id";
         }
-        //System.out.println("->" + atrbt +" - " +order);
-        // if (order.equals("desc")){
-        //     pageable = PageRequest.of(0, 10, Sort.by(atrbt).descending()); 
-        // }else{
-        //     pageable = PageRequest.of(0, 10, Sort.by(atrbt).ascending()); 
-        // }
+        System.out.println("->" + atrbt +" - " +order);
+        if (order.equals("desc")){
+            pageable = PageRequest.of(pageable.getPageNumber(), 10, Sort.by(atrbt).descending()); 
+        }else{
+            pageable = PageRequest.of(pageable.getPageNumber(), 10, Sort.by(atrbt).ascending()); 
+        }
         return marketservice.getMarkets(pageable);
     }
 
