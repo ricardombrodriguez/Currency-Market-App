@@ -24,31 +24,31 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Integer> {
 
         // query
 
-        @Query(value = "SELECT c.id, c.name, c.logo_url, c.online, c.symbol, SUM(IF(sell_pt IS NULL AND c.id = o.origin_currency_id, 0, IF((p.id = sell_pt AND c.id = o.destiny_currency_id) OR (p.id = buy_pt AND c.id = o.origin_currency_id), -qt, qt))) quantity  FROM portfolio p "
+        @Query(value = "SELECT c.id, c.name, c.logo_url, c.online, c.symbol, SUM(IF(o.destiny_currency_id = c.id OR EXISTS(SELECT t1.id FROM `transaction` t1 INNER JOIN orders od ON t1.destiny_order_id = od.id WHERE od.portfolio_id = :id AND t1.id < o.tid), IF((p.id = sell_pt AND c.id = o.destiny_currency_id) OR (p.id = buy_pt AND c.id = o.origin_currency_id), -qt, qt), 0)) quantity  FROM portfolio p "
                         +
                         "LEFT JOIN (" +
-                        "SELECT m.id, m.origin_currency_id, m.destiny_currency_id, oo.portfolio_id sell_pt, od.portfolio_id buy_pt, LEAST(-oo.quantity, od.quantity) qt FROM `transaction` t "
+                        "SELECT t.id tid, m.id, m.origin_currency_id, m.destiny_currency_id, oo.portfolio_id sell_pt, od.portfolio_id buy_pt, LEAST(-oo.quantity, od.quantity) qt FROM `transaction` t "
                         +
                         "INNER JOIN orders oo ON t.origin_order_id = oo.id " +
                         "INNER JOIN orders od ON t.destiny_order_id = od.id " +
                         "INNER JOIN market m ON m.id = oo.market_id " +
                         ") o ON p.id = o.sell_pt OR  p.id = o.buy_pt " +
-                        "LEFT JOIN currency c ON (o.sell_pt IS NOT NULL AND c.id = o.origin_currency_id) OR c.id = o.destiny_currency_id "
+                        "LEFT JOIN currency c ON c.id = o.origin_currency_id OR c.id = o.destiny_currency_id "
                         +
                         "WHERE p.id = :id " +
                         "GROUP BY p.id, c.id", nativeQuery = true)
         Page<PCurrency> getPortfolioDetailsById(@Param("id") int id, Pageable pageable);
 
-        @Query(value = "SELECT c.id, c.name, c.logo_url, c.online, c.symbol, SUM(IF(sell_pt IS NULL AND c.id = o.origin_currency_id, 0, IF((p.id = sell_pt AND c.id = o.destiny_currency_id) OR (p.id = buy_pt AND c.id = o.origin_currency_id), -qt, qt))) quantity  FROM portfolio p "
+        @Query(value = "SELECT c.id, c.name, c.logo_url, c.online, c.symbol, SUM(IF(o.destiny_currency_id = c.id OR EXISTS(SELECT t1.id FROM `transaction` t1 INNER JOIN orders od ON t1.destiny_order_id = od.id WHERE od.portfolio_id = :portfolioId AND t1.id < o.tid), IF((p.id = sell_pt AND c.id = o.destiny_currency_id) OR (p.id = buy_pt AND c.id = o.origin_currency_id), -qt, qt), 0)) quantity  FROM portfolio p "
                         +
                         "LEFT JOIN (" +
-                        "SELECT m.id, m.origin_currency_id, m.destiny_currency_id, oo.portfolio_id sell_pt, od.portfolio_id buy_pt, LEAST(-oo.quantity, od.quantity) qt FROM `transaction` t "
+                        "SELECT t.id tid, m.id, m.origin_currency_id, m.destiny_currency_id, oo.portfolio_id sell_pt, od.portfolio_id buy_pt, LEAST(-oo.quantity, od.quantity) qt FROM `transaction` t "
                         +
                         "INNER JOIN orders oo ON t.origin_order_id = oo.id " +
                         "INNER JOIN orders od ON t.destiny_order_id = od.id " +
                         "INNER JOIN market m ON m.id = oo.market_id " +
                         ") o ON p.id = o.sell_pt OR  p.id = o.buy_pt " +
-                        "LEFT JOIN currency c ON (o.sell_pt IS NOT NULL AND c.id = o.origin_currency_id) OR c.id = o.destiny_currency_id "
+                        "LEFT JOIN currency c ON c.id = o.origin_currency_id OR c.id = o.destiny_currency_id "
                         +
                         "WHERE p.id = :portfolioId AND c.id = :currencyId " +
                         "GROUP BY p.id, c.id", nativeQuery = true)

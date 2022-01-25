@@ -2,6 +2,7 @@ export interface TransactionDetails {
   created_at: string, 
   qt: number, 
   val: number, 
+  portfolio_id: number,
   is_seller: boolean | null, 
   sell_curr_id: number, 
   sell_curr_logo: string, 
