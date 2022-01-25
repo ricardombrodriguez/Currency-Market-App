@@ -1,38 +1,52 @@
+
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">YesFinance</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#"><img src="./assets/img/yesfinance.png"
+      alt=" yesFinance logo" style="width: 180px; align-content: center;" /></a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
     data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-
-  <div class="navbar-nav" *ngIf="!loggedId">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" data-bs-toggle="modal" data-bs-target="#signUp">Sign up</a>
+  <div class="w-100" style="padding-right: 20px; display: flex; justify-content: flex-end">
+    <div class="search-box">
+      <button class="btn-search"><i class="fas fa-search"></i></button>
+      <input type="text" class="input-search" placeholder="Search for a coin..." (keyup)="onEnter()" id="searchBar"
+        (focusout)="clean()">
+    </div>
+    
+    <div style="position: absolute; max-height: 200px; overflow-y: scroll; background-color: white; box-shadow: 0px 0px 10px 1px;" >
+      <div *ngFor="let coin of coin_data" (click)="href(coin.id)" class="op" >
+        <p style="padding: 20px;" > {{ coin.name }}</p>
+      </div>
     </div>
   </div>
 
   <div class="navbar-nav" *ngIf="!loggedId">
-    <div class="nav-item text-nowrap" data-bs-toggle="modal" data-bs-target="#logIn">
-      <a class="nav-link px-3">Log in</a>
+    <div class="nav-item text-nowrap">
+      <a class="nav-link px-3" data-bs-toggle="modal" data-bs-target="#signUp"><i class="fas fa-user-plus"></i> Sign up</a>
+    </div>
+  </div>
+
+  <div class="navbar-nav" *ngIf="!loggedId">
+    <div class="nav-item text-nowrap" data-bs-toggle="modal" data-bs-target="#logIn"> 
+      <a class="nav-link px-3"><i class="fas fa-sign-in-alt"></i> Log in</a>
     </div>
   </div>
 
   <div class="navbar-nav" *ngIf="loggedId">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#" (click)="logOut()">Log out</a>
+      <a class="nav-link px-3" href="#" (click)="logOut()"><i class="fas fa-sign-out-alt"></i> Log out</a>
     </div>
   </div>
 </header>
 
-<div class="container-fluid">
-  <div class="row">
+<div style="margin-top: 10px;" class="container-fluid">
+  <div class=" row">
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3 d-flex flex-column h-100">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" href="#" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" href="#" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" style="padding-top: 25px;">
               <i class="icon fas fa-home"></i>
               Dashboard
             </a>
@@ -56,16 +70,18 @@
           <hr style="width:90%;text-align:left;margin-left:5%">
 
           <ul class="nav flex-column">
-            <a class="nav-link" href="#" aria-label="Add a new portfolio" data-bs-toggle="modal" data-bs-target="#newPortfolio">
+            <a class="nav-link" href="#" aria-label="Add a new portfolio" data-bs-toggle="modal"
+              data-bs-target="#newPortfolio">
               <li class="nav-item">
-                  <i class="icon fas fa-plus-circle"></i>
-                  Create Portfolio
+                <i class="icon fas fa-plus-circle"></i>
+                Create Portfolio
               </li>
             </a>
-            <a class="nav-link" href="#" aria-label="Add a new portfolio" data-bs-toggle="modal" data-bs-target="#joinPortfolio">
+            <a class="nav-link" href="#" aria-label="Add a new portfolio" data-bs-toggle="modal"
+              data-bs-target="#joinPortfolio">
               <li class="nav-item">
-                  <i class="icon fas fa-sign-in-alt"></i>
-                  Join Portfolio
+                <i class="icon fas fa-sign-in-alt"></i>
+                Join Portfolio
               </li>
             </a>
           </ul>
@@ -73,19 +89,20 @@
           <app-portfolio-list></app-portfolio-list>
         </div>
 
-        <div>
+        <div *ngIf="userID != null">
           <hr style="width:90%;text-align:left;margin-left:5%">
 
           <ul class="nav flex-column pb-2">
             <li class="nav-item">
-              <a class="nav-link" href="#" routerLink="/developers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a class="nav-link" href="#" routerLink="/developers" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
                 <i class="icon fas fa-code"></i>
                 Developers
               </a>
             </li>
           </ul>
         </div>
-        
+
       </div>
     </nav>
 
@@ -110,11 +127,12 @@
         <form>
           <div>
             <label for="newPortfolioName" class="form-label">Name</label>
-            <input id="name" type="text" class="form-control" placeholder="Name" [(ngModel)]="portfolio.pname" name="p_name">
+            <input id="name" type="text" class="form-control" placeholder="Name" [(ngModel)]="portfolio.pname"
+              name="p_name">
           </div>
         </form>
       </div>
-      <div class="modal-footer" >
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary" (click)="createPortfolio()">Create</button>
       </div>
@@ -139,35 +157,21 @@
         <form>
           <div>
             <label for="portfolioPublicKey" class="form-label">Public Key</label>
-            <input id="publicKey" name="publicKey" type="text" class="form-control" placeholder="Portfolio public key" [(ngModel)]="portfolio.pkey">
+            <input id="publicKey" name="publicKey" type="text" class="form-control" placeholder="Portfolio public key"
+              [(ngModel)]="portfolio.pkey">
           </div>
         </form>
       </div>
-      <div class="modal-footer" >
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary" (click)="joinPortfolio()">Join</button>
       </div>
       <div *ngIf="error==true" style="text-align:center; color:red;">
-        <span >Invalid public key!</span>
+        <span>Invalid public key!</span>
       </div>
     </div>
   </div>
 </div>
-
-<!--
-<div class="modal fade" id="portfolio" tabindex="-1" aria-hidden="true" *ngIf="!loggedId">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPortfolio">Create Portfolio</button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#joinPortfolio">Join Portfolio</button>
-      </div>
-    </div>
-  </div>
-</div>
--->
 
 
 <!-- LOG IN -->
@@ -187,7 +191,8 @@
 
         <div>
           <label for="lpassword" class="form-label">Password</label>
-          <input id="lpassword" type="password" class="form-control" placeholder="Password" [(ngModel)]="logInData.password">
+          <input id="lpassword" type="password" class="form-control" placeholder="Password"
+            [(ngModel)]="logInData.password">
         </div>
       </div>
       <div class="modal-footer">
@@ -210,27 +215,31 @@
       <div class="modal-body">
         <div>
           <label for="rusername" class="form-label">Username</label>
-          <input id="rusername" type="text" class="form-control" placeholder="Username" [(ngModel)]="signUpData.username">
+          <input id="rusername" type="text" class="form-control" placeholder="Username"
+            [(ngModel)]="signUpData.username">
         </div>
 
         <div>
           <label for="rfull_name" class="form-label">Full Name</label>
-          <input id="rfull_name" type="text" class="form-control" placeholder="Full Name" [(ngModel)]="signUpData.fullname">
+          <input id="rfull_name" type="text" class="form-control" placeholder="Full Name"
+            [(ngModel)]="signUpData.fullname">
         </div>
 
         <div>
           <label for="remail" class="form-label">Email</label>
-          <input id="remail" type="email" class="form-control" placeholder="Email"[(ngModel)]="signUpData.email">
+          <input id="remail" type="email" class="form-control" placeholder="Email" [(ngModel)]="signUpData.email">
         </div>
 
         <div>
           <label for="rpassword" class="form-label">Password</label>
-          <input id="rpassword" type="password" class="form-control" placeholder="Password" [(ngModel)]="signUpData.password">
+          <input id="rpassword" type="password" class="form-control" placeholder="Password"
+            [(ngModel)]="signUpData.password">
         </div>
 
         <div>
           <label for="rpassword_repeat" class="form-label">Repeat Password</label>
-          <input id="rpassword_repeat" type="password" class="form-control" placeholder="Password" [(ngModel)]="signUpData.passwordRepeat">
+          <input id="rpassword_repeat" type="password" class="form-control" placeholder="Password"
+            [(ngModel)]="signUpData.passwordRepeat">
         </div>
       </div>
       <div class="modal-footer">

@@ -25,14 +25,16 @@ public class CurrencyService {
     }
 
     public Page<Currency> getCurrencies(Pageable pageable) {
-        return repository.findByOnline(pageable);
+        return repository.findAll(pageable);
     }
 
     public Currency getCurrencyById(int id) {
         return repository.findById((int)id).orElse(null);
     }
 
-    // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO CurrencyRepository.java
+    public List<Currency> getCurrenciesByName(String name) {
+        return repository.findCurrenciesByName(name);
+    }
 
     public String deleteCurrency(int id) {
         repository.deleteById(id);

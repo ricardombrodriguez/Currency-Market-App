@@ -2,6 +2,8 @@ package yes.finance.controller;
 
 import java.util.*;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
@@ -10,8 +12,8 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.util.SystemPropertyUtils;
 import org.springframework.data.domain.Sort;
-
 
 import yes.finance.model.*;
 import yes.finance.model.Currency;
@@ -43,24 +45,17 @@ public class FinanceController {
     @Autowired
     private UserService userService;
 
-    // CLICK EXTENSION //
+    private Random random = new Random();
 
-    /*     
-    @GetMapping("/click-extension/{market}/{operation}")
-    public void getClickNotification(@PathVariable String market, @PathVariable String operation) {
+    private Portfolio systemPortfolio;
 
-        Extension clickExtension = extensionservice.getExtensionById(1);
-        Integer marketId = marketservice.getMarketBySymbol(market).getId();
-        List<Portfolio> portfoliosWithClickExtensions = extensionservice.getExtensionPortfolios(clickExtension);
+    //// INIT ///
 
-        Float quantity = operation.equals("BUY") ? (float) 2 : (float) -2;
-        Float value = (float) 100.0;
-
-        for (Portfolio p : portfoliosWithClickExtensions) {
-            this.createOrders(marketId, p.getId(), quantity, value);
-        }
-    } 
-    */
+    @PostConstruct
+    public void init() {
+        systemPortfolio = new Portfolio("system");
+        portfolioservice.savePortfolio(systemPortfolio);
+    }
 
     //////////////////////////////////////////// USER
     //////////////////////////////////////////// ////////////////////////////////////////////
@@ -90,7 +85,9 @@ public class FinanceController {
     }
 
     @GetMapping("/currency")
-    public Page<Currency> getAllCurrencies(@SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(value = "order", defaultValue = "asc") String order) {
+    public Page<Currency> getAllCurrencies(
+            @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, 
+            @RequestParam(value = "order", defaultValue = "asc") String order) {
         String atrbt="";
         for (Sort.Order ordery : pageable.getSort()){
             atrbt = ordery.getProperty();
@@ -113,10 +110,13 @@ public class FinanceController {
     }
 
     @GetMapping("/currency/{id}")
-    public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId) {
-        List<Market> markets_by_currency = marketservice.getMarketsByCurrency(currencyId);
-        Page<Market> page_markets_by_currency = new PageImpl<>(markets_by_currency);
-        return page_markets_by_currency;
+    public Page<Market> getMarketsByCurrencyId(@PathVariable(value = "id") int currencyId, Pageable pageable) {
+        return marketservice.getMarketsByCurrency(currencyId, pageable);
+    }
+
+    @GetMapping("/currency/search")
+    public List<Currency> getCurrenciesByName(@RequestParam String name) {
+        return currencyservice.getCurrenciesByName(name);
     }
 
     //////////////////////////////////////////// EXTENSION
@@ -126,10 +126,17 @@ public class FinanceController {
     public Page<Extension> getAllExtensions(Pageable pageable) {
         return extensionservice.getExtensions(pageable);
     }
-    
+
+    @GetMapping("/extensions")
+    public List<Extension> getExtensionsList() {
+        return extensionservice.getExtensionsList();
+    }
 
     @GetMapping("/extension/{id}")
-    public Page<Extension> getUserExtensions(@PathVariable int id, @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(value = "order", defaultValue = "asc") String order) {
+    public Page<Extension> getUserExtensions(
+            @PathVariable int id, 
+            @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable, 
+            @RequestParam(value = "order", defaultValue = "asc") String order) {
         //User user = userService.getUserById(id);
         String atrbt="";
         for (Sort.Order ordery : pageable.getSort()){
@@ -143,7 +150,8 @@ public class FinanceController {
     }
  
     @PostMapping("/extension")
-    public Extension createExtensions(@RequestParam int userId, @RequestParam String name, @RequestParam String description, @RequestParam String path) {
+    public Extension createExtensions(@RequestParam int userId, @RequestParam String name,
+            @RequestParam String description, @RequestParam String path) {
         User user = userService.getUserById(userId);
         Extension extension = new Extension(user, name, description, path);
         return extensionservice.saveExtension(extension);
@@ -166,34 +174,39 @@ public class FinanceController {
     @DeleteMapping("/portfolio/{id}")
     public void deletePortfolios(@PathVariable int id, @RequestParam int user_id) {
 
-        // return portfolioservice.deletePortfolio(id);
+        System.out.println("deleting portfolio..." + id);
 
-        // remover o portfolio da lista de portfolios do user
         Portfolio p = portfolioservice.getPortfolioById(id);
+
         User u = service.getUserById(user_id);
 
         u.removePortfolio(p);
+
         p.removeUser(u);
-        if (p.getUsers().size() == 0) {
-            portfolioservice.deletePortfolio(id);
-        } else {
-            portfolioservice.savePortfolio(p);
-        }
+
+        portfolioservice.savePortfolio(p);
+
         userService.saveUser(u);
-        System.out.println("deleting portfolio with id " + id);
+
     }
 
     // recebe um post do angular com os parametros name e user (maybe)
     @PostMapping("/portfolio")
     public Portfolio createPortfolio(@RequestParam String name, @RequestParam int id) {
 
-        System.out.println(">> A criar Portfolio '" + name + "'...");
-        Portfolio p = new Portfolio(name);
+        Portfolio p = portfolioservice.savePortfolio(new Portfolio(name));
+
         User u = service.getUserById(id);
         u.addPortfolio(p);
         userService.saveUser(u);
-        // p.addUser(u);
-        // return portfolioservice.savePortfolio(p);
+
+        Market m = marketservice.getMarketById(random.nextInt(marketservice.getMarketsCount().intValue() + 1));
+        Order origin_order = orderservice
+                .saveOrder(new Order(Float.valueOf(-100), Float.valueOf(0), systemPortfolio, m));
+        Order destiny_order = orderservice.saveOrder(new Order(Float.valueOf(100), Float.valueOf(0), p, m));
+
+        transactionservice.saveTransaction(new Transaction(origin_order, destiny_order));
+
         return p;
 
     }
@@ -226,6 +239,11 @@ public class FinanceController {
             pageable = PageRequest.of(0, 10, Sort.by(atrbt).descending()); 
         }
         return portfolioservice.getPortfolioDetailsById(id, pageable);
+    }
+
+    @GetMapping("/portfolio/{id}/transactions")
+    public Page<Map<String, Object>> getPortfolioTransactions(@PathVariable int id, Pageable pageable) {
+        return transactionservice.getTransactionDetails(id, pageable);
     }
 
     @PostMapping("porfolio/users")
@@ -330,7 +348,24 @@ public class FinanceController {
     @PostMapping("/order")
     public Order createOrders(@RequestParam int marketId, @RequestParam int portfolioId, @RequestParam Float quantity,
             @RequestParam Float orderValue) {
+        if (quantity == 0)
+            return null;
+
         Market market = marketservice.getMarketById(marketId);
+
+        Currency req_curr;
+        if (quantity > 0)
+            req_curr = market.getOriginCurrency();
+        else
+            req_curr = market.getDestinyCurrency();
+
+        PCurrency pcurr = portfolioservice.getCurrencyDetailsInPortfolio(portfolioId, req_curr.getId());
+        if (pcurr == null)
+            return null;
+
+        if ((quantity > 0 && quantity > pcurr.getQuantity()) || (quantity < 0 && -quantity > pcurr.getQuantity()))
+            return null;
+
         Order order = orderservice
                 .saveOrder(new Order(quantity, orderValue, portfolioservice.getPortfolioById(portfolioId), market));
         if (order != null) {

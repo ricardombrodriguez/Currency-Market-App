@@ -1,13 +1,20 @@
 import { AuthenticationService } from './services/authentication.service';
 import { Component } from '@angular/core';
 import { PortfolioServiceService } from './services/portfolio-service.service';
+import { ActivatedRoute } from '@angular/router';
+import { Coin } from './interfaces/coin';
 
+import { SearchService } from './services/search.service';
+ 
+import { Router } from '@angular/router';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent {
   loggedId: boolean = false;
 
@@ -44,13 +51,14 @@ export class AppComponent {
   logIn = () =>
     this.authService.logIn(this.logInData.email, this.logInData.password);
   signUp = () => {
-    if (this.signUpData.password === this.signUpData.passwordRepeat)
+    if (this.signUpData.password === this.signUpData.passwordRepeat) {
       this.authService.signUp(
         this.signUpData.username,
         this.signUpData.fullname,
         this.signUpData.email,
         this.signUpData.password
       );
+    }
   };
   logOut = () => this.authService.logOut();
 
@@ -58,12 +66,15 @@ export class AppComponent {
   
   public constructor(
     public authService: AuthenticationService,
-    public service: PortfolioServiceService
+    public service: PortfolioServiceService,
+    public searchService: SearchService,
+    private router: Router
   ) {
     this.loggedId = authService.isLoggedIn();
     this.userID = this.authService.curentUserId
 
     authService.userIdObs.subscribe((data) => {
+      this.userID = data
       this.loggedId = data !== null;
       if (this.loggedId) {
         $('.modal-backdrop').remove();
@@ -72,7 +83,7 @@ export class AppComponent {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   portfolio = { pname: "", pkey: "" }
   public error = false;
@@ -101,5 +112,21 @@ export class AppComponent {
 
     this.service.joinPortfolio((<HTMLInputElement>document.getElementById("publicKey")).value, parseInt(this.authService.curentUserId!)).subscribe((response) => { });
     window.location.reload()
+  }
+
+
+  public coin_data: Coin[] = []
+
+  onEnter() {
+    if ((<HTMLInputElement>document.getElementById("searchBar")).value == "") return
+    this.searchService.getData( (<HTMLInputElement>document.getElementById("searchBar")).value ).subscribe(data => this.coin_data = data)
+  }
+
+  clean() {
+    setTimeout( () => this.coin_data = [], 500 )
+  }
+
+  href(id: number) {
+    window.location.href = "/coins/"+id;
   }
 }

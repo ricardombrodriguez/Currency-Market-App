@@ -34,4 +34,7 @@ export class OrderServiceService {
     this.websocketService.startUpdates('/order/' + market, callback)
   }
 
+  deleteOrder(id: number) {
+    return this.http.delete(environment.API_URL + '/order/' + id)
+  }
 }

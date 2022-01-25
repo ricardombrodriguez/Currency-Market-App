@@ -1,10 +1,8 @@
 import { CoinsServiceService } from './../../services/coins-service.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Coin } from 'src/app/interfaces/coin';
-import { map, Observable } from 'rxjs';
-import { param } from 'jquery';
-import { ThrowStmt } from '@angular/compiler';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-coin',
@@ -18,15 +16,16 @@ export class CoinComponent implements OnInit {
   @Input() public name: string = "";
   @Input() public symbol: string = "";
   @Input() public logo: string = "";
+  @Input() public online!: boolean;
 
 
   columns: DataTables.ColumnSettings[] = [
-    { title: '#', data: 'id' },
-    { title: 'Market', render: (a, b, row) => `<a href="/coins/${row.originCurrency.id}">${row.originCurrency.name}</a>-<a href="/coins/${row.destinyCurrency.id}">${row.destinyCurrency.name}</a>` },
+    { data: 'id' },
+    { title: 'Market', render: (a, b, row) => `<a href="/coins/${row.originCurrency.id}"><button type="button" class="btn btn-outline-primary btn-sm">${row.originCurrency.name}</button></a><i class="fas fa-arrows-alt-h" style="padding-right:5px; padding-left:5px;"></i><a href="/coins/${row.destinyCurrency.id}"><button type="button" class="btn btn-outline-primary btn-sm">${row.destinyCurrency.name}</button></a>` },
     { title: 'Price', render: (a, b, row) => `${row.price}$` },
-    { title: '% 1m', render: (a, b, row) => `${row.minuteChange}%` },
-    { title: '% 1h', render: (a, b, row) => `${row.hourChange}%` }, 
-    { title: '', render: (a, b, row) => `<a href="/markets/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>`, orderable: false },
+    { title: 'Minute Change (%)', render: (a, b, row) => `${row.minuteChange}%` },
+    { title: 'Hour Change (%)', render: (a, b, row) => `${row.hourChange}%` }, 
+    { render: (a, b, row) => <boolean>row.originCurrency.online ? `<a href="/markets/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>` : `<button type="button" class="btn btn-danger btn-sm">Offline</button>` , orderable: false },
   ]
 
   constructor(public service: CoinsServiceService, private router: Router) {  };
@@ -42,6 +41,7 @@ export class CoinComponent implements OnInit {
       this.name = value.name;
       this.symbol = value.symbol;
       this.logo = value.logoUrl;
+      this.online = <boolean>value.online;
     });
   };
 

@@ -4,10 +4,12 @@ killall(){
   echo "Killing containers..."
   docker kill finance_db
   docker kill finance_mq
+  docker kill datagen
 
   echo "Removing containers..."
   docker rm finance_db
   docker rm finance_mq
+  docker rm datagen
 
   echo "Killing other processes..."
   kill 0
@@ -28,12 +30,13 @@ docker run --name finance_mq --health-cmd='rabbitmq-diagnostics -q status' -p 56
 
 sleep 1
 
-sleep 25
+sleep 30;
 
 cd ./projDataGenerator
-python3 main.py &
+docker build -t datagen .
+docker run --name datagen --add-host host.docker.internal:host-gateway -e FINANCE_RABBITMQ_HOST='host.docker.internal' datagen &
 
-sleep 25
+sleep 30;
 
 
 cd ../projBackend/finance

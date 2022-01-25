@@ -8,11 +8,12 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-coins',
   templateUrl: './coins.component.html',
   styleUrls: ['./coins.component.css']
-})
+}) 
 export class CoinsComponent implements OnInit {
 
   columns: DataTables.ColumnSettings[] = [
-    { title: '#', data: 'id' }, 
+    { data: 'id' }, 
+    { render: (a, b, row) => <boolean>row.online ? `<div style="background-color: green; height:8px;width: 8px; border-radius:50%; display:flex;"></div>` :  `<div style="background-color: red; height:8px;width: 8px; border-radius:50%; display:flex;"></div>`, orderable: false },
     { title: 'Symbol', data: 'symbol' },
     { title: 'Name', data: 'name' },
     { render: (a, b, row) => `<a href="/coins/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button><a>`, orderable: false },

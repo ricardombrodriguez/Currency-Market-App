@@ -1,8 +1,14 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1> {{ name }} | {{ symbol }} </h1>
-  <img src="{{ logo }}" alt="{{ symbol }} Logo" height="100px" width="100px">
+<div style="display:flex; padding-top: 50px;">
+  <img src="{{ logo }}" alt="{{ symbol }} Logo" height="50px" width="50px" >
+  <h1 style="padding-left: 20px;"> {{ name }} </h1> 
+  <h2 style="padding: 7px 20px; color: #8C8C8C"> ({{ symbol }}) </h2>
+
+  <div *ngIf="online" style="background-color: green; height:15px;width: 15px; border-radius:50%; display:flex; "></div>
+  <div *ngIf="!online" style="background-color: red; height:15px;width: 15px; border-radius:50%; display:flex;"></div>
 
 </div>
+
+<hr>
 
 <h2>Markets</h2>
 

@@ -1,13 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PortfolioServiceService } from './../../services/portfolio-service.service';
 import { Portfolio } from './../../interfaces/portfolio';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AuthenticationService } from './../../services/authentication.service';
 import { User } from 'src/app/interfaces/user';
 import { Extension } from 'src/app/interfaces/extension';
 import { Order } from 'src/app/interfaces/order';
-import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-portfolio',
@@ -25,33 +24,26 @@ export class PortfolioComponent implements OnInit {
   public public_key: string = ""
   public id: number = 0;
 
+  public changeText: boolean;
 
-  constructor(public portfolioService: PortfolioServiceService, private router: Router, private activatedRoute: ActivatedRoute, public authService: AuthenticationService) { }
+  constructor(public portfolioService: PortfolioServiceService, private router: Router, public authService: AuthenticationService) { this.changeText = false; }
 
   ngOnInit(): void {
 
     this.getPortfolioInfo();
     this.getAllExtensions();
+    this.getPortfolioUsers();
 
     console.log(">> this portfolio: " + this.portfolio)
-    console.log(">>> all extensions: " + this.allExtensions)
+    console.log(">> all extensions: " + this.allExtensions)
+    console.log(">> users: " + this.users)
 
-    // this.portfolioService.getPortfolio(id).pipe(
-    //   mergeMap((portfolio) => this.portfolioService.getAllExtensions())
-    // ).subscribe((allExtensions) => {
-    //   this.portfolio = this.portfolio;
-    //   this.allExtensions = allExtensions;
-    // });
-
-
-
-    // this.name = portfolio.name;
-    // this.extensions = portfolio.extensions;
-    // this.orders = portfolio.orders;
-    // this.public_key = portfolio.public_key;
-    // this.id = portfolio.id
-
-    // this.extensions = extensions;
+    const url_array = this.router.url.split("/");
+    const id = +url_array[url_array.length - 1];
+    this.portfolioService.startUpdates(id, () => {
+      $('#currencies').DataTable().ajax.reload()
+      $('#history').DataTable().ajax.reload()
+    })
   }
 
 
@@ -75,7 +67,6 @@ export class PortfolioComponent implements OnInit {
   getPortfolioUsers(): void {
 
     this.portfolioService.getPortfolioUsers(this.portfolio.public_key).subscribe((users) => {
-      console.log("port service....")
       this.users = users;
     })
 
@@ -85,6 +76,7 @@ export class PortfolioComponent implements OnInit {
   deletePortfolio(): void {
     this.portfolioService.deletePortfolio(this.portfolio, parseInt(this.authService.curentUserId!)).subscribe();
     window.location.reload();
+    console.log("delelet portfolio")
     this.router.navigateByUrl("/");
   }
 
@@ -101,24 +93,11 @@ export class PortfolioComponent implements OnInit {
     if (this.portfolio === undefined) { return }
     this.portfolioService.deleteExtension(this.portfolio, extension).subscribe((extension) => {
     })
-    window.location.reload();
   }
 
-
-  // getPortfolioExtensions(): void {
-  //   if (this.portfolio === undefined) { return }
-  //   this.portfolioService.getPortfolioExtensions(this.portfolio).subscribe((extensions) => {
-  //     this.extensions = extensions;
-  //     console.log("extensions list (of portfolio)")
-  //     console.log(extensions)
-  //   })
-  // }
-
-  getAllExtensions(): void {
-    this.portfolioService.getAllExtensions().subscribe((extensions) => {
+  getAllExtensions() {
+    this.portfolioService.getAllExtensionsList().subscribe((extensions) => {
       this.allExtensions = extensions;
-      console.log("all extensionsssssssssssssssssss")
-      console.log(this.allExtensions)
     })
   }
 
@@ -138,8 +117,17 @@ export class PortfolioComponent implements OnInit {
     { title: '#', data: 'id' },
     { title: 'Currency', render: (a, b, row) => `<img style="height: 20px;" src="${row.logo_url}"> ${row.name}`, orderable: false },
     { title: 'Quantity', data: 'quantity' },
-    { title: 'Volume', data: 'volume' },
-    { render: (a, b, row) => `<a href="/markets/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>`, orderable: false },
+    { render: (a, b, row) => `<a href="/coins/${row.id}"><button type="button" class="btn btn-primary btn-sm">Details</button></a>`, orderable: false },
+  ]
+
+  getTransactions = (parameters: Object) => this.portfolioService.getPortfolioTransactions(parameters, this.portfolio.id)
+
+  tcolumns: DataTables.ColumnSettings[] = [
+    { title: 'Date', data: 'created_at', render: a => (new Date(a)).toLocaleString() },
+    { title: 'Operation', render: (a, b, row) => row.is_seller === null ? '<i class="text-secondary">System</i>' : (row.is_seller == 1 ? '<i class="fas fa-arrow-left text-danger"></i>' : '<i class="fas fa-arrow-right text-success"></i>') },
+    { title: 'Market', render: (a, b, row) => (row.is_seller === null ? '' : `<a href="/coins/${row.sell_curr_id}">${row.sell_curr_name}</a>-`) + `<a href="/coins/${row.buy_curr_id}">${row.buy_curr_name}</a>` },
+    { title: 'Quantity', data: 'qt' },
+    { title: 'Value', data: 'val' },
   ]
 
 }
