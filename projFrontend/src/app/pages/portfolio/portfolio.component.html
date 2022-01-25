@@ -2,8 +2,8 @@
     <h1 class="h2"> {{ portfolio.name }} </h1>
     <h5> Public key: {{ portfolio.public_key }} </h5>
     <div class="m-2 float-right">
-        <a class="nav-link" routerLink="/" routerLinkActive="active">
-            <button type="button" class="btn btn-outline-danger" (click)="deletePortfolio()">
+        <a class="nav-link" routerLink="/">
+            <button type=" button" class="btn btn-outline-danger" (click)="deletePortfolio()">
                 Leave Portfolio
             </button>
         </a>
@@ -37,12 +37,6 @@
     </div>
 
     <div class="tab-pane fade" id="extensions" role="tabpanel" aria-labelledby="extensions-tab">
-        <div class="mt-4 col-sm-12 col-md-6 col-lg-4">
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
-            </form>
-        </div>
 
         <div class="list-group mt-4">
 

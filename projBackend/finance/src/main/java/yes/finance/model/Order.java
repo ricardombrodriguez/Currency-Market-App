@@ -1,7 +1,9 @@
 package yes.finance.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,17 +24,17 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-  
+
     private Float quantity;
     private Float order_value;
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "origin_order")
+    @OneToMany(mappedBy = "origin_order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> origin_orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "destiny_order")
+    @OneToMany(mappedBy = "destiny_order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> destiny_orders = new ArrayList<>();
-   
+
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
@@ -41,7 +43,8 @@ public class Order {
     @JoinColumn(name = "market_id")
     private Market market;
 
-    public Order(){}
+    public Order() {
+    }
 
     public Order(Float quantity, Float order_value, Portfolio portfolio, Market market) {
         this.quantity = quantity;
@@ -51,7 +54,6 @@ public class Order {
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
-    
     public Integer getId() {
         return id;
     }
@@ -114,14 +116,13 @@ public class Order {
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", quantity='" + getQuantity() + "'" +
-            ", order_value='" + getOrder_value() + "'" +
-            ", created_at='" + getCreatedAt() + "'" +
-            ", portfolio='" + getPortfolioId() + "'" +
-            ", market='" + getMarketId() + "'" +
-            "}";
+                " id='" + getId() + "'" +
+                ", quantity='" + getQuantity() + "'" +
+                ", order_value='" + getOrder_value() + "'" +
+                ", created_at='" + getCreatedAt() + "'" +
+                ", portfolio='" + getPortfolioId() + "'" +
+                ", market='" + getMarketId() + "'" +
+                "}";
     }
-
 
 }

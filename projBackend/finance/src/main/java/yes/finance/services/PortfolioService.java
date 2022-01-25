@@ -31,7 +31,7 @@ public class PortfolioService {
     }
 
     public Portfolio getPortfolioById(int id) {
-        return repository.findById((int) id).orElse(null);
+        return repository.findById(id);
     }
 
     // IMPLEMENTAR TODOS OS FIND's QUE TIVERMOS NO PortfolioRepository.java
@@ -42,7 +42,7 @@ public class PortfolioService {
     }
 
     public Portfolio updatePortfolio(Portfolio Portfolio) {
-        Portfolio existingPortfolio = repository.findById((int) Portfolio.getId()).orElse(null);
+        Portfolio existingPortfolio = repository.findById((int) Portfolio.getId());
         return savePortfolio(existingPortfolio);
     }
 

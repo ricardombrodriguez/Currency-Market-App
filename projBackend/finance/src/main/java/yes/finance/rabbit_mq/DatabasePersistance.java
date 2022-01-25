@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
+import yes.finance.controller.FinanceController;
 import yes.finance.model.Currency;
 import yes.finance.model.Market;
 import yes.finance.model.Order;
@@ -38,6 +39,7 @@ import yes.finance.repository.OrderRepository;
 import yes.finance.repository.TickerRepository;
 import yes.finance.services.TransactionService;
 import yes.finance.services.OrderService;
+import yes.finance.services.PortfolioService;
 import yes.finance.repository.ExtensionRepository;
 
 @Component
@@ -62,7 +64,10 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
     private ExtensionRepository extensionRepository;
 
     @Autowired
-    private OrderService orderService;
+    private PortfolioService portfolioService;
+
+    @Autowired
+    private FinanceController financeController;
 
     private ArrayList<String> currencies = new ArrayList<String>();
 
@@ -109,7 +114,8 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                         ticker.getMax_buyer_value());
 
                 for (Order order : buyOrders) {
-                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMin_seller_value(), null,
+                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMin_seller_value(),
+                            portfolioService.getPortfolioById(1),
                             order.getMarket());
                     Transaction t = new Transaction(complementOrder, order);
 
@@ -118,7 +124,8 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
                 }
 
                 for (Order order : sellOrders) {
-                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMax_buyer_value(), null,
+                    Order complementOrder = new Order(-order.getQuantity(), ticker.getMax_buyer_value(),
+                            portfolioService.getPortfolioById(1),
                             order.getMarket());
                     Transaction t = new Transaction(order, complementOrder);
 
@@ -165,8 +172,9 @@ public class DatabasePersistance implements ApplicationListener<MessageEvent> {
 
                         for (Portfolio p : extensionPortfolios) {
 
-                            Order ord = new Order(quantity.floatValue(), value.floatValue(), p, market);
-                            orderService.saveOrder(ord);
+                            financeController.createOrders(market.getId(), p.getId(), quantity.floatValue(),
+                                    value.floatValue());
+
                         }
 
                         http.disconnect();
