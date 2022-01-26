@@ -1,67 +1,10 @@
 # YesFinance
 
-## Segunda iteração
+## Abstrato
+YesFinace é uma aplicação web com o intuito de tornar o mundo de investimentos em criptomoedas mais intuitivo. Para tal, enquadra-se como um simulador de compra e venda de moedas virtuais.
 
-Tivemos alguns problemas a interligar o backend com o frontend, portanto, deixamos um pequeno "tutorial" de como fazemos para testar.
-
-## Como correr
-```
-sudo docker-compose up
-docker ps -a
-
-[verificar qual o container do client]
-
-docker stop <container_do_client>
-docker rm <container_do_client>
-```
-
-noutro terminal
-```
-cd projFrontend/src/
-ng serve
-```
-
-## Serviços a funcionar
-
-```
-localhost:4200/
-localhost:4200/coins/
-localhost:4200/ticker/
-localhost:4200/markets/
-```
-
-
-## Base de dados
-
-ENTIDADES
-
-Table -> Moeda (https://api.bittrex.com/v3/currencies)
-- symbol
-- name
-- coinType
-- status
-- minConfirmations
-- notice
-- txFee
-- logoUrl
-- prohibitedIn
-- baseAddress
-- associatedTermsOfService
-- tags
-
-Table -> Exchange (https://api.bittrex.com/v3/markets/tickers)
-- symbol
-- lastTradeRate
-- bidRate
-- askRate
-
-Table -> User
-- username
-- fullname
-- email
-- password
-- telephone
-- creditCard (será que é seguro ou não?)
+## Bookmarks
+A documentação da API está na pasta /reports.
 
 ## Autores
 
