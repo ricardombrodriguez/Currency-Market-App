@@ -6,6 +6,10 @@ YesFinace é uma aplicação web com o intuito de tornar o mundo de investimento
 ## Bookmarks
 A documentação da API está na pasta /reports.
 
+## Grade
+
+17
+
 ## Autores
 
 | NMec | Name | Email | Roles |
